@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@font-face {
+	font-family: tepeno_sans;
+	src: url(../fonts/);
+  }
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: #182952	;
+	font-family: 'Montserrat', sans-serif;
+	color: white;
+	height: 100vh;
+	margin: 10px  10px;
+}
+
+h1 {
+	font-weight: bold;
+	margin: 20;
+	color: white;
+}
+
+h2 {
+	text-align: center;
+}
+
+p {
+	font-size: 14px;
+	font-weight: 100;
+	line-height: 20px;
+	letter-spacing: 0.5px;
+	margin: 20px 0 30px;
+}
+
+span {
+	font-size: 12px;
+	color: white;
+}
+
+a {
+	color: white;
+	font-size: 14px;
+	text-decoration: none;
+	margin: 15px 0;
+}
+
+button {
+    margin-top:15px;
+    margin-bottom:25px;
+	border-radius: 20px;
+	border: 1px solid #FF4B2B;
+	background-color: #FF4B2B;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    cursor: pointer;
+}
+
+button:active {
+	transform: scale(0.95);
+}
+
+button:focus {
+	outline: none;
+}
+
+button.ghost {
+	background-color: transparent;
+	border-color: #FFFFFF;
+}
+
+
+form {
+	background-color: #182952;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 50px;
+	height: 100%;
+	text-align: center;
+}
+
+input, select {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+}
+
+#signin{
+	margin-bottom: 60px;
+}
+.header{
+	width: 100%;
+	height: 50px;
+	color: #03c4a1;
+	font-family: tepeno_sans;
+}
+.header img{
+	height: 100%; 
+	float: left;
+}
+.header h2{
+	float: right;
+}
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background-color: #182952;
+	border-radius: 10px;
+	position: relative;
+	overflow: hidden;
+	width: 450px;
+	max-width: 100%;
+	min-height: 650px;
+}
+.googlebtn{
+	background-color: white;
+	color: black;
+	display: flex;
+	justify-content: space-between;
+	width: 200px;
+	border:1px solid rgb(105, 105, 105);
+	border-radius: 5px;
+	padding: 5px;
+}
+.googlebtn img{
+	width: 10%;
+}
+.sign-in-container {
+	width: 100%;
+	z-index: 2;
+}
+
+.social-container {
+	margin: 20px 0;
+}
+
+.social-container a {
+	border: 1px solid #DDDDDD;
+	border-radius: 50%;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 5px;
+	height: 40px;
+	width: 40px;
+}
+.errorBox {
+	width: 100%;
+    background-color: rgb(241, 74, 74);
+    padding: 10px;
+    margin: 10px;
+}
+.errorBox a{
+    color: white;;
+}
+.post{
+    background-color: white;
+    width: 100vw;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+.post div{
+    margin: 0px 10%
+}
+.post img{
+    width: 100%;
+}
+.post_header{
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+.post_header img{
+    border-radius: 50%;
+    height: 100%; 
+    width: auto;
+    object-fit:contain;
+    margin-right: 5px;
+}
+.like_section{
+    display: flex;
+    align-items: center;
+    height: 20px;
+}
+.like_section img{
+    height: 100%; 
+    width: auto;
+    object-fit: contain;
+}
+.like_section a{
+    margin-right: 20px;
+    margin-left: 5px;
+}
+/*-------------------------------------------------------------------------------------*/
+
