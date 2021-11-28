@@ -9,6 +9,9 @@
     <title>Channel</title>
 </head>
 <body>
-    
+    <div class="header"> 
+        <img src="../img/logo1.png" alt="TocTic_logo">
+        <h2 id="company_name">TocTic</h2>
+    </div> 
 </body>
 </html>
