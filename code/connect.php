@@ -4,7 +4,7 @@ $username = "root";
 $password = "qwerty";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, "Social_Network");
+$conn = new mysqli($servername, $username, $password, "Toctic");
 
 // Check connection
 if ($conn->connect_error) {
