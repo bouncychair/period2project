@@ -12,9 +12,10 @@ CREATE TABLE `Users` (
   `Gender` varchar(10) NOT NULL,
   `Age` int(11) NOT NULL,
   `RegDate` varchar(30),
-  `ProfilePicture` varchar(500) NOT NULL,
+  `ProfilePicture` varchar(500),
   `Token` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Channels` (

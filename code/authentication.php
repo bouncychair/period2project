@@ -59,7 +59,7 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     <a href="#">Forgot your password?</a>
     <button name="Sign_In">Sign In</button>
     <a href="#">Don' . 't have an account?</a>
-    <a href="test.php?page=signup" style="margin-top:0;  cursor: pointer;" ChangePage("SignUp")">SignUp</a>';
+    <a href="authentication.php?page=signup" style="margin-top:0;  cursor: pointer;" ChangePage("SignUp")">SignUp</a>';
 }else if($_GET["page"] == "google"){ //----------------------------------- Sign Up Via Google form
     include("googleTest.php");
     $formChange = '<h1>Create Account</h1>
@@ -71,11 +71,11 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     </a>
     <span>or use your email for registration</span>
     ' . $msgBox . '
-    <input type="text" name="Fname"  placeholder="First Name" value="'.@$_SESSION['user_first_name'].'"  />
+    <input type="text" name="Fname"  placeholder="First Name" value="'.$_SESSION['user_first_name'].'"  />
     <input type="text" name="Lname"  placeholder="Last Name" value="'.$_SESSION['user_last_name'].'"  />
     
     <input type="username" name="Username"  placeholder="Username"  />
-    <input type="email" name="Email"  placeholder="Email" value="'.@$_SESSION['user_email_address'].'" />
+    <input type="email" name="Email"  placeholder="Email" value="'.$_SESSION['user_email_address'].'" />
     <input type="password" name="Password" placeholder="Password"  />
     <input type="number" name="Age"  placeholder="Age"  />
 <select id="gender" name="Gender">
@@ -117,10 +117,10 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
 if (isset($_POST["Sign_Up"])) {
     $mailSent = false;
     if (!empty($_POST["Fname"]) && !empty($_POST["Lname"]) && !empty($_POST["Username"]) && !empty($_POST["Email"]) && !empty($_POST["Password"])) {
-        if (strlen($_POST["Fname"]) > 1 && !preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-_]/', $_POST["Lname"]) && strlen($_POST["Lname"]) > 1 && !preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-_]/', $_POST["Lname"])) {
+        if (strlen($_POST["Fname"]) > 1 && !preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-_]/', $_POST["Fname"]) && strlen($_POST["Lname"]) > 1 && !preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-_]/', $_POST["Lname"])) {
             if (strlen($_POST["Username"]) > 1 && !preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-]/', $_POST["Username"])) {
                 $username = $_POST["Username"];
-                $query = "SELECT * FROM users WHERE Username = '$username'";
+                $query = "SELECT * FROM `Users` WHERE Username = '$username'";
                 $result = mysqli_query($conn, $query);
                 if ($result) {
                     if (mysqli_num_rows($result) > 0) {
@@ -167,6 +167,7 @@ if (isset($_POST["Sign_Up"])) {
                                     $mail->Body = 'Your code for verification is: ' . $_SESSION['rand'] . '';
                                     $mail->send();
                                     $mailSent = true;
+                                    echo "Sent";
                                 } catch (Exception $e) {
                                     echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
                                 }
@@ -220,7 +221,7 @@ if (isset($_POST["Sign_Up"])) {
                     $age = $_SESSION['age'];
                     $token = uniqid("",true);
 
-                    $sql = "INSERT INTO `users`(`FirstName`,`LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `Token`) VALUES ('$fname', '$lname', '$username', '$email' , '$password', '$country', '$gender', '$age', '$token' )";
+                    $sql = "INSERT INTO `Users`(`FirstName`,`LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `Token`) VALUES ('$fname', '$lname', '$username', '$email' , '$password', '$country', '$gender', '$age', '$token' )";
 
                     if (mysqli_query($conn, $sql)) {
                         echo "Records inserted successfully.";

@@ -28,7 +28,7 @@ $google_client->addScope('profile');
 
 //index.php
 $f = $google_client->createAuthUrl();
-$f = "http://127.0.0.1/Social_Network/code/test.php";
+$f = "http://127.0.0.1/Social_Network/code/authentication.php";
 ?><script>
     var f = <?php $f ?>;
     console.log(f);
@@ -78,7 +78,7 @@ $f = "http://127.0.0.1/Social_Network/code/test.php";
                     }
                 }
             ?><script>
-        location.replace("http://127.0.0.1/Social_Network/code/test.php?page=google");
+        location.replace("http://127.0.0.1/Social_Network/code/authentication.php?page=google");
     </script><?php
 
             }
