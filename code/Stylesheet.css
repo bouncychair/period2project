@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url(//db.onlinewebfonts.com/c/39bdd3092b9dea8d90eab635bb361024?family=Tepeno+Sans);
 @font-face {
 	font-family: tepeno_sans;
 	src: url(../fonts/);
@@ -13,7 +14,8 @@ body {
 	font-family: 'Montserrat', sans-serif;
 	color: white;
 	height: 100vh;
-	margin: 10px  10px;
+	width: 100%;
+	margin:0;
 }
 
 h1 {
@@ -103,6 +105,9 @@ input, select {
 	height: 50px;
 	color: #03c4a1;
 	font-family: tepeno_sans;
+	text-align: center;
+	margin: 10px 0;
+	padding:0 10px;
 }
 .header img{
 	height: 100%; 
@@ -110,6 +115,9 @@ input, select {
 }
 .header h2{
 	float: right;
+	font-family: "Tepeno Sans";
+	margin: 0;
+	font-size: 230%;
 }
 .container {
 	display: flex;
@@ -165,7 +173,27 @@ input, select {
 .errorBox a{
     color: white;;
 }
-.post{
+/*-------------------------------------------------------------------------------------*/
+
+/* Main Page -----------------------------------------------------------------------*/
+div.scrollmenu {
+	background-color: #333;
+	overflow: auto;
+	white-space: nowrap;
+}
+  
+div.scrollmenu div {
+	display: inline-block;
+	color: white;
+	text-align: center;
+	padding: 14px;
+	text-decoration: none;
+}
+  
+div.scrollmenu a:hover {
+	background-color: #777;
+}
+  .post{
     background-color: white;
     width: 100vw;
     margin: 0 auto;
@@ -203,6 +231,3 @@ input, select {
     margin-right: 20px;
     margin-left: 5px;
 }
-/*-------------------------------------------------------------------------------------*/
-
-/* Channel Page -----------------------------------------------------------------------*/

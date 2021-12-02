@@ -344,7 +344,7 @@ if (isset($_POST["Sign_Up"])) {
 
 <body>
     <div class="header">
-        <img src="../img/logo.png" alt="TocTic Logo" />
+        <img src="../img/logo1.png" alt="TocTic Logo" />
         <h2>TocTic</h2>
     </div>
     <div class="container" id="container">

@@ -16,19 +16,16 @@ if (!empty($_SESSION["Token"])) {
         mysqli_stmt_bind_param($statement, 's', $id);
         mysqli_stmt_execute($statement) or die(mysqli_error($conn));
         mysqli_stmt_bind_result($statement, $ChannelId);
-        mysqli_stmt_fetch($statement);
-        mysqli_stmt_close($statement);
-        echo $ChannelId;
-        
-        $result = mysqli_query($conn, "SELECT * FROM `Channels`") or trigger_error("Query Failed! SQL: $result - Error: ".mysqli_error($conn), E_USER_ERROR);
+        mysqli_stmt_store_result($statement);
 
-        while ($row = mysqli_fetch_array($result)) {
-            echo $row["Name"];
-        }
-        mysqli_close($conn);
-        die();
+        //mysqli_stmt_close($statement);
+
+        //$result = mysqli_query($conn, "SELECT * FROM `Channels`") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
+
+        
+        //mysqli_close($conn);
     }
-    
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -42,6 +39,20 @@ if (!empty($_SESSION["Token"])) {
     </head>
 
     <body>
+        <div class="header">
+            <img src="../img/logo1.png" alt="TocTic Logo" />
+            <h2>TocTic</h2>
+        </div>
+        <div class="scrollmenu">
+            <?php
+            $result = mysqli_query($conn, "SELECT * FROM `Channels`") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
+            while($row = mysqli_fetch_array($result)) {
+                echo "<div>";
+                echo "<img width='80px' src='../uploads/".$row['MainPic']."' />";
+                echo "</div>";
+            }
+            ?>
+        </div>
         <h1>Feed</h1>
         <div class="post">
             <div class="post_header">
