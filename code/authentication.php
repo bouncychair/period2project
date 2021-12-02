@@ -1,4 +1,5 @@
 <?php
+//ob_start();
 session_start();
 
 include "connect.php";
@@ -6,32 +7,81 @@ include "connect.php";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
+
 $msgBox = "";
 $formChange = '';
 
-if(!empty($_GET["error"]))
+
+function SelectDB($select, $from, $where, $keyword, $conn)
 {
-    if(!empty($_GET["page"])){
+    //include "connect.php";
+    $count = str_word_count($select);
+    // $question = "?";
+    // for ($i=0; $i < $count; $i++) { 
+    //     $question = $question + ",?";
+    // }
+    $query = "SELECT $select FROM `$from` WHERE $where = ?";
+
+    // Step #4.1: Prepare query as a statement
+    if ($statement = mysqli_prepare($conn, $query)) {
+        // Step #4.2: Fill in the ? parameters!
+        mysqli_stmt_bind_param($statement, 's', $keyword);
+
+        //Step #5: Execute statement and check success
+        if (mysqli_stmt_execute($statement)) {
+            echo "Query executed";
+        } else {
+            echo "Error executing query";
+            die(mysqli_error($conn));
+        }
+
+        // Step #6.1: Bind result to variables when fetching...
+        mysqli_stmt_bind_result($statement, $name, $yob);
+        // Step #6.2: And buffer the result if and only if you want to check the number of rows
+        mysqli_stmt_store_result($statement);
+
+        // Step #7: Check if there are results in the statement
+        if (mysqli_stmt_num_rows($statement) > 0) {
+            echo "Number of rows: " . mysqli_stmt_num_rows($statement);
+
+            // Step #8: Fetch all rows of data from the result statement
+            while (mysqli_stmt_fetch($statement)) {
+
+                // Create cells
+                echo  $name;
+                echo $yob;
+            }
+        } else {
+            echo "No records found";
+        }
+        // Step #9: Close the statement and free memory
+        mysqli_stmt_close($statement);
+    }
+}
+
+if (!empty($_GET["error"])) {
+    if (!empty($_GET["page"])) {
         if ($_GET["page"] == "signup") {
-            switch ($_GET["error"]){
-                case("passLength"):
+            switch ($_GET["error"]) {
+                case ("passLength"):
                     $msgBox = "<div class='errorBox'><a>Password should contain 6-20 characters</a></div>";
                     break;
-                case("mailInvalid"):
+                case ("mailInvalid"):
                     $msgBox = "<div class='errorBox'><a>Please enter a valid email</a></div>";
                     break;
-                case("username"):
+                case ("username"):
                     $msgBox = "<div class='errorBox'><a>Username must contain more than 2 characters and can contain only letters and underline</a></div>";
                     break;
-                case("name"):
+                case ("name"):
                     $msgBox = "<div class='errorBox'><a>Name and last name can't contain symbols</a></div>";
                     break;
-                case("fields"):
+                case ("fields"):
                     $msgBox = "<div class='errorBox'><a>Please fill all the fields</a></div>";
                     break;
             }
         }
-    }else {
+    } else {
         switch ($_GET["error"]) {
             case ("passInvalid"):
                 $msgBox = "<div class='errorBox'><a>Invalid password</a></div>";
@@ -60,7 +110,7 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     <button name="Sign_In">Sign In</button>
     <a href="#">Don' . 't have an account?</a>
     <a href="authentication.php?page=signup" style="margin-top:0;  cursor: pointer;" ChangePage("SignUp")">SignUp</a>';
-}else if($_GET["page"] == "google"){ //----------------------------------- Sign Up Via Google form
+} else if ($_GET["page"] == "google") { //----------------------------------- Sign Up Via Google form
     include("googleTest.php");
     $formChange = '<h1>Create Account</h1>
     <a href="' . $google_client->createAuthUrl() . '">
@@ -71,11 +121,11 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     </a>
     <span>or use your email for registration</span>
     ' . $msgBox . '
-    <input type="text" name="Fname"  placeholder="First Name" value="'.$_SESSION['user_first_name'].'"  />
-    <input type="text" name="Lname"  placeholder="Last Name" value="'.$_SESSION['user_last_name'].'"  />
+    <input type="text" name="Fname"  placeholder="First Name" value="' . ((!empty($_SESSION['user_first_name'])) ? $_SESSION['user_first_name'] : "") . '"  />
+    <input type="text" name="Lname"  placeholder="Last Name" value="' . ((!empty($_SESSION['user_last_name'])) ? $_SESSION['user_last_name'] : "") . '"  />
     
     <input type="username" name="Username"  placeholder="Username"  />
-    <input type="email" name="Email"  placeholder="Email" value="'.$_SESSION['user_email_address'].'" />
+    <input type="email" name="Email"  placeholder="Email" value="' . ((!empty($_SESSION['user_email_address'])) ? $_SESSION['user_email_address'] : "") . '" />
     <input type="password" name="Password" placeholder="Password"  />
     <input type="number" name="Age"  placeholder="Age"  />
 <select id="gender" name="Gender">
@@ -84,7 +134,7 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     <option value="Other">Other</option>
 </select>
     <button name="Sign_Up"">Sign Up </button>';
-}else if ($_GET["page"] == "signup") { //----------------------------------- Sign Up form
+} else if ($_GET["page"] == "signup") { //----------------------------------- Sign Up form
     include("googleTest.php");
     $formChange = '<h1>Create Account</h1>
     <a href="' . $google_client->createAuthUrl() . '">
@@ -117,8 +167,8 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
 if (isset($_POST["Sign_Up"])) {
     $mailSent = false;
     if (!empty($_POST["Fname"]) && !empty($_POST["Lname"]) && !empty($_POST["Username"]) && !empty($_POST["Email"]) && !empty($_POST["Password"])) {
-        if (strlen($_POST["Fname"]) > 1 && !preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-_]/', $_POST["Fname"]) && strlen($_POST["Lname"]) > 1 && !preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-_]/', $_POST["Lname"])) {
-            if (strlen($_POST["Username"]) > 1 && !preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-]/', $_POST["Username"])) {
+        if (strlen($_POST["Fname"]) > 1 && ctype_alpha($_POST["Fname"]) && strlen($_POST["Lname"]) > 1 && ctype_alpha($_POST["Lname"])) {
+            if (strlen($_POST["Username"]) > 1 && ctype_alnum($_POST["Username"])) {
                 $username = $_POST["Username"];
                 $query = "SELECT * FROM `Users` WHERE Username = '$username'";
                 $result = mysqli_query($conn, $query);
@@ -133,6 +183,7 @@ if (isset($_POST["Sign_Up"])) {
                                 $_SESSION['username'] = $_POST["Username"];
                                 $_SESSION['email'] = $_POST["Email"];
                                 $_SESSION['password'] = $_POST["Password"];
+                                $_SESSION['age'] = $_POST["Age"];
                                 $_SESSION['gender'] = $_POST["Gender"];
 
                                 require_once __DIR__ . '/lib/phpmailer/src/Exception.php';
@@ -172,31 +223,31 @@ if (isset($_POST["Sign_Up"])) {
                                     echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
                                 }
                             } else {
-                                ?><script>  
+?><script>
                                     location.replace(location.href + "?page=signup&error=passLength");
-                                </script><?php  
+                                </script><?php
                                         }
                                     } else {
-                                        ?><script>  
-                                    location.replace(location.href + "?page=signup&error=mailInvalid");
-                                </script><?php  
+                                            ?><script>
+                                location.replace(location.href + "?page=signup&error=mailInvalid");
+                            </script><?php
                                     }
                                 }
                             }
                         } else {
-                            ?><script>  
-                                    location.replace(location.href + "?page=signup&error=username");
-                                </script><?php 
+                                        ?><script>
+                    location.replace(location.href + "?page=signup&error=username");
+                </script><?php
                         }
                     } else {
-                        ?><script>  
-                                    location.replace(location.href + "?page=signup&error=name");
-                                </script><?php 
+                            ?><script>
+                location.replace(location.href + "?page=signup&error=name");
+            </script><?php
                     }
                 } else {
-                    ?><script>  
-                                    location.replace(location.href + "?page=signup&error=fields");
-                                </script><?php 
+                        ?><script>
+            location.replace(location.href + "?page=signup&error=fields");
+        </script><?php
                 }
                 if ($mailSent) {
                     $formChange = '<h1>Verify Your Mail</h1>
@@ -204,7 +255,7 @@ if (isset($_POST["Sign_Up"])) {
         <button name="Verify">Verify</button>';
                 } else {
                     $_SESSION['error'] = $msgBox1;
-                                            ?><script>
+                    ?><script>
             location.replace(location.href + "?page=signup");
         </script><?php
                 }
@@ -219,17 +270,18 @@ if (isset($_POST["Sign_Up"])) {
                     $country = $_COOKIE['country'];
                     $gender = $_SESSION['gender'];
                     $age = $_SESSION['age'];
-                    $token = uniqid("",true);
+                    $regdate = date("d-m-Y");
+                    $token = uniqid("", true);
 
-                    $sql = "INSERT INTO `Users`(`FirstName`,`LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `Token`) VALUES ('$fname', '$lname', '$username', '$email' , '$password', '$country', '$gender', '$age', '$token' )";
-
-                    if (mysqli_query($conn, $sql)) {
+                    $stmt = $conn->prepare("INSERT INTO `Users` (`FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `Token` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("sssssssiss", $fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $token);
+                    if ($stmt->execute()) {
                         echo "Records inserted successfully.";
                     } else {
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
                     }
                 } else {
-                    echo "incorrect";
+                    echo "incorrect code";
                 }
             }
 
@@ -238,10 +290,20 @@ if (isset($_POST["Sign_Up"])) {
                     if (!empty($_POST["Password"])) {
                         $username = $_POST["Username"];
                         $pass = $_POST["Password"];
-                        $query = "SELECT `Password` FROM users WHERE Username = '$username'";
-                        $result = mysqli_query($conn, $query);
-                        $row = mysqli_fetch_assoc($result);
-                        if (password_verify($pass, $row['Password'])) {
+                        $query = "SELECT `Password`, `Token` FROM Users WHERE Username = ?";
+                        if ($statement = mysqli_prepare($conn, $query)) {
+                            mysqli_stmt_bind_param($statement, 's', $username);
+                            mysqli_stmt_execute($statement) or die(mysqli_error($conn));
+                            mysqli_stmt_bind_result($statement, $dbpass, $token);
+                            mysqli_stmt_fetch($statement);
+                            mysqli_stmt_close($statement);
+                        }
+                        // $result = mysqli_query($conn, $query);
+                        // $row = mysqli_fetch_assoc($result);
+                        if (password_verify($pass, $dbpass)) {
+                            $_SESSION["Token"] = $token;
+                            //setcookie('Token', $token, time() + 600, "/");
+                            //ob_end_flush();
                     ?>
                 <script>
                     window.location.href = "http://127.0.0.1/Social_Network/code/main.php";
