@@ -302,8 +302,7 @@ if (isset($_POST["Sign_Up"])) {
                         // $row = mysqli_fetch_assoc($result);
                         if (password_verify($pass, $dbpass)) {
                             $_SESSION["Token"] = $token;
-                            //setcookie('Token', $token, time() + 600, "/");
-                            //ob_end_flush();
+                            
                     ?>
                 <script>
                     window.location.href = "http://127.0.0.1/Social_Network/code/main.php";

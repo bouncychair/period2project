@@ -45,15 +45,46 @@ if (!empty($_SESSION["Token"])) {
         </div>
         <div class="scrollmenu">
             <?php
-            $result = mysqli_query($conn, "SELECT * FROM `Channels`") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
+            $result = mysqli_query($conn, "SELECT * FROM `Channels` WHERE CreatedBy = $id") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
             while($row = mysqli_fetch_array($result)) {
-                echo "<div>";
+                echo "<div id='".$row['id']."' onclick='javascript:testId(this.id)'>";
                 echo "<img width='80px' src='../uploads/".$row['MainPic']."' />";
                 echo "</div>";
+                echo "<div>test</div>";
+                echo "<div>test</div>";
+                echo "<div>test</div>";
+                echo "<div>test</div>";
             }
             ?>
         </div>
         <h1>Feed</h1>
+        <?php   
+        if(!empty($_GET["C"])){
+            $currentChannelId = $_GET["C"];
+        } else{
+            $currentChannelId = 1;
+        }
+            
+            $result = mysqli_query($conn, "SELECT * FROM `Posts`, Users WHERE ChannelId = $currentChannelId AND CreatedBy = $id") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
+            while($row = mysqli_fetch_array($result)) {
+                echo '<div class="post">';
+                echo '<div class="post_header">';
+                echo '<img src="../uploads/' . $row['ProfilePicture'] . '" />';
+                echo '<a>'.$row["Username"].'</a>';
+                echo '</div>';
+                echo '<div>';
+                echo '<p>'.$row['Caption'].'</p>';
+                echo '</div>';
+                echo '<div><img src="../uploads/'.$row['Img'].'" alt="Post"></div>';
+                echo '<div class="like_section">';
+                echo '<img src="../img/like.png">';
+                echo '<a>'.$row["likes"].'</a>';
+                echo '</div></div>';
+                //echo "<div id='".$row['id']."'>";
+                //echo "<img width='80px' src='../uploads/".$row['Img']."' />";
+                //echo "</div>";
+            }
+            ?>
         <div class="post">
             <div class="post_header">
                 <img src="https://memegenerator.net/img/instances/74987997.jpg">
@@ -70,6 +101,17 @@ if (!empty($_SESSION["Token"])) {
                 <p><b>@sahibthecreator: </b>if you know you know😗</p>
             </div>
         </div>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            function testId(id){
+                if(urlParams.has('C')){
+                    window.history.replaceState({}, document.title, "/" + "Social_Network/code/main.php");
+                }
+                window.location.replace(location.href + "?C=" + id);
+                
+            
+        }
+        </script>
     </body>
 
     </html>
