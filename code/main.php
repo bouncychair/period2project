@@ -45,7 +45,7 @@ if (!empty($_SESSION["Token"])) {
         </div>
         <div class="scrollmenu">
             <?php
-            $result = mysqli_query($conn, "SELECT * FROM `Channels` WHERE CreatedBy = $id") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
+            $result = mysqli_query($conn, "SELECT * FROM `Channels`, Followed WHERE Followed.UserId = $id AND Followed.ChannelId = Channels.id") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
             while($row = mysqli_fetch_array($result)) {
                 echo "<div id='".$row['id']."' onclick='javascript:testId(this.id)'>";
                 echo "<img width='80px' src='../uploads/".$row['MainPic']."' />";
@@ -65,7 +65,7 @@ if (!empty($_SESSION["Token"])) {
             $currentChannelId = 1;
         }
             
-            $result = mysqli_query($conn, "SELECT * FROM `Posts`, Users WHERE ChannelId = $currentChannelId AND CreatedBy = $id") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
+            $result = mysqli_query($conn, "SELECT * FROM `Posts`, Users WHERE ChannelId = $currentChannelId AND CreatedBy = Users.Id") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
             while($row = mysqli_fetch_array($result)) {
                 echo '<div class="post">';
                 echo '<div class="post_header">';
