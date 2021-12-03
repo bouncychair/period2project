@@ -50,13 +50,33 @@ if (isset($_POST["submit"]) && !empty($_FILES["file"]["name"])) {
 // Display status message
 echo $statusMsg;
 ?>
-<form action="" method="post" enctype="multipart/form-data">
-    <p>Select Image File to Upload:</p>
-    <input type="file" name="file">
-    <input type="submit" name="submit" value="Upload">
-</form>
+<!DOCTYPE html>
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="src/Stylesheet.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-
+<body>
+    <div class="header">
+                <img src="../img/logo1.png" alt="TocTic Logo" />
+                <h2>TocTic</h2>
+            </div>
+            <div id="nickname">
+                <div id="pb">
+                   <!-- add php in pb--> 
+                </div>
+            </div>
+   
+        <form action="" method="post" enctype="multipart/form-data">
+            <p>Select Image File to Upload:</p>
+            <input type="file" name="file">
+            <input type="submit" name="submit" value="Upload">
+        </form>
+</body>
+<!--//add security //looking for user who uploaded-->
 
 
 
