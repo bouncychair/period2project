@@ -33,7 +33,7 @@ p {
 	font-weight: 100;
 	line-height: 20px;
 	letter-spacing: 0.5px;
-	margin: 20px 0 30px;
+	/* margin: 20px 0 30px; */
 }
 
 span {
@@ -193,11 +193,14 @@ div.scrollmenu div {
 div.scrollmenu a:hover {
 	background-color: #777;
 }
-  .post{
-    background-color: white;
+.post{
+    background-color: purple;
+	color: white;
     width: 100vw;
     margin: 0 auto;
     border-radius: 10px;
+	margin-bottom: 25px;
+	padding-bottom: 10px;
 }
 .post div{
     margin: 0px 10%
