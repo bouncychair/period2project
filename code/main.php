@@ -38,61 +38,36 @@ $data = Query($conn, $query, "i", $id);
             </div>
             ";
         }
-        // while ($data) {
-        //     echo "<div id='" . $row['id'] . "' onclick='javascript:testId(this.id)'>";
-        //     echo "<img width='80px' src='../uploads/" . $row['MainPic'] . "' />";
-        //     echo "</div>";
-        //     echo "<div>test</div>";
-        //     echo "<div>test</div>";
-        //     echo "<div>test</div>";
-        //     echo "<div>test</div>";
-        // }
         ?>
     </div>
     <h1>Feed</h1>
     <?php
-    if (!empty($_GET["C"])) {
+    if (!empty($_GET["C"]))
         $currentChannelId = $_GET["C"];
-    } else {
-        $currentChannelId = 1;
-    }
+    else
+        $currentChannelId = $data[0]["ChannelId"];
 
-    $result = mysqli_query($conn, "SELECT * FROM `Posts`, Users WHERE ChannelId = $currentChannelId AND CreatedBy = Users.Id") or trigger_error("Query Failed! SQL: $result - Error: " . mysqli_error($conn), E_USER_ERROR);
-    while ($row = mysqli_fetch_array($result)) {
-        echo '<div class="post">';
-        echo '<div class="post_header">';
-        echo '<img src="../uploads/' . $row['ProfilePicture'] . '" />';
-        echo '<a>' . $row["Username"] . '</a>';
-        echo '</div>';
-        echo '<div>';
-        echo '<p>' . $row['Caption'] . '</p>';
-        echo '</div>';
-        echo '<div><img src="../uploads/' . $row['Img'] . '" alt="Post"></div>';
-        echo '<div class="like_section">';
-        echo '<img src="../img/like.png">';
-        echo '<a>' . $row["likes"] . '</a>';
-        echo '</div></div>';
-        //echo "<div id='".$row['id']."'>";
-        //echo "<img width='80px' src='../uploads/".$row['Img']."' />";
-        //echo "</div>";
+    $query = "SELECT * FROM `Posts`, Users WHERE ChannelId = ? AND CreatedBy = Users.Id";
+    $data = Query($conn, $query, "i", $currentChannelId);
+    for ($i = 0; $i < sizeof($data); $i++) {
+        echo '
+        <div class="post">
+            <div class="post_header">
+                <img src="../uploads/' . $data[$i]['ProfilePicture'] . '" />
+                <a>' . $data[$i]["Username"] . '</a>
+            </div>
+            <div>
+                <p>' . $data[$i]['Caption'] . '</p>
+            </div>
+            <div><img src="../uploads/' . $data[$i]['Img'] . '" alt="Post"></div>
+            <div class="like_section">
+                <img src="../img/like.png">
+                <a>' . $data[$i]["likes"] . '</a>
+            </div>
+        </div>
+        ';
     }
     ?>
-    <div class="post">
-        <div class="post_header">
-            <img src="https://memegenerator.net/img/instances/74987997.jpg">
-            <a>Programming_Memes</a>
-        </div>
-        <div><img src="../img/post1.jpg" alt="Post"></div>
-        <div class="like_section">
-            <img src="../img/like.png">
-            <a>142</a>
-            <img src="https://cdn2.iconfinder.com/data/icons/medical-healthcare-26/28/Chat-2-512.png">
-            <a>18</a>
-        </div>
-        <div>
-            <p><b>@sahibthecreator: </b>if you know you know😗</p>
-        </div>
-    </div>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
 
@@ -108,11 +83,3 @@ $data = Query($conn, $query, "i", $id);
 </body>
 
 </html>
-
-
-<?php
-// }
-// if (empty($_SESSION["Token"])) {
-//     GoToUrl("authentication.php");
-// }
-?>
