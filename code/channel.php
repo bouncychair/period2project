@@ -1,4 +1,9 @@
-<?php require "connect.php"; ?>
+<?php
+session_start();
+require "connect.php";
+require "utils.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,23 +20,22 @@
     </div>
     <div class="channel_header">
         <div class="post_header">
-          <img id="channel_pic" src="../img/profileDef.png" alt="profilepic">
-          <!--<?php // echo $_POST['MainPic'] ?>-->
+          <img id="channel_pic" src="../img/profileDef.png" alt="profilepic"> <?php // echo $_POST['MainPic'] ?>
         </div>
-        <div class="channel_name">
-            <h3>Channel Name</h3>        <!--<?php //echo $_POST['CName'] ?>-->
+        <div id="channel_name">
+            <h3>Channel Name</h3>        <?php //echo $_POST['CName'] ?>
         </div>
-        <div class="channel_description">
-          <h4>Description</h4>          <!--<?php //echo $_POST['Description'] ?>-->
+        <div id="channel_description">
+          <p>Description</p>          <?php //echo $_POST['Description'] ?>
         </div>
-        <hr>
     </div>
+    <hr id="divider">
     <div class="footer">
-      <img src="" alt="Main_menu">
-      <img src="" alt="Channels">
-      <img src="" alt="Notifications">
-      <img src="" alt="Add_post">
-      <img src="" alt="Profile">
+      <img onClick="location.href='main.php'" id="footer_menu" src="../img/Project2_menu.png" alt="Main_menu">
+      <img onClick="location.href='search.php'" id="footer_channels" src="../img/Project2_channels.png" alt="Channels">
+      <img onClick="location.href='...'" id="footer_notifications" src="../img/Project2_notification.png" alt="Notifications">
+      <img onClick="location.href='...'" id="footer_add_post" src="../img/Project2_add_post.png" alt="Add_post">
+      <img onClick="location.href='profile.php'" id="footer_profile" src="../img/Project2_profile.png" alt="Profile">
     </div>
 </body>
 </html>
