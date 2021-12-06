@@ -1,9 +1,9 @@
 # period2project
-<h3>For running this project you will need next things:</h3>
->Server for running php(XAMPP,Docker,MAMP)<br/>
->Code editor (Visual Studio preferable)<br/>
->MySQL Server<br/>
->Import Database configuration to PHPMyAdmin<br/>
+<h3>Software required:</h3>
+>XAMPP (Apache and MySQL running)<br/>
+>IDE(Visual Studio preferable)<br/>
+>PHP 8<br/>
+>Internet browser<br/>
 <h3>connect.php</h3>
 <p>To work with database you will need to include connect.php file in to your page</p>
 <p>After that you can work with the variable named $conn</p>
