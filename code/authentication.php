@@ -1,65 +1,10 @@
 <?php
-//ob_start();
 session_start();
-
 include "connect.php";
 include_once "utils.php";
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-
 $msgBox = "";
 $formChange = '';
-
-
-function SelectDB($select, $from, $where, $keyword, $conn)
-{
-    //include "connect.php";
-    $count = str_word_count($select);
-    // $question = "?";
-    // for ($i=0; $i < $count; $i++) { 
-    //     $question = $question + ",?";
-    // }
-    $query = "SELECT $select FROM `$from` WHERE $where = ?";
-
-    // Step #4.1: Prepare query as a statement
-    if ($statement = mysqli_prepare($conn, $query)) {
-        // Step #4.2: Fill in the ? parameters!
-        mysqli_stmt_bind_param($statement, 's', $keyword);
-
-        //Step #5: Execute statement and check success
-        if (mysqli_stmt_execute($statement)) {
-            echo "Query executed";
-        } else {
-            echo "Error executing query";
-            die(mysqli_error($conn));
-        }
-
-        // Step #6.1: Bind result to variables when fetching...
-        mysqli_stmt_bind_result($statement, $name, $yob);
-        // Step #6.2: And buffer the result if and only if you want to check the number of rows
-        mysqli_stmt_store_result($statement);
-
-        // Step #7: Check if there are results in the statement
-        if (mysqli_stmt_num_rows($statement) > 0) {
-            echo "Number of rows: " . mysqli_stmt_num_rows($statement);
-
-            // Step #8: Fetch all rows of data from the result statement
-            while (mysqli_stmt_fetch($statement)) {
-
-                // Create cells
-                echo  $name;
-                echo $yob;
-            }
-        } else {
-            echo "No records found";
-        }
-        // Step #9: Close the statement and free memory
-        mysqli_stmt_close($statement);
-    }
-}
 
 if (!empty($_GET["error"])) {
     if (!empty($_GET["page"])) {
@@ -79,6 +24,9 @@ if (!empty($_GET["error"])) {
                     break;
                 case ("fields"):
                     $msgBox = "<div class='errorBox'><a>Please fill all the fields</a></div>";
+                    break;
+                case ("usernameTaken"):
+                    $msgBox = "<div class='errorBox'><a>This username is already taken</a></div>";
                     break;
             }
         }
@@ -105,12 +53,11 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     $formChange = '<h1 id="signin">Sign in</h1>
     ' . $msgBox . '
     <input type="text" name="Username" placeholder="Username" />
-    <div><?php echo $msg; ?></div>
     <input type="password" name="Password" placeholder="Password" />
     <a href="#">Forgot your password?</a>
     <button name="Sign_In">Sign In</button>
     <a href="#">Don' . 't have an account?</a>
-    <a href="authentication.php?page=signup" style="margin-top:0;  cursor: pointer;" ChangePage("SignUp")">SignUp</a>';
+    <a href="authentication.php?page=signup" style="margin-top:0;  cursor: pointer;">SignUp</a>';
 } else if ($_GET["page"] == "google") { //----------------------------------- Sign Up Via Google form
     include("googleTest.php");
     $formChange = '<h1>Create Account</h1>
@@ -128,7 +75,7 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     <input type="username" name="Username"  placeholder="Username"  />
     <input type="email" name="Email"  placeholder="Email" value="' . ((!empty($_SESSION['user_email_address'])) ? $_SESSION['user_email_address'] : "") . '" />
     <input type="password" name="Password" placeholder="Password"  />
-    <input type="number" name="Age"  placeholder="Age"  />
+    <input type="number" name="Age"  placeholder="Age" />
 <select id="gender" name="Gender">
     <option value="Male">Male</option>
     <option value="Female">Female</option>
@@ -152,7 +99,7 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     <input type="username" name="Username"  placeholder="Username"  />
     <input type="email" name="Email"  placeholder="Email"  />
     <input type="password" name="Password" placeholder="Password"  />
-    <input type="number" name="Age"  placeholder="Age"  />
+    <input type="number" name="Age"  placeholder="Age" />
 <select id="gender" name="Gender">
     <option value="Male">Male</option>
     <option value="Female">Female</option>
@@ -167,173 +114,86 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
 
 if (isset($_POST["Sign_Up"])) {
     $mailSent = false;
-    if (!empty($_POST["Fname"]) && !empty($_POST["Lname"]) && !empty($_POST["Username"]) && !empty($_POST["Email"]) && !empty($_POST["Password"])) {
+    if (!empty($_POST["Fname"]) && !empty($_POST["Lname"]) && !empty($_POST["Username"]) && !empty($_POST["Email"]) && !empty($_POST["Password"]) && !empty($_POST["Age"])) {
         if (strlen($_POST["Fname"]) > 1 && ctype_alpha($_POST["Fname"]) && strlen($_POST["Lname"]) > 1 && ctype_alpha($_POST["Lname"])) {
             if (strlen($_POST["Username"]) > 1 && ctype_alnum($_POST["Username"])) {
-                $username = $_POST["Username"];
-                $query = "SELECT * FROM `Users` WHERE Username = '$username'";
-                $result = mysqli_query($conn, $query);
-                if ($result) {
-                    if (mysqli_num_rows($result) > 0) {
-                        $msg = "This username is already taken";
-                    } else {
-                        if (filter_var($_POST["Email"], FILTER_VALIDATE_EMAIL)) {
-                            if (strlen($_POST["Password"]) >= 6 && strlen($_POST["Password"]) < 50) {
-                                $_SESSION['fname'] = $_POST["Fname"];
-                                $_SESSION['lname'] = $_POST["Lname"];
-                                $_SESSION['username'] = $_POST["Username"];
-                                $_SESSION['email'] = $_POST["Email"];
-                                $_SESSION['password'] = $_POST["Password"];
-                                $_SESSION['age'] = $_POST["Age"];
-                                $_SESSION['gender'] = $_POST["Gender"];
-
-                                require_once __DIR__ . '/lib/phpmailer/src/Exception.php';
-                                require_once __DIR__ . '/lib/phpmailer/src/PHPMailer.php';
-                                require_once __DIR__ . '/lib/phpmailer/src/SMTP.php';
-
-                                // passing true in constructor enables exceptions in PHPMailer
-                                $mail = new PHPMailer(true);
-                                $email = $_POST["Email"];
-
-                                try {
-                                    // Server settings
-                                    //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
-                                    $mail->isSMTP();
-                                    $mail->Host = 'smtp.gmail.com';
-                                    $mail->SMTPAuth = true;
-                                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                                    $mail->Port = 587;
-
-                                    $mail->Username = 'botfortesting1234@gmail.com'; // YOUR gmail email
-                                    $mail->Password = 'botfortesting4321'; // YOUR gmail  password
-
-                                    // Sender and recipient settings
-                                    $mail->setFrom('test@gmail.com', 'Email Verification');
-                                    $mail->addAddress($email, 'Bot');
-                                    $mail->addReplyTo('example@gmail.com', 'Sender Name'); // to set the reply to
-
-                                    // Setting the email content
-                                    $_SESSION['rand'] = mt_rand(1000, 9999);
-                                    $mail->IsHTML(true);
-                                    $mail->Subject = "Verify your email";
-                                    $mail->Body = 'Your code for verification is: ' . $_SESSION['rand'] . '';
-                                    $mail->send();
-                                    $mailSent = true;
-                                    echo "Sent";
-                                } catch (Exception $e) {
-                                    echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
-                                }
-                            } else {
-?><script>
-                                    location.replace(location.href + "?page=signup&error=passLength");
-                                </script><?php
-                                        }
-                                    } else {
-                                            ?><script>
-                                location.replace(location.href + "?page=signup&error=mailInvalid");
-                            </script><?php
-                                    }
-                                }
-                            }
-                        } else {
-                                        ?><script>
-                    location.replace(location.href + "?page=signup&error=username");
-                </script><?php
-                        }
-                    } else {
-                            ?><script>
-                location.replace(location.href + "?page=signup&error=name");
-            </script><?php
-                    }
-                } else {
-                        ?><script>
-            location.replace(location.href + "?page=signup&error=fields");
-        </script><?php
+                $query = "SELECT * FROM `Users` WHERE Username = ?";
+                $data = Query($conn, $query, "s", $_POST["Username"]);
+                if (sizeof($data) > 0)
+                    AddParam("page=signup&error=usernameTaken");
+                else {
+                    if (filter_var($_POST["Email"], FILTER_VALIDATE_EMAIL)) {
+                        if (strlen($_POST["Password"]) >= 6 && strlen($_POST["Password"]) < 50) {
+                            $_SESSION['fname'] = $_POST["Fname"];
+                            $_SESSION['lname'] = $_POST["Lname"];
+                            $_SESSION['username'] = $_POST["Username"];
+                            $_SESSION['email'] = $_POST["Email"];
+                            $_SESSION['password'] = $_POST["Password"];
+                            $_SESSION['age'] = $_POST["Age"];
+                            $_SESSION['gender'] = $_POST["Gender"];
+                            SendVerificationMail($_POST["Email"]);
+                            $mailSent = true;
+                        } else
+                            AddParam("page=signup&error=passLength");
+                    } else
+                        AddParam("page=signup&error=mailInvalid");
                 }
-                if ($mailSent) {
-                    $formChange = '<h1>Verify Your Mail</h1>
+            } else
+                AddParam("page=signup&error=username");
+        } else
+            AddParam("page=signup&error=name");
+    } else
+        AddParam("page=signup&error=fields");
+
+    if ($mailSent) {
+        $formChange = '<h1>Verify Your Mail</h1>
         <input type="text" name="vertext" placeholder="Code" required />
         <button name="Verify">Verify</button>';
-                } else {
-                    $_SESSION['error'] = $msgBox1;
-                    ?><script>
-            location.replace(location.href + "?page=signup");
-        </script><?php
-                }
-            }
-            if (isset($_POST['Verify'])) {
-                if ($_POST["vertext"] == $_SESSION['rand']) {
-                    $fname = $_SESSION['fname'];
-                    $lname = $_SESSION['lname'];
-                    $username = $_SESSION['username'];
-                    $email = $_SESSION['email'];
-                    $password = password_hash($_SESSION['password'], PASSWORD_DEFAULT);
-                    $country = $_COOKIE['country'];
-                    $gender = $_SESSION['gender'];
-                    $age = $_SESSION['age'];
-                    $regdate = date("d-m-Y");
-                    $token = uniqid("", true);
+    } else
+        AddParam("page=signup");
+}
+if (isset($_POST['Verify'])) {
+    if ($_POST["vertext"] == $_SESSION['rand']) {
+        $fname = $_SESSION['fname'];
+        $lname = $_SESSION['lname'];
+        $username = $_SESSION['username'];
+        $email = $_SESSION['email'];
+        $password = password_hash($_SESSION['password'], PASSWORD_DEFAULT);
+        $country = $_COOKIE['country'];
+        $gender = $_SESSION['gender'];
+        $age = $_SESSION['age'];
+        $regdate = date("d-m-Y");
+        $token = uniqid("", true);
 
-                    $stmt = $conn->prepare("INSERT INTO `Users` (`FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `Token` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                    $stmt->bind_param("sssssssiss", $fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $token);
-                    if ($stmt->execute()) {
-                        echo "Records inserted successfully.";
-                    } else {
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
-                    }
-                } else {
-                    echo "incorrect code";
-                }
-            }
+        $stmt = $conn->prepare("INSERT INTO `Users` (`FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `Token` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssiss", $fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $token);
+        if ($stmt->execute()) {
+            echo "Records inserted successfully.";
+        } else {
+            echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
+        }
+    } else {
+        echo "incorrect code";
+    }
+}
 
-            if (isset($_POST['Sign_In'])) {
-                if (!empty($_POST["Username"])) {
-                    if (!empty($_POST["Password"])) {
-                        $username = $_POST["Username"];
-                        $pass = $_POST["Password"];
-                        $query = "SELECT `Password`, `Token` FROM Users WHERE Username = ?";
-                        if ($statement = mysqli_prepare($conn, $query)) {
-                            mysqli_stmt_bind_param($statement, 's', $username);
-                            mysqli_stmt_execute($statement) or die(mysqli_error($conn));
-                            mysqli_stmt_bind_result($statement, $dbpass, $token);
-                            mysqli_stmt_fetch($statement);
-                            mysqli_stmt_close($statement);
-                        }
-                        // $result = mysqli_query($conn, $query);
-                        // $row = mysqli_fetch_assoc($result);
-                        if (password_verify($pass, $dbpass)) {
-                            $_SESSION["Token"] = $token;
-                           GoToUrl("main.php"); 
-                    ?>
-                    
-                <script>
-                    
-                    window.location.href = "http://127.0.0.1/Social_Network/code/main.php";
-                </script>
-            <?php
-                            exit();
-                        } else {
-            ?>
-                <script>
-                    location.replace(location.href + "?error=passInvalid");
-                </script>
-            <?php
-                        }
-                    } else {
-            ?>
-            <script>
-                location.replace(location.href + "?error=enterPass");
-            </script>
-        <?php
-                    }
-                } else {
-        ?>
-        <script>
-            location.replace(location.href + "?error=enterUsername");
-        </script>
-<?php
-                }
-            }
+if (isset($_POST['Sign_In'])) {
+    if (!empty($_POST["Username"])) {
+        if (!empty($_POST["Password"])) {
+            $username = $_POST["Username"];
+            $pass = $_POST["Password"];
+            $query = "SELECT `Password`, `Token` FROM Users WHERE Username = ?";
+            $data = Query($conn, $query, "s", $username);
+            if (password_verify($pass, $data[0]["Password"])) {
+                $_SESSION["Token"] = $data[0]["Token"];
+                GoToUrl("main.php");
+            } else
+                AddParam("error=passInvalid");
+        } else
+            AddParam("error=enterPass");
+    } else
+        AddParam("error=enterUsername");
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -358,25 +218,17 @@ if (isset($_POST["Sign_Up"])) {
         </div>
     </div>
     <script>
-        function SignUp() {
-            location.replace(location.href + "?id=reg");
-        }
-
-        function Verify() {
-            location.replace(location.href + "?id=ver");
-        }
-        fetch('http://ip-api.com/json')
+        fetch('https://ipapi.co/json/')
             .then(res => res.json())
             .then(response => {
-                console.log("Country: ", response.country);
-                console.log("Region: ", response.regionName);
+                console.log("Country: ", response.country_name);
+                console.log("Region: ", response.region);
                 console.log("City: ", response.city);
-                console.log("ZIP: ", response.zip);
                 console.log("Timezone: ", response.timezone);
-                console.log("IP:: ", response.query);
+                console.log("IP:: ", response.ip);
 
 
-                var country = response.country;
+                var country = response.country_name;
                 document.cookie = "country = " + country;
             })
             .catch((data, status) => {

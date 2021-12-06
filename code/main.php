@@ -33,7 +33,7 @@ $data = Query($conn, $query, "i", $id);
         $data = Query($conn, $query, "i", $id);
         for ($i = 0; $i < sizeof($data); $i++) {
             echo "
-            <div id='" . $data[$i]['id'] . "' onclick='javascript:testId(this.id)'>
+            <div id='" . $data[$i]['id'] . "'>
                 <a href='?C=".$data[$i]['id']."' ><img width='80px' src='../uploads/" . $data[$i]['MainPic'] . "' /></a>
             </div>
             ";
@@ -68,18 +68,13 @@ $data = Query($conn, $query, "i", $id);
         ';
     }
     ?>
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-
-        function testId(id) {
-            if (urlParams.has('C')) {
-                //window.history.replaceState({}, document.title, "/" + "Social_Network/code/main.php");
-                //window.location.href = 'main.php';
-                //window.location = window.location.href.split("?")[0];
-            }
-            //window.location = window.location.href + "?C=" + id;
-        }
-    </script>
+    <div class="footer">
+      <img onClick="location.href='main.php'" id="footer_menu" src="../img/Project2_menu.png" alt="Main_menu">
+      <img onClick="location.href='search.php'" id="footer_channels" src="../img/Project2_channels.png" alt="Channels">
+      <img onClick="location.href='...'" id="footer_notifications" src="../img/Project2_notification.png" alt="Notifications">
+      <img onClick="location.href='...'" id="footer_add_post" src="../img/Project2_add_post.png" alt="Add_post">
+      <img onClick="location.href='profile.php'" id="footer_profile" src="../img/Project2_profile.png" alt="Profile">
+    </div>
 </body>
 
 </html>

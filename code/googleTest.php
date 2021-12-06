@@ -31,9 +31,9 @@ $google_client->addScope('profile');
 $f = $google_client->createAuthUrl();
 $f = "http://127.0.0.1/Social_Network/code/authentication.php";
 ?><script>
-    var f = <?php $f ?>;
+    //var f = <?php $f ?>;
     console.log(f);
-    window.location = f;
+    //window.location = f;
 </script><?php
 
             $login_button = '';
