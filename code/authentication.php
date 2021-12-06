@@ -3,6 +3,7 @@
 session_start();
 
 include "connect.php";
+include_once "utils.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -302,9 +303,11 @@ if (isset($_POST["Sign_Up"])) {
                         // $row = mysqli_fetch_assoc($result);
                         if (password_verify($pass, $dbpass)) {
                             $_SESSION["Token"] = $token;
-                            
+                           GoToUrl("main.php"); 
                     ?>
+                    
                 <script>
+                    
                     window.location.href = "http://127.0.0.1/Social_Network/code/main.php";
                 </script>
             <?php

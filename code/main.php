@@ -34,7 +34,7 @@ $data = Query($conn, $query, "i", $id);
         for ($i = 0; $i < sizeof($data); $i++) {
             echo "
             <div id='" . $data[$i]['id'] . "' onclick='javascript:testId(this.id)'>
-                <img width='80px' src='../uploads/" . $data[$i]['MainPic'] . "' />
+                <a href='?C=".$data[$i]['id']."' ><img width='80px' src='../uploads/" . $data[$i]['MainPic'] . "' /></a>
             </div>
             ";
         }
@@ -73,11 +73,11 @@ $data = Query($conn, $query, "i", $id);
 
         function testId(id) {
             if (urlParams.has('C')) {
-                window.history.replaceState({}, document.title, "/" + "Social_Network/code/main.php");
+                //window.history.replaceState({}, document.title, "/" + "Social_Network/code/main.php");
+                //window.location.href = 'main.php';
+                //window.location = window.location.href.split("?")[0];
             }
-            window.location.replace(location.href + "?C=" + id);
-
-
+            //window.location = window.location.href + "?C=" + id;
         }
     </script>
 </body>
