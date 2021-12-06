@@ -2,6 +2,10 @@
 session_start();
 require "connect.php";
 require "utils.php";
+CheckToken();
+$id = GetUserId();
+$data = Query($conn, $sql);
+GoToUrl();
 ?>
 
 <!DOCTYPE html>
