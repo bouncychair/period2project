@@ -33,14 +33,14 @@ $data = Query($conn, $query, "i", $id);
         $data = Query($conn, $query, "i", $id);
         for ($i = 0; $i < sizeof($data); $i++) {
             echo "
-            <div id='" . $data[$i]['id'] . "'>
-                <a href='?C=".$data[$i]['id']."' ><img width='80px' src='../uploads/" . $data[$i]['MainPic'] . "' /></a>
+            <div>
+                <a href='?C=".$data[$i]['id']."' ><img id='".$data[$i]['id']."' src='../uploads/" . $data[$i]['MainPic'] . "' /></a>
+                <p>".$data[$i]['Name']."</p>
             </div>
             ";
         }
         ?>
     </div>
-    <h1>Feed</h1>
     <?php
     if (!empty($_GET["C"]))
         $currentChannelId = $_GET["C"];
@@ -50,6 +50,8 @@ $data = Query($conn, $query, "i", $id);
     $query = "SELECT * FROM `Posts`, Users WHERE ChannelId = ? AND CreatedBy = Users.Id";
     $data = Query($conn, $query, "i", $currentChannelId);
     for ($i = 0; $i < sizeof($data); $i++) {
+        $query = "SELECT COUNT(Comments.PostId) FROM `Comments`, Posts WHERE Posts.id = ?";
+        $commentAmount = Query($conn, $query, "i", $data[$i]["likes"]);
         echo '
         <div class="post">
             <div class="post_header">
@@ -63,6 +65,8 @@ $data = Query($conn, $query, "i", $id);
             <div class="like_section">
                 <img src="../img/like.png">
                 <a>' . $data[$i]["likes"] . '</a>
+                <img src="../img/comment.png">
+                <a>' . $commentAmount[0]["COUNT(Comments.PostId)"] . '</a>
             </div>
         </div>
         ';
@@ -75,6 +79,11 @@ $data = Query($conn, $query, "i", $id);
       <img onClick="location.href='...'" id="footer_add_post" src="../img/Project2_add_post.png" alt="Add_post">
       <img onClick="location.href='profile.php'" id="footer_profile" src="../img/Project2_profile.png" alt="Profile">
     </div>
+    <script>
+        url = new URL(window.location.href);
+        currentChannel = url.searchParams.get("C");
+        document.getElementById(currentChannel).style.boxShadow = "0 0 20px purple";
+    </script>
 </body>
 
 </html>

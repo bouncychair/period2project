@@ -6,6 +6,7 @@ include_once "utils.php";
 $msgBox = "";
 $formChange = '';
 
+
 if (!empty($_GET["error"])) {
     if (!empty($_GET["page"])) {
         if ($_GET["page"] == "signup") {
@@ -154,24 +155,23 @@ if (isset($_POST["Sign_Up"])) {
 }
 if (isset($_POST['Verify'])) {
     if ($_POST["vertext"] == $_SESSION['rand']) {
+        $url = 'https://ip-api.io/json';
+        $json = file_get_contents($url);
+        $obj = json_decode($json);
+
+        $country = $obj->country_name;
         $fname = $_SESSION['fname'];
         $lname = $_SESSION['lname'];
         $username = $_SESSION['username'];
         $email = $_SESSION['email'];
         $password = password_hash($_SESSION['password'], PASSWORD_DEFAULT);
-        $country = $_COOKIE['country'];
         $gender = $_SESSION['gender'];
         $age = $_SESSION['age'];
         $regdate = date("d-m-Y");
         $token = uniqid("", true);
 
-        $stmt = $conn->prepare("INSERT INTO `Users` (`FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `Token` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssiss", $fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $token);
-        if ($stmt->execute()) {
-            echo "Records inserted successfully.";
-        } else {
-            echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
-        }
+        $sql = "INSERT INTO `Users` (`FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `Token` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Query($conn, $sql,"sssssssiss",$fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $token);
     } else {
         echo "incorrect code";
     }
@@ -217,25 +217,6 @@ if (isset($_POST['Sign_In'])) {
             </form>
         </div>
     </div>
-    <script>
-        fetch('https://ipapi.co/json/')
-            .then(res => res.json())
-            .then(response => {
-                console.log("Country: ", response.country_name);
-                console.log("Region: ", response.region);
-                console.log("City: ", response.city);
-                console.log("Timezone: ", response.timezone);
-                console.log("IP:: ", response.ip);
-
-
-                var country = response.country_name;
-                document.cookie = "country = " + country;
-            })
-            .catch((data, status) => {
-                console.log('Request failed');
-            })
-    </script>
-
 </body>
 
 </html>

@@ -38,11 +38,7 @@ function GoToUrl($url){
 ?>
     <script>
         var url = "<?php echo $url ?>";
-        //window.history.replaceState({}, document.title, "/Social_Network/code/" + url);
-        //window.location.reload();
-        //location.reload();
         window.location.href = url;
-        //location.href = ''+ url;
     </script>
 <?php
 }
