@@ -1,11 +1,13 @@
 <?php
 session_start();
-require "connect.php";
-require "utils.php";
+include "connect.php";
+include "utils.php";
+
 CheckToken();
-$id = GetUserId();
-$data = Query($conn, $sql);
-GoToUrl();
+$id = GetUserId($conn);
+
+$query = "SELECT `ChannelId` FROM Followed WHERE UserId = ?";
+$data = Query($conn, $query, "i", $id);
 ?>
 
 <!DOCTYPE html>
