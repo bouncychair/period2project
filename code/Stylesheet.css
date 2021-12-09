@@ -246,7 +246,7 @@ div.scrollmenu a:hover {
 }
 
 .post div {
-    margin: 0px 10%
+    margin: 0px 10%;
 }
 
 .post img {
@@ -257,6 +257,7 @@ div.scrollmenu a:hover {
     display: flex;
     align-items: center;
     height: 40px;
+    padding-top: 10px;
 }
 
 .post_header img {

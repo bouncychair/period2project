@@ -77,15 +77,14 @@ $data = Query($conn, $query, "i", $id);
         ';
         }
     } else {
-        echo '<h3>Recommended</h3>';
-        $query = "SELECT * FROM Channels, `Posts`, Users, Likes WHERE Posts.CreatedByUserId = Users.id AND Posts.ChannelId = Channels.id AND Likes.PostId = Posts.id AND ? ORDER BY COUNT(Likes.PostId) DESC";
+        echo '<h2>Recommended</h2>';
+        $query = "SELECT Channels.id ChannelID, Channels.Name, Posts.*, Users.id UserId, Users.Username, Users.ProfilePicture FROM Channels, `Posts`, Users WHERE Posts.CreatedByUserId = Users.id AND Posts.ChannelId = Channels.id AND ? ORDER BY (SELECT COUNT(CASE WHEN Likes.PostId = Posts.id THEN 1 ELSE NULL END) Likes FROM Likes) DESC;";
         $data = Query($conn, $query, "i", 1);
-        var_dump($data);die();
         for ($i = 0; $i < sizeof($data); $i++) {
-            $query = "SELECT COUNT(Comments.PostId) FROM `Comments`, Posts WHERE Posts.id = ?";
-            $commentsAmount = Query($conn, $query, "i", $data[$i]["PostId"]);
-            $query = "SELECT COUNT(Likes.PostId) FROM `Likes`, Posts WHERE Posts.id = ?";
-            $likesAmount = Query($conn, $query, "i", $data[$i]["PostId"]);
+            $query = "SELECT COUNT(CASE WHEN Comments.PostId = ? THEN 1 ELSE NULL END) Comments FROM Comments";
+            $commentsAmount = Query($conn, $query, "i", $data[$i]["id"]);
+            $query = "SELECT COUNT(CASE WHEN Likes.PostId = ? THEN 1 ELSE NULL END) Likes FROM Likes";
+            $likesAmount = Query($conn, $query, "i", $data[$i]["id"]);
             echo '
         <div class="post">
             <div class="post_header">
@@ -98,15 +97,16 @@ $data = Query($conn, $query, "i", $id);
             <div><img src="../uploads/' . $data[$i]['ImageName'] . '" alt="Post"></div>
             <div class="like_section">
                 <img src="../img/like.png">
-                <a>' . $likesAmount[$i]["COUNT(Likes.PostId)"] . '</a>
+                <a>' . $likesAmount[0]["Likes"] . '</a>
                 <img src="../img/comment.png">
-                <a>' . $commentsAmount[$i]["COUNT(Comments.PostId)"] . '</a>
+                <a>' . $commentsAmount[0]["Comments"] . '</a>
             </div>
         </div>
         ';
         }
     }
     ?>
+    <br><br>
     <div class="footer">
         <img onClick="location.href='main.php'" id="footer_menu" src="../img/Project2_menu.png" alt="Main_menu">
         <img onClick="location.href='search.php'" id="footer_channels" src="../img/Project2_channels.png" alt="Channels">
