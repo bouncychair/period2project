@@ -6,7 +6,7 @@ session_start();
 include "connect.php";
 include "utils.php";
 
-CheckIdentifier($conn);
+CheckIdentifier();
 $id = GetUserId($conn);
 
 $query = "SELECT `ChannelId` FROM Followed WHERE UserId = ?";
