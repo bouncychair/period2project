@@ -1,11 +1,16 @@
 <?php
+
+use Google\Service\Genomics\CheckInRequest;
+
 session_start();
-require "connect.php";
-require "utils.php";
-CheckIdentifier();
-$id = GetUserId();
-$data = Query($conn, $sql);
-GoToUrl();
+include "connect.php";
+include "utils.php";
+
+CheckIdentifier($conn);
+$id = GetUserId($conn);
+
+$query = "SELECT `ChannelId` FROM Followed WHERE UserId = ?";
+$data = Query($conn, $query, "i", $id);
 ?>
 
 <!DOCTYPE html>
