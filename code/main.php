@@ -80,29 +80,31 @@ $data = Query($conn, $query, "i", $id);
         echo '<h2>Recommended</h2>';
         $query = "SELECT Channels.id ChannelID, Channels.Name, Posts.*, Users.id UserId, Users.Username, Users.ProfilePicture FROM Channels, `Posts`, Users WHERE Posts.CreatedByUserId = Users.id AND Posts.ChannelId = Channels.id AND ? ORDER BY (SELECT COUNT(CASE WHEN Likes.PostId = Posts.id THEN 1 ELSE NULL END) Likes FROM Likes) DESC;";
         $data = Query($conn, $query, "i", 1);
-        for ($i = 0; $i < sizeof($data); $i++) {
-            $query = "SELECT COUNT(CASE WHEN Comments.PostId = ? THEN 1 ELSE NULL END) Comments FROM Comments";
-            $commentsAmount = Query($conn, $query, "i", $data[$i]["id"]);
-            $query = "SELECT COUNT(CASE WHEN Likes.PostId = ? THEN 1 ELSE NULL END) Likes FROM Likes";
-            $likesAmount = Query($conn, $query, "i", $data[$i]["id"]);
-            echo '
-        <div class="post">
-            <div class="post_header">
-                <img src="../img/' . $data[$i]['ProfilePicture'] . '" />
-                <a>' . $data[$i]["Username"] . '</a>
+        if (sizeof($data) > 0) {
+            for ($i = 0; $i < sizeof($data); $i++) {
+                $query = "SELECT COUNT(CASE WHEN Comments.PostId = ? THEN 1 ELSE NULL END) Comments FROM Comments";
+                $commentsAmount = Query($conn, $query, "i", $data[$i]["id"]);
+                $query = "SELECT COUNT(CASE WHEN Likes.PostId = ? THEN 1 ELSE NULL END) Likes FROM Likes";
+                $likesAmount = Query($conn, $query, "i", $data[$i]["id"]);
+                echo '
+            <div class="post">
+                <div class="post_header">
+                    <img src="../img/' . $data[$i]['ProfilePicture'] . '" />
+                    <a>' . $data[$i]["Username"] . '</a>
+                </div>
+                <div>
+                    <p>' . $data[$i]['Caption'] . '</p>
+                </div>
+                <div><img src="../uploads/' . $data[$i]['ImageName'] . '" alt="Post"></div>
+                <div class="like_section">
+                    <img src="../img/like.png">
+                    <a>' . $likesAmount[0]["Likes"] . '</a>
+                    <img src="../img/comment.png">
+                    <a>' . $commentsAmount[0]["Comments"] . '</a>
+                </div>
             </div>
-            <div>
-                <p>' . $data[$i]['Caption'] . '</p>
-            </div>
-            <div><img src="../uploads/' . $data[$i]['ImageName'] . '" alt="Post"></div>
-            <div class="like_section">
-                <img src="../img/like.png">
-                <a>' . $likesAmount[0]["Likes"] . '</a>
-                <img src="../img/comment.png">
-                <a>' . $commentsAmount[0]["Comments"] . '</a>
-            </div>
-        </div>
-        ';
+            ';
+            }
         }
     }
     ?>
