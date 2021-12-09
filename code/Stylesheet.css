@@ -208,6 +208,8 @@ div.scrollmenu div {
 
 .scrollmenu {
     margin-bottom: 30px;
+    height: 60px;
+    text-align: center;
 }
 
 .scrollmenu img {

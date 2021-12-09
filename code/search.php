@@ -3,7 +3,7 @@ session_start();
 include "connect.php";
 include "utils.php";
 
-CheckToken();
+CheckIdentifier();
 $id = GetUserId($conn);
 ?>
 <!DOCTYPE html>
