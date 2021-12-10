@@ -18,6 +18,7 @@ $data = Query($conn, $query, "i", $id);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Stylesheet.css">
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
     <title>Main</title>
 </head>
 
@@ -35,7 +36,7 @@ $data = Query($conn, $query, "i", $id);
             for ($i = 0; $i < sizeof($data); $i++) {
                 echo "
                 <div>
-                    <a href='?C=" . $data[$i]['id'] . "' ><img id='" . $data[$i]['id'] . "' src='../uploads/" . $data[$i]['MainPic'] . "' /></a>
+                    <a href='?C=" . $data[$i]['id'] . "' ><img id='" . $data[$i]['id'] . "' src='../uploads/" . $data[$i]['MainPicture'] . "' /></a>
                     <p>" . $data[$i]['Name'] . "</p>
                 </div>
                 ";
@@ -52,26 +53,28 @@ $data = Query($conn, $query, "i", $id);
         else
             $currentChannelId = $data[0]["ChannelId"];
 
-        $query = "SELECT * FROM `Posts`, Users WHERE ChannelId = ? AND CreatedBy = Users.Id";
+        $query = "SELECT * FROM `Posts`, Users WHERE ChannelId = ? AND CreatedByUserId = Users.Id";
         $data = Query($conn, $query, "i", $currentChannelId);
         for ($i = 0; $i < sizeof($data); $i++) {
-            $query = "SELECT COUNT(Comments.PostId) FROM `Comments`, Posts WHERE Posts.id = ?";
-            $commentAmount = Query($conn, $query, "i", $data[$i]["likes"]);
+            $query = "SELECT COUNT(CASE WHEN Comments.PostId = ? THEN 1 ELSE NULL END) Comments FROM Comments";
+            $commentsAmount = Query($conn, $query, "i", $data[$i]["id"]);
+            $query = "SELECT COUNT(CASE WHEN Likes.PostId = ? THEN 1 ELSE NULL END) Likes FROM Likes";
+            $likesAmount = Query($conn, $query, "i", $data[$i]["id"]);
             echo '
         <div class="post">
             <div class="post_header">
-                <img src="../uploads/' . $data[$i]['ProfilePicture'] . '" />
+                <img src="../img/' . $data[$i]['ProfilePicture'] . '" />
                 <a>' . $data[$i]["Username"] . '</a>
             </div>
             <div>
                 <p>' . $data[$i]['Caption'] . '</p>
             </div>
-            <div><img src="../uploads/' . $data[$i]['Img'] . '" alt="Post"></div>
+            <div><img src="../uploads/' . $data[$i]['ImageName'] . '" alt="Post"></div>
             <div class="like_section">
                 <img src="../img/like.png">
-                <a>' . $data[$i]["likes"] . '</a>
+                <a>' . $likesAmount[0]["Likes"] . '</a>
                 <img src="../img/comment.png">
-                <a>' . $commentAmount[0]["COUNT(Comments.PostId)"] . '</a>
+                <a>' . $commentsAmount[0]["Comments"] . '</a>
             </div>
         </div>
         ';
@@ -97,7 +100,7 @@ $data = Query($conn, $query, "i", $id);
                 </div>
                 <div><img src="../uploads/' . $data[$i]['ImageName'] . '" alt="Post"></div>
                 <div class="like_section">
-                    <img src="../img/like.png">
+                    <img src="../img/like.png" id="' . $data[$i]['id'] . '" onclick="Like(' . $id . ',' . $data[$i]['id'] . ',1)">
                     <a>' . $likesAmount[0]["Likes"] . '</a>
                     <img src="../img/comment.png">
                     <a>' . $commentsAmount[0]["Comments"] . '</a>
@@ -120,6 +123,23 @@ $data = Query($conn, $query, "i", $id);
         url = new URL(window.location.href);
         currentChannel = url.searchParams.get("C");
         document.getElementById(currentChannel).style.boxShadow = "0 0 20px purple";
+
+        function Like(UserId, PostId, Reaction) {
+            $.ajax({
+                type: 'POST',
+                url: 'like.php',
+                dataType: "json",
+                data: ({
+                    "UserId": UserId,
+                    "PostId": PostId,
+                    "Reaction": Reaction
+                }),
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+            return false;
+        }
     </script>
 </body>
 
