@@ -29,7 +29,7 @@ die();*/?>
             <div id="nickname">
                 <div id="pb">
                   <?php 
-                    $sql = "SELECT ProfilePicture FROM `users` WHERE id = 1";
+                    $sql = "SELECT ProfilePicture FROM users WHERE id = 1";
                     $result = mysqli_query($conn, $sql);
                     
                     if (mysqli_num_rows($result) > 0) {
@@ -81,11 +81,19 @@ die();*/?>
                     ?></p>
                 </div>
             </div>
+
             <div id="upload">
              <form action="" method="post" enctype="multipart/form-data">
             <p>Select Image File to Upload:</p>
             <input type="file" name="file">
             <input type="submit" name="submit" value="Upload">
+                </form>
+                </div>
+                <div id="change">
+             <form action="" method="post" enctype="multipart/form-data">
+            <p>Change your Nickname here:</p>
+            <input type="text" name="username">
+            <input type="submit" name="submit" value="Change">
                 </form>
                 </div>
                 <br><br>
