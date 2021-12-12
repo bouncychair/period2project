@@ -52,7 +52,6 @@ $id = GetUserId($conn);
         <input type="text" autocomplete="off" placeholder="Search video..." />
         <div class="result"></div>
     </div>
-
+    <?php include "footer.php"; ?>
 </body>
-
 </html>
