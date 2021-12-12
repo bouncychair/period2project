@@ -1,13 +1,27 @@
 <?php
+session_start();
 include("connect.php");
+include("utils.php");
+//CheckToken();
+//$id = GetUserId($conn);
+/*$query = "SELECT * FROM users WHERE id = ?"; // ? binding the operator $data
+$data = Query($conn, $query, "i", 1); // i for integer 
+echo $data[0]["Username"]; // gets from array 0 the needed FirstName
+die();*/
 
 
-$sql = "SELECT profilePicture FROM users WHERE id = 1";
+$query = "SELECT Username FROM users WHERE id = ?";
+$data = Query($conn, $query, "i", 1);
+var_dump($data);
+echo $data[0]["Username"];
+
+
+$sql = "SELECT ProfilePicture FROM users WHERE id = $id"; //  
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
     while($row = $result->fetch_assoc()){
-        $imageURL = '../uploads/'.$row["profilePicture"];
+        $imageURL = '../uploads/'.$row["ProfilePicture"];
 ?>
     <img width="400px" src="<?php echo $imageURL; ?>" alt="" />
 <?php }
