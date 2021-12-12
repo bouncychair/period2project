@@ -167,11 +167,11 @@ if (isset($_POST['Verify'])) {
         $password = password_hash($_SESSION['password'], PASSWORD_DEFAULT);
         $gender = $_SESSION['gender'];
         $age = $_SESSION['age'];
-        $regdate = date("d-m-Y");
-        $token = uniqid("", true);
+        $regdate = date("Y-m-d");
+        $identifier = uniqid("", true);
 
-        $sql = "INSERT INTO `Users` (`FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `Token` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Query($conn, $sql,"sssssssiss",$fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $token);
+        $sql = "INSERT INTO `Users` (`FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `Identifier` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Query($conn, $sql,"sssssssiss",$fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $identifier);
     } else {
         echo "incorrect code";
     }
@@ -182,10 +182,10 @@ if (isset($_POST['Sign_In'])) {
         if (!empty($_POST["Password"])) {
             $username = $_POST["Username"];
             $pass = $_POST["Password"];
-            $query = "SELECT `Password`, `Token` FROM Users WHERE Username = ?";
+            $query = "SELECT `Password`, `Identifier` FROM Users WHERE Username = ?";
             $data = Query($conn, $query, "s", $username);
             if (password_verify($pass, $data[0]["Password"])) {
-                $_SESSION["Token"] = $data[0]["Token"];
+                $_SESSION["Identifier"] = $data[0]["Identifier"];
                 GoToUrl("main.php");
             } else
                 AddParam("error=passInvalid");

@@ -4,15 +4,15 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 // Checks if user is logged in, Call this function in each page just right after session_start()
-function CheckToken(){
-    if (empty($_SESSION["Token"]))
+function CheckIdentifier(){
+    if (empty($_SESSION["Identifier"]))
         GoToUrl("authentication.php");
 }
 // Gets user id, you have to assign this function to variable to get the user id
 function GetUserId($conn){
-    $query = "SELECT `id` FROM Users WHERE Token = ?";
+    $query = "SELECT `id` FROM Users WHERE Identifier = ?";
     if ($statement = mysqli_prepare($conn, $query)) {
-        mysqli_stmt_bind_param($statement, 's', $_SESSION["Token"]);
+        mysqli_stmt_bind_param($statement, 's', $_SESSION["Identifier"]);
         mysqli_stmt_execute($statement) or die(mysqli_error($conn));
         mysqli_stmt_bind_result($statement, $id);
         mysqli_stmt_fetch($statement);

@@ -1,73 +1,21 @@
 <?php
 session_start();
-include("connect.php");
-include("utils.php");
-//CheckToken();
-//$id = GetUserId($conn);
+include "connect.php";
+include "utils.php";
+
+CheckIdentifier();
+$id = GetUserId($conn);
+
+$query = "SELECT `ChannelId` FROM Followed WHERE UserId = ?";
+$data = Query($conn, $query, "i", $id);
 /*$query = "SELECT * FROM users WHERE id = ?"; // ? binding the operator $data
 $data = Query($conn, $query, "i", 1); // i for integer 
 echo $data[0]["Username"]; // gets from array 0 the needed FirstName
-die();*/
-
-
-$query = "SELECT Username FROM users WHERE id = ?";
-$data = Query($conn, $query, "i", 1);
-var_dump($data);
-echo $data[0]["Username"];
-
-
-$sql = "SELECT ProfilePicture FROM users WHERE id = $id"; //  
-$result = mysqli_query($conn, $sql);
-
-if (mysqli_num_rows($result) > 0) {
-    while($row = $result->fetch_assoc()){
-        $imageURL = '../uploads/'.$row["ProfilePicture"];
-?>
-    <img width="400px" src="<?php echo $imageURL; ?>" alt="" />
-<?php }
-}else{ ?>
-    <p>No image(s) found...</p>
-<?php }
-
-
-$statusMsg = '';
-
-
-// File upload path
-$targetDir = "../uploads/";
-$fileName = @basename($_FILES["file"]["name"]);
-$targetFilePath = $targetDir . $fileName;
-$fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-
-if (isset($_POST["submit"]) && !empty($_FILES["file"]["name"])) {
-    // Allow certain file formats
-    $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
-    if (in_array($fileType, $allowTypes)) {
-        // Upload file to server
-        if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
-            // Insert image file name into database
-            $sql = "UPDATE `users` SET `profilePicture` = '$fileName' WHERE id = 1";
-            if (mysqli_query($conn, $sql)) {
-                echo "Records inserted successfully.";
-            } else {
-                $statusMsg = "File upload failed, please try again.";
-            }
-        } else {
-            $statusMsg = "Sorry, there was an error uploading your file.";
-        }
-    } else {
-        $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
-    }
-} else {
-}
-
-// Display status message
-echo $statusMsg;
-?>
+die();*/?>
 <!DOCTYPE html>
 <head>
     <title>Profile</title>
-    <link rel="stylesheet" href="src/Stylesheet.css">
+    <link rel="stylesheet" href="Stylesheet.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,16 +28,99 @@ echo $statusMsg;
             </div>
             <div id="nickname">
                 <div id="pb">
-                   <!-- add php in pb--> 
+                  <?php 
+                    $sql = "SELECT ProfilePicture FROM `users` WHERE id = 1";
+                    $result = mysqli_query($conn, $sql);
+                    
+                    if (mysqli_num_rows($result) > 0) {
+                        while($row = $result->fetch_assoc()){
+                            $imageURL = '../uploads/'.$row[`ProfilePicture`];
+                    ?>
+                        <img width="400px" src="<?php echo $imageURL; ?>" alt="" />
+                    <?php }
+                    }else{ ?>
+                        <p>No image(s) found...</p>
+                    <?php }
+                    $statusMsg = '';
+
+                        // File upload path
+                        $targetDir = "../uploads/";
+                        $fileName = @basename($_FILES["file"]["name"]);
+                        $targetFilePath = $targetDir . $fileName;
+                        $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+
+                        if (isset($_POST["submit"]) && !empty($_FILES["file"]["name"])) {
+                            // Allow certain file formats
+                            $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+                            if (in_array($fileType, $allowTypes)) {
+                                // Upload file to server
+                                if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
+                                    // Insert image file name into database
+                                    $sql = "UPDATE `users` SET `ProfilePicture` = '$fileName' WHERE id = 1";
+                                    if (mysqli_query($conn, $sql)) {
+                                        echo "Records inserted successfully.";
+                                    } else {
+                                        $statusMsg = "File upload failed, please try again.";
+                                    }
+                                } else {
+                                    $statusMsg = "Sorry, there was an error uploading your file.";
+                                }
+                            } else {
+                                $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
+                            }
+                        } else {
+                        }
+                        // Display status message
+                        echo $statusMsg;
+                        ?>             
+                </div>
+                <div class="name">
+                 <p><?php 
+                    $sql = "SELECT Username FROM users WHERE id = 1";
+                    $result = mysqli_query($conn, $sql);
+                    ?></p>
                 </div>
             </div>
-   
-        <form action="" method="post" enctype="multipart/form-data">
+            <div id="upload">
+             <form action="" method="post" enctype="multipart/form-data">
             <p>Select Image File to Upload:</p>
             <input type="file" name="file">
             <input type="submit" name="submit" value="Upload">
-        </form>
-</body>
+                </form>
+                </div>
+                <br><br>
+                    <div class="footer">
+                        <img onClick="location.href='main.php'" id="footer_menu" src="../img/Project2_menu.png" alt="Main_menu">
+                        <img onClick="location.href='search.php'" id="footer_channels" src="../img/Project2_channels.png" alt="Channels">
+                        <img onClick="location.href='...'" id="footer_notifications" src="../img/Project2_notification.png" alt="Notifications">
+                        <img onClick="location.href='...'" id="footer_add_post" src="../img/Project2_add_post.png" alt="Add_post">
+                        <img onClick="location.href='profile.php'" id="footer_profile" src="../img/Project2_profile.png" alt="Profile">
+                    </div>
+                    <script>
+                        url = new URL(window.location.href);
+                        currentChannel = url.searchParams.get("C");
+                        document.getElementById(currentChannel).style.boxShadow = "0 0 20px purple";
+
+                        function Like(UserId, PostId, Reaction) {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'like.php',
+                                dataType: "json",
+                                data: ({
+                                    "UserId": UserId,
+                                    "PostId": PostId,
+                                    "Reaction": Reaction
+                                }),
+                                success: function(data) {
+                                    console.log(data);
+                                }
+                            });
+                            return false;
+                }
+            </script>
+        </body>
+
+        </html>
 <!--//add security //looking for user who uploaded-->
 
 
