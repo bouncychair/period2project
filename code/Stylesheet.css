@@ -181,7 +181,6 @@ select {
 
 .errorBox a {
     color: white;
-    ;
 }
 
 
@@ -243,10 +242,6 @@ div.scrollmenu a:hover {
     padding-bottom: 10px;
 }
 
-.post div {
-    margin: 0px 10%;
-}
-
 .post img {
     width: 100%;
 }
@@ -256,20 +251,41 @@ div.scrollmenu a:hover {
     align-items: center;
     height: 40px;
     padding-top: 10px;
+    position: relative;
+    padding-left: 10px;
 }
 
 .post_header img {
-    border-radius: 50%;
-    height: 100%;
-    width: auto;
-    object-fit: contain;
+    object-fit: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
     margin-right: 5px;
+}
+
+.post_header img+img {
+    object-fit: cover;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    margin-right: 5px;
+    transform: translate(-70%, +35%);
+}
+
+.post_caption {
+    padding-left: 10px;
+}
+
+.post_caption p {
+    margin-top: 25px;
+    font-size: 16px;
 }
 
 .like_section {
     display: flex;
     align-items: center;
     height: 30px;
+    padding-left: 10px;
 }
 
 .like_section img {
