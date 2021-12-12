@@ -352,3 +352,8 @@ div.scrollmenu a:hover {
 #divider {
     border: solid purple 1px;
 }
+/* Profile Page -----------------------------------------------------------------------*/
+#pb {
+    display: inline-block;
+
+}
