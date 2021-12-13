@@ -1,10 +1,10 @@
-<?php//
+<?php
 session_start();
 require "connect.php";
 require "utils.php";
 
 CheckIdentifier();
-$id = GetUserId($conn);//
+$id = GetUserId($conn);
 ?>
 <!DOCTYPE html>
 
