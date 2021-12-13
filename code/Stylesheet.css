@@ -449,7 +449,13 @@ select#postType {
     position: absolute;
     top: 45%;
 }
-::placeholder {
+input#photoDescription::placeholder {
+    color: white;
+}
+input#videoDescription::placeholder {
+    color: white;
+}
+input#text::placeholder {
     color: white;
 }
 input#photoDescription, input#videoDescription, input#text {
@@ -471,6 +477,7 @@ input#submitPost {
 }
 #searchChannel::placeholder {
     text-align:center;
+    color: white;
 }
 input#searchChannel {
     width: 50%;
