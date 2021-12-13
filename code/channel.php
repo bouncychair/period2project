@@ -59,12 +59,12 @@ $id = GetUserId($conn);
                     }*/
         
                     /*$query = "SELECT MainPicture FROM Channels";
-                    //$result = mysqli_query($conn, $query);
+                    $result = Query($conn, $query);
                   
                     
 
-                        //$image = '../uploads/' .$result;
-                        //echo $image; */
+                        $image = '../uploads/' .$result;
+                        echo $image; */
                       ?>
            <img id="channel_pic" src="../img/DefaultProfile.png" alt="profilepic"> 
       </div>

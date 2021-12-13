@@ -29,7 +29,7 @@ die();*/?>
             <div id="nickname">
                 <div id="pb">
                   <?php 
-                    $sql = "SELECT ProfilePicture FROM users WHERE id = 1";
+                    $sql = "SELECT ProfilePicture FROM Users WHERE id = 1";
                     $result = mysqli_query($conn, $sql);
                     
                     if (mysqli_num_rows($result) > 0) {
