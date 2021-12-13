@@ -32,17 +32,20 @@ $id = GetUserId($conn);
                </select>
             <div id="postPhoto" style="display: block">
             <input type="file" id="photo" name="photo" class="file_upload">
-            <input type="text" id="photoDescription" name="photoDescripion" placeholder="Description" maxlength="500" size="50">
+            <input type="text" id="photoDescription" name="photoDescripion" placeholder="Description" maxlength="500">
             <input type="submit" value="Post" id="submitPost"></div>
             <div id="postVideo" style="display: none">
             <input type="file" id="video" name="video" class="file_upload">
-            <input type="text" id="videoDescription" name="videoDescripion" placeholder="Description" maxlength="500" size="50">
+            <input type="text" id="videoDescription" name="videoDescripion" placeholder="Description" maxlength="500">
             <input type="submit" value="Post" id="submitPost"></div>
             <div id="postText" style="display: none">
-            <input type="text" id="text" name="text" placeholder="Your post" maxlength="500" size="100">
+            <input type="text" id="text" name="text" placeholder="Your post" maxlength="500">
             <input type="submit" value="Post" id="submitPost"></div>
         </form>
     </div>
+    <?php
+    include "footer.php";
+    ?>
     <script>
         function post() {
             if (document.getElementById("postType").value == "photo") {
