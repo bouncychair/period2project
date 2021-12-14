@@ -491,5 +491,11 @@ input#searchChannel {
     min-width: 70%;
     position: absolute;
     top: 17%;
-    left: 13%
+    left: 13%;
+}
+/* profile Page -----------------------------------------------------------------------*/
+#nickname{
+    border-bottom-style: solid;
+    border-bottom-style: 0px 0px 5px 0px;
+    border-bottom-style:rgb(255, 238, 0);
 }

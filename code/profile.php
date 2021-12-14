@@ -26,15 +26,16 @@ die();*/?>
                 <img src="../img/logo1.png" alt="TocTic Logo" />
                 <h2>TocTic</h2>
             </div>
+            
             <div id="nickname">
                 <div id="pb">
                   <?php 
-                    $sql = "SELECT ProfilePicture FROM Users WHERE id = 1";
+                    $sql = "SELECT `ProfilePicture` FROM users WHERE id = 6";
                     $result = mysqli_query($conn, $sql);
                     
                     if (mysqli_num_rows($result) > 0) {
                         while($row = $result->fetch_assoc()){
-                            $imageURL = '../uploads/'.$row[`ProfilePicture`];
+                            $imageURL = '../uploads/'. $row[`ProfilePicture`];
                     ?>
                         <img width="400px" src="<?php echo $imageURL; ?>" alt="" />
                     <?php }
@@ -56,7 +57,7 @@ die();*/?>
                                 // Upload file to server
                                 if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
                                     // Insert image file name into database
-                                    $sql = "UPDATE `users` SET `ProfilePicture` = '$fileName' WHERE id = 1";
+                                    $sql = "UPDATE `users` SET `ProfilePicture` = `$fileName` WHERE id = 6"; //echos failure but uploads image
                                     if (mysqli_query($conn, $sql)) {
                                         echo "Records inserted successfully.";
                                     } else {
@@ -74,10 +75,17 @@ die();*/?>
                         echo $statusMsg;
                         ?>             
                 </div>
+               
                 <div class="name">
                  <p><?php 
-                    $sql = "SELECT Username FROM users WHERE id = 1";
-                    $result = mysqli_query($conn, $sql);
+                    $sql = "SELECT `Username` FROM users WHERE id = 6";
+                    $name = mysqli_query($conn, $sql);
+                    
+                    while($row = mysqli_fetch_array($name))
+                    {
+                        echo "<img src='../uploads/".$row[`ProfilePicture`]."'>";
+                        echo $row[`Username`];
+                    }
                     ?></p>
                 </div>
             </div>
@@ -95,6 +103,7 @@ die();*/?>
             <input type="text" name="username">
             <input type="submit" name="submit" value="Change">
                 </form>
+
                 </div>
                 <br><br>
                     <div class="footer">
