@@ -83,9 +83,9 @@ die();*/?>
                     
                     while($row = mysqli_fetch_array($name))
                     {
-                        echo "<img src='../uploads/".$row[`ProfilePicture`]."'>";
                         echo $row[`Username`];
                     }
+                    
                     ?></p>
                 </div>
             </div>
