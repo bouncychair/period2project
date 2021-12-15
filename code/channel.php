@@ -1,7 +1,10 @@
 <?php
 session_start();
-require "connect.php";
-require "utils.php";
+include "connect.php";
+include "utils.php";
+
+CheckIdentifier();
+$id = GetUserId($conn);
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +13,7 @@ require "utils.php";
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Stylesheet.css" rel="text/css">
+    <link rel="stylesheet" href="Stylesheet.css" type="text/css">
     <title>Channel</title>
 </head>
 <body>
@@ -19,23 +22,78 @@ require "utils.php";
         <h2 id="company_name">TocTic</h2>
     </div>
     <div class="channel_header">
-        <div class="post_header">
-          <img id="channel_pic" src="../img/profileDef.png" alt="profilepic"> <?php // echo $_POST['MainPic'] ?>
-        </div>
+
+      <div id="channel_cover_pic">
+                      <?php 
+                            /*$sql = "SELECT MainPicture FROM `Channels` WHERE Channels.id = ?";
+                            $data = Query($conn, $sql, "i", $id);
+                        if (sizeof($data) > 0) {
+                            for ($i = 0; $i < sizeof($data); $i++) {
+                                echo "
+                                <div>
+                                    <img id='" . $data[$i]['id'] . "' src='../uploads/" . $data[$i]['CoverPicture'] . "' /></a>
+                                </div>
+                                ";
+                            }
+                        } else {
+                            echo "<p>Why is it not working</p>";
+                        }*/
+                        ?>
+         <img src="../uploads/iss_4567_04174.jpeg" alt="Cover Picture"> 
+      </div>
+
+      <div class="post_header_channel">
+                      <?php 
+                        /*$sql = "SELECT MainPicture FROM `Channels` WHERE Channels.id = ?";
+                        $data = Query($conn, $sql, "i", $id);
+                    if (sizeof($data) > 0) {
+                        for ($i = 0; $i < sizeof($data); $i++) {
+                            echo "
+                            <div>
+                                <img id='" . $data[$i]['id'] . "' src='../uploads/" . $data[$i]['MainPicture'] . "' /></a>
+                            </div>
+                            ";
+                        }
+                    } else {
+                        echo "<p>Why is it not working</p>";
+                    }*/
+        
+                    /*$query = "SELECT MainPicture FROM Channels";
+                    $result = Query($conn, $query);
+                  
+                    
+
+                        $image = '../uploads/' .$result;
+                        echo $image; */
+                      ?>
+           <img id="channel_pic" src="../img/DefaultProfile.png" alt="profilepic"> 
+      </div>
         <div id="channel_name">
-            <h3>Channel Name</h3>        <?php //echo $_POST['CName'] ?>
+        <?php 
+        mysqli_select_db($conn, "Toctic");
+        $query = "SELECT * FROM Channels";
+        $result = mysqli_query($conn, $query);
+        while($name = mysqli_fetch_array($result)){ ?>
+          <p><?php echo $name['Name']; ?> </p>
+          <?php } ?>
         </div>
+        
         <div id="channel_description">
-          <p>Description</p>          <?php //echo $_POST['Description'] ?>
+          <?php 
+          mysqli_select_db($conn, "Toctic");
+          $query = "SELECT * FROM Channels";
+          $result = mysqli_query($conn, $query);
+          while($description = mysqli_fetch_array($result)){ ?>
+            <p><?php echo $description['Description']; ?> </p>
+          <?php } ?>
+          <!-- CLOSE THE PHP CONNECTION AFTER THAT --> 
         </div>
     </div>
     <hr id="divider">
-    <div class="footer">
-      <img onClick="location.href='main.php'" id="footer_menu" src="../img/Project2_menu.png" alt="Main_menu">
-      <img onClick="location.href='search.php'" id="footer_channels" src="../img/Project2_channels.png" alt="Channels">
-      <img onClick="location.href='...'" id="footer_notifications" src="../img/Project2_notification.png" alt="Notifications">
-      <img onClick="location.href='...'" id="footer_add_post" src="../img/Project2_add_post.png" alt="Add_post">
-      <img onClick="location.href='profile.php'" id="footer_profile" src="../img/Project2_profile.png" alt="Profile">
-    </div>
+            <!-- INSERT CONTENT AFTER THAT -->
+      
+            
+      <!-- Obiviously a footer -->        
+   <?php include "footer.php"; ?>
 </body>
 </html>

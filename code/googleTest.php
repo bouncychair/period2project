@@ -4,6 +4,8 @@
 
 //Include Google Client Library for PHP autoload file
 require_once '../vendor/autoload.php';
+require_once "utils.php";
+
 
 //Make object of Google API Client for call Google API
 $google_client = new Google_Client();
@@ -15,8 +17,7 @@ $google_client->setClientId('801553437171-l6cln7i1n5v7l891et07f7sb2829hf3a.apps.
 $google_client->setClientSecret('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');
 
 //Set the OAuth 2.0 Redirect URI
-$google_client->setRedirectUri('http://127.0.0.1/Social_Network/code/googleTest.php');
-
+$google_client->setRedirectUri("http://127.0.0.1/Social_Network/code/googleTest.php");
 //
 $google_client->addScope('email');
 
@@ -30,9 +31,9 @@ $google_client->addScope('profile');
 $f = $google_client->createAuthUrl();
 $f = "http://127.0.0.1/Social_Network/code/authentication.php";
 ?><script>
-    var f = <?php $f ?>;
+    //var f = <?php $f ?>;
     console.log(f);
-    window.location = f;
+    //window.location = f;
 </script><?php
 
             $login_button = '';
@@ -77,10 +78,7 @@ $f = "http://127.0.0.1/Social_Network/code/authentication.php";
                         $_SESSION['user_image'] = $data['picture'];
                     }
                 }
-            ?><script>
-        location.replace("http://127.0.0.1/Social_Network/code/authentication.php?page=google");
-    </script><?php
-
+                GoToUrl("authentication.php?page=google");
             }
 
             //This is for check user has login into system by using Google account, if User not login into system then it will execute if block of code and make code for display Login link for Login using Google account.
