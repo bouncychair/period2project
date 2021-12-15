@@ -74,7 +74,7 @@ die();*/?>
                     $username = array_column($data,'Username');
                     $sql = "SELECT Username FROM Users WHERE id = ?";
                     $data= Query($conn, $sql, "s", $id);
-                        echo $data[0]["Username"];
+                        echo "<b>Username:</b> " .  "<i>" . $data[0]["Username"] . "</i>";
                     ?></p>
                 </div>
             </div>
@@ -90,7 +90,7 @@ die();*/?>
              <form action="" method="post" enctype="multipart/form-data">
             
              <p>Change your Nickname here:</p>
-            <input type="text" name="username">
+            <input type="text" name="username" placeholder="New Username">
             <input type="submit" name="submit" value="Change">
                 </form>
 
