@@ -17,6 +17,32 @@ $id = GetUserId($conn);
     <title>Add post</title>
 </head>
 <body>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+      $(document).ready(function() {
+          $('.searchChannel input[type="text"]').on("keyup input", function() {
+              /* Get input value on change */
+              var inputVal = $(this).val();
+              var resultDropdown = $(this).siblings(".searchResult");
+              if (inputVal.length) {
+                  $.get("backend-search.php", {
+                      term: inputVal
+                  }).done(function(data) {
+                      // Display the returned data in browser
+                      resultDropdown.html(data);
+                  });
+              } else {
+                  resultDropdown.empty();
+              }
+          });
+
+          // Set search input value on click of result item
+          $(document).on("click", ".searchResult p", function() {
+              $(this).parents(".searchChannel").find('input[type="text"]').val($(this).text());
+              $(this).parent(".searchResult").empty();
+          });
+      });
+  </script>
     <div class="header">
         <img src="../img/logo1.png" alt="TocTic Logo" />
         <h2>TocTic</h2>
@@ -24,7 +50,10 @@ $id = GetUserId($conn);
     <h2>Create Post</h2>
     <div class="post_type">
         <form action="<?= htmlentities($_SERVER['PHP_SELF']);?>" method="post">
-            <div id="searchChannel"><input type="text" id="searchChannel" name="searchChannel" placeholder="Channel name"></div>
+            <div class="searchChannel">
+              <input type="text" id="searchChannel" name="searchChannel" placeholder="Channel name">
+              <div class="searchResult"></div>
+            </div>
             <select id="postType" name="postType" onchange="post()">
                 <option value="photo" selected>Photo</option>
                 <option value="video">Video</option>
