@@ -328,13 +328,13 @@ div.scrollmenu a:hover {
 }
 
 #footer_notifications {
-    grid-column: 4/5;
+    grid-column: 5/6;
     grid-row: 1/2;
     margin-top: 20%;
 }
 
 #footer_add_post {
-    grid-column: 5/6;
+    grid-column: 4/5;
     grid-row: 1/2;
     margin-top: 20%;
 }
