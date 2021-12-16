@@ -510,7 +510,7 @@ input[type=text] , input[type=file]{
     color: black;
 }
 
-img{
+#pb{
     max-width: 50%;
     border-radius: 50px;
     display: inline;
