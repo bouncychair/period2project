@@ -325,23 +325,30 @@ div.scrollmenu a:hover {
 
 .popup .popuptext {
     visibility: hidden;
-    width: 270px;
-    height: 50px;
-    background-color: rgb(73, 73, 73);
+    width: 276px;
+    height: 73px;
+    background-color: rgb(24 41 82);
     color: #fff;
     text-align: center;
     border-radius: 60px;
-    padding: 8px 0;
+    padding: 8px 10px;
     position: absolute;
     z-index: 1;
     bottom: 150%;
     left: -5px;
+    display: flex;
+    text-align: right;
 }
 
 .popup .popuptext img {
     height: 45px;
     width: 45px;
-    margin-top: -5px
+    margin-top: -5px;
+}
+
+.popup .popuptext a {
+    padding: 0 50%;
+    margin: 0;
 }
 
 
@@ -524,11 +531,15 @@ div.scrollmenu a:hover {
 .file_upload:active::before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
+
 input.file_upload {
-  color: white;
+    color: white;
 }
 
-select#postType, #postPhoto, #postVideo, #postText {
+select#postType,
+#postPhoto,
+#postVideo,
+#postText {
     width: 50%;
     background: purple;
     border-radius: 5px;
@@ -539,32 +550,42 @@ select#postType, #postPhoto, #postVideo, #postText {
     min-height: 10%;
     min-width: 70%;
 }
+
 select#postType {
     position: absolute;
     top: 30%;
 }
-#postPhoto, #postVideo, #postText {
+
+#postPhoto,
+#postVideo,
+#postText {
     position: absolute;
     top: 45%;
 }
+
 input#searchChannel {
     width: 50%;
     background: purple;
     border-radius: 5px;
 }
+
 input#searchChannel::placeholder {
-    text-align:center;
+    text-align: center;
     color: white;
 }
+
 input#photoDescription::placeholder {
     color: white;
 }
+
 input#videoDescription::placeholder {
     color: white;
 }
+
 input#text::placeholder {
     color: white;
 }
+
 input#photoDescription,
 input#videoDescription,
 input#text {
@@ -586,6 +607,7 @@ input#submitPost {
     border-color: black;
     color: purple;
 }
+
 input#searchChannel {
     width: 50%;
     background: purple;
@@ -600,25 +622,30 @@ input#searchChannel {
     top: 17%;
     left: 13%
 }
+
+
 /* Profile Page ----------------------------------------------------------------*/
-#change input[type=submit], #upload input[type=submit]{
+
+#change input[type=submit],
+#upload input[type=submit] {
     background-color: blueviolet;
-    color:black;
+    color: black;
     border-radius: 20px;
 }
 
-#change input[type=text] , input[type=file]{
+#change input[type=text],
+input[type=file] {
     background-color: turquoise;
     color: black;
     border-radius: 20px;
     text-align: center;
 }
 
-#change ::placeholder{
-    color:black;
+#change ::placeholder {
+    color: black;
 }
 
-#pb img{
+#pb img {
     max-width: 50%;
     border-radius: 100px;
     padding: 10px;
@@ -627,15 +654,15 @@ input#searchChannel {
     margin: 0 auto;
 }
 
-.name p{
+.name p {
     text-align: center;
     font-size: 17px;
 }
- 
-#upload p{
+
+#upload p {
     font-size: 18px;
 }
-#change p{
+
+#change p {
     font-size: 17px;
 }
-

@@ -22,6 +22,7 @@ $id = GetUserId($conn);
     <script>
         $(document).ready(function() {
             $('.search-box input[type="text"]').on("keyup input", function() {
+                document.getElementById("notfound").style.visibility = "hidden";
                 /* Get input value on change */
                 var inputVal = $(this).val();
                 var resultDropdown = $(this).siblings(".result");
@@ -51,7 +52,9 @@ $id = GetUserId($conn);
     <div class="search-box">
         <input type="text" autocomplete="off" placeholder="Search video..." />
         <div class="result"></div>
+        <center id="notfound"><img width='300px' src='../img/q.gif' /></center>
     </div>
     <?php include "footer.php"; ?>
 </body>
+
 </html>

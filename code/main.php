@@ -91,12 +91,28 @@ $data = Query($conn, $query, "i", $id);
             <div><img src="../uploads/' . $data[$i]['ImageName'] . '" alt="Post"></div>
             <div class="like_section" id="Post ' . $data[$i]['id'] . '">
             <div class="popup">
-                <img onmouseover="OpenReactions()" src="../img/' . $likeIconName . '" onclick="Like(' . $id . ',' . $data[$i]['id'] . ',1, ' . $likesAmount[0]["Likes"] . ' )">
-                <div class="popuptext" id="myPopup">
-                    <img src="../img/like.gif" />
-                    <img src="../img/heart.gif" />
-                    <img src="../img/laugh.gif" />
-                    <img src="../img/heart-eyes.gif" />
+                <img onclick="OpenReactions(' . $data[$i]['id'] . ')" src="../img/' . $likeIconName . '">
+                <div class="popuptext" id="Popup ' . $data[$i]['id'] . '">
+                    <div>
+                        <a class="like-gif-count">21</a>
+                        <img src="../img/like.gif" onclick="Like(' . $id . ',' . $data[$i]['id'] . ',0, ' . $likesAmount[0]["Likes"] . ' )" />
+                    </div>
+                    <div>
+                        <a class="think-gif-count">21</a>
+                        <img src="../img/think.gif" onclick="Like(' . $id . ',' . $data[$i]['id'] . ',1, ' . $likesAmount[0]["Likes"] . ' )" />
+                    </div>
+                    <div>
+                        <a class="laugh-gif-count">132</a>
+                        <img src="../img/laugh.gif" onclick="Like(' . $id . ',' . $data[$i]['id'] . ',2, ' . $likesAmount[0]["Likes"] . ' )" />
+                    </div>
+                    <div>
+                        <a class="angry-gif-count">1</a>
+                        <img src="../img/angry.gif" onclick="Like(' . $id . ',' . $data[$i]['id'] . ',3, ' . $likesAmount[0]["Likes"] . ' )" />
+                    </div>
+                    <div>
+                        <a class="sad-gif-count">1</a>
+                        <img src="../img/sad.gif" onclick="Like(' . $id . ',' . $data[$i]['id'] . ',4, ' . $likesAmount[0]["Likes"] . ' )" />
+                    </div>
                 </div>
             </div>    
                 <a class="likescount">' . $likesAmount[0]["Likes"] . '</a>
@@ -110,13 +126,7 @@ $data = Query($conn, $query, "i", $id);
 
     ?>
     <br><br>
-    <div class="footer">
-        <img onClick="location.href='main.php'" id="footer_menu" src="../img/Project2_menu.png" alt="Main_menu">
-        <img onClick="location.href='search.php'" id="footer_channels" src="../img/Project2_channels.png" alt="Channels">
-        <img onClick="location.href='...'" id="footer_notifications" src="../img/Project2_notification.png" alt="Notifications">
-        <img onClick="location.href='...'" id="footer_add_post" src="../img/Project2_add_post.png" alt="Add_post">
-        <img onClick="location.href='profile.php'" id="footer_profile" src="../img/Project2_profile.png" alt="Profile">
-    </div>
+    <?php include "footer.php"; ?>
     <script>
         url = new URL(window.location.href);
         currentChannel = url.searchParams.get("C");
@@ -124,21 +134,27 @@ $data = Query($conn, $query, "i", $id);
 
 
 
-        function OpenReactions() {
-            var popup = document.getElementById("myPopup");
+        function OpenReactions(id) {
+            var popup = document.getElementById("Popup " + id);
             popup.classList.toggle("show");
         }
 
         function Like(UserId, PostId, Reaction, LikesCount) {
             var Like;
-            var likeText = document.getElementById("Post " + PostId).getElementsByClassName("likescount")[0];
             var likeImage = document.getElementById("Post " + PostId).getElementsByTagName('img')[0];
+            var likeText = document.getElementById("Post " + PostId).getElementsByClassName("likescount")[0];
+
+            var likeGifText = document.getElementById("Post " + PostId).getElementsByClassName("like-gif-count")[0];
+            var thinkGifText = document.getElementById("Post " + PostId).getElementsByClassName("think-gif-count")[0];
+            var laughGifText = document.getElementById("Post " + PostId).getElementsByClassName("laugh-gif-count")[0];
+            var angryGifText = document.getElementById("Post " + PostId).getElementsByClassName("angry-gif-count")[0];
+            var sadGidText = document.getElementById("Post " + PostId).getElementsByClassName("sad-gif-count")[0];
+
+
             if (likeImage.src.substr(likeImage.src.lastIndexOf('/')) == "/like.png") {
-                (likeText.innerHTML == LikesCount) ? likeText.innerHTML = LikesCount + 1: likeText.innerHTML = LikesCount;
                 likeImage.src = '../img/liked.png';
                 Like = "SetLike";
             } else {
-                (likeText.innerHTML == LikesCount) ? likeText.innerHTML = LikesCount - 1: likeText.innerHTML = LikesCount;
                 likeImage.src = '../img/like.png';
                 Like = "RemoveLike";
             }
@@ -154,10 +170,19 @@ $data = Query($conn, $query, "i", $id);
                 }),
 
                 success: function(data) {
-                    console.log(data);
+                    console.log(data[0].all);
+                    likeText.innerHTML = data[0].all;
+                    likeGifText.innerHTML = data[0].like;
+                    thinkGifText.innerHTML = data[0].think;
+                    laughGifText.innerHTML = data[0].laugh;
+                    angryGifText.innerHTML = data[0].angry;
+                    sadGidText.innerHTML = data[0].sad;
+
                 }
             });
+            OpenReactions(PostId);
             return false;
+
         }
     </script>
 </body>

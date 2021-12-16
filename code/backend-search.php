@@ -25,10 +25,10 @@ if(isset($_REQUEST["term"])){
             if(mysqli_num_rows($result) > 0){
                 // Fetch result rows as an associative array
                 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                    echo "<div style='background-color:white;'><a style = 'text-decoration: none; color:black' href ='#".$row['Name']."' ><img width='100px' src='../uploads/" . $row["MainPic"] . "' ></img><p>".$row["Name"]."</p></a></div>";
+                    echo "<div style='background-color:white;'><a style = 'text-decoration: none; color:black' href ='channel.php?ChannelId=".$row['id']."' ><img width='100px' src='../uploads/" . $row["MainPicture"] . "' ></img><p>".$row["Name"]."</p></a></div>";
                 }
             } else{
-                echo "<p>No matches found</p>";
+                echo "<center><img width='300px' src='../img/q.gif' /></center>";
             }
         } else{
             echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
