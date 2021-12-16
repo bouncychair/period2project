@@ -107,10 +107,6 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     <option value="Other">Other</option>
 </select>
     <button name="Sign_Up"">Sign Up </button>';
-} else if ($_SESSION['content'] == "Verify") { //----------------------------------- Verify form
-    $formChange = '<h1>Verify Your Mail</h1>
-    <input type="text" name="vertext" placeholder="Code" required />
-    <button name="Verify">Verify</button>';
 }
 
 if (isset($_POST["Sign_Up"])) {
@@ -147,7 +143,9 @@ if (isset($_POST["Sign_Up"])) {
         AddParam("page=signup&error=fields");
 
     if ($mailSent) {
-        $formChange = '<h1>Verify Your Mail</h1>
+        $formChange = '
+        <h1>Verify Your Mail</h1>
+        <img width="70%" src="../img/plane.gif" alt="Flying Paper Plane" />
         <input type="text" name="vertext" placeholder="Code" required />
         <button name="Verify">Verify</button>';
     } else

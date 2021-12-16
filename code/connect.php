@@ -1,7 +1,7 @@
 <?php
-$servername = "localhost";
+$servername = "mysql";
 $username = "root";
-$password = "";
+$password = "qwerty";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, "Toctic");

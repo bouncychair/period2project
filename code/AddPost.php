@@ -5,6 +5,139 @@ require "utils.php";
 
 CheckIdentifier();
 $id = GetUserId($conn);
+
+if (isset($_POST['submit'])) {
+   if (!empty($_POST['searchChannel'])) {
+      if ($_POST['postType'] == 'photo') {
+         if (!empty($_POST['photo'])) {
+            if ($_FILES['photo']['size'] < 2000000) {
+                $acceptedFileTypes = ['image/gif', 'image/jpg', 'image/jpeg', 'image/png'];
+                $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+                $uploadedFileType = finfo_file($fileinfo, $_FILES['photo']['tmp_name']);
+                if (in_array($uploadedFileType, $acceptedFileTypes)) {
+                    if ($_FILES['photo']['error'] = 0) {
+                      $oldPhotoName = $_FILES['photo']['name'];
+                      $extensionPhoto = pathinfo($oldPhotoName, PATHINFO_EXTENSION);
+                        if (file_exists("../uploads/" . $_FILES['photo']['name'])) {
+                           $newPhotoName = $oldPhotoName.date('Ymd').'.'.$extensionPhoto;
+                           if (strlen($newPhotoName) > 255) {
+                            $lengPhotoName = substr($newPhotoName, 0,240);
+                            $newLengPhotoName = $lengPhotoName.date('Ymd').$extensionPhoto;
+                                if (move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/".$newLengPhotoName)) {
+                                  $_SESSION['channelName'] = $_POST['searchChannel'];
+                                  $_SESSION['photoDescription'] = $_POST['photoDescription'];
+                                   } else {
+                                   echo "An error occurred while uploading a file. Please try again";
+                                }
+                           } else {
+                           if (move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/". $newPhotoName)) {
+                              $_SESSION['channelName'] = $_POST['searchChannel'];
+                              $_SESSION['photoDescription'] = $_POST['photoDescription'];
+                              } else {
+                                echo "An error occurred while uploading a file. Please try again";
+                                }
+                              }
+                          } else {
+                            if (strlen($newPhotoName) > 255) {
+                             $leng2PhotoName = substr($oldPhotoName, 0,240);
+                             $newLeng2PhotoName = $leng2PhotoName.$extensionPhoto;
+                             if (move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/". $newLeng2PhotoName)){
+                               $_SESSION['channelName'] = $_POST['searchChannel'];
+                               $_SESSION['photoDescription'] = $_POST['photoDescription'];
+                                } else {
+                                  echo "An error occurred while uploading a file. Please try again";
+                                  }
+                                } else {
+                            if (move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/". $_FILES['photo']['name'])){
+                              $_SESSION['channelName'] = $_POST['searchChannel'];
+                              $_SESSION['photoDescription'] = $_POST['photoDescription'];
+                               } else {
+                                 echo "An error occurred while uploading a file. Please try again";
+                                 }
+                              }
+                            }
+                    } else {
+                      echo "An error occurred while uploading a file. Please try again";
+                      }
+                } else {
+                  echo "File must be gif, jpg, jpeg, png";
+                }
+            } else {
+              echo "File must be less than 2MB";
+            }
+        } else{
+          echo "Choose a file to upload";
+        }
+      }
+      if ($_POST['postType'] == 'video') {
+        if (!empty($_POST['video'])) {
+           if ($_FILES['video']['size'] < 100000000) {
+               $acceptedFileTypes = ['video/mov', 'video/swf', 'video/mp4', 'video/mkv', 'video/flv', 'video/wmv', 'video/avi', 'video/3gp', 'video/vob', 'video/aaf', 'video/mod', 'video/mpeg'];
+               $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+               $uploadedFileType = finfo_file($fileinfo, $_FILES['video']['tmp_name']);
+               if (in_array($uploadedFileType, $acceptedFileTypes)) {
+                   if ($_FILES['video']['error'] = 0) {
+                     $oldVideoName = $_FILES['video']['name'];
+                     $extensionVideo = pathinfo($oldVideoName, PATHINFO_EXTENSION);
+                       if (file_exists("../uploads/" . $_FILES['video']['name'])) {
+                          $newVideoName = $oldVideoName.date('Ymd').'.'.$extensionVideo;
+                          if (strlen($newVideoName) > 255) {
+                           $lengVideoName = substr($newVideoName, 0,240);
+                           $newLengVideoName = $lengVideoName.date('Ymd').$extensionVideo;
+                               if (move_uploaded_file($_FILES['video']['tmp_name'], "../uploads/".$newLengVideoName)) {
+                                  //uploaded
+                                  } else {
+                                  echo "An error occurred while uploading a file. Please try again";
+                               }
+                          } else {
+                          if (move_uploaded_file($_FILES['video']['tmp_name'], "../uploads/". $newVideoName)) {
+                             $_SESSION['channelName'] = $_POST['searchChannel'];
+                             $_SESSION['videoDescription'] = $_POST['videoDescription'];
+                             } else {
+                               echo "An error occurred while uploading a file. Please try again";
+                               }
+                             }
+                         } else {
+                           if (strlen($newVideoName) > 255) {
+                            $leng2VideoName = substr($oldVideoName, 0,240);
+                            $newLeng2VideoName = $leng2VideoName.$extensionVideo;
+                            if (move_uploaded_file($_FILES['video']['tmp_name'], "../uploads/". $newLeng2VideoName)){
+                               //uploaded
+                               } else {
+                                 echo "An error occurred while uploading a file. Please try again";
+                                 }
+                               } else {
+                           if (move_uploaded_file($_FILES['video']['tmp_name'], "../uploads/". $_FILES['video']['name'])){
+                              //uploaded
+                              } else {
+                                echo "An error occurred while uploading a file. Please try again";
+                                }
+                             }
+                           }
+                   } else {
+                     echo "An error occurred while uploading a file. Please try again";
+                     }
+               } else {
+                 echo "File must be mov, swf, mp4, mkv, flv, wmv, avi, 3gp, vob, aaf, mod, mpeg";
+               }
+           } else {
+             echo "File must be less than 100MB";
+           }
+       } else{
+         echo "Choose a file to upload";
+       }
+      }
+    if ($_POST['postType'] == 'text') {
+      if(!empty($_POST['text'])) {
+      //db text
+      } else {
+        echo "Please enter text";
+      }
+    }
+    } else {
+      echo "Enter the name of the channel";
+    }
+}
 ?>
 <!DOCTYPE html>
 

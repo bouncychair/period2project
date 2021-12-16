@@ -45,14 +45,14 @@ die();*/ ?>
 
             if (isset($_POST["submit"]) && !empty($_FILES["file"]["name"])) {
                 // Allow certain file formats
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif',);
+                $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
                 if (in_array($fileType, $allowTypes)) {
                     // Upload file to server
                     if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
                         // Insert image file name into database
-                        $sql = "UPDATE `users` SET `ProfilePicture` = `$fileName` WHERE id = ?";
+                        $sql = "UPDATE Users SET `ProfilePicture` = `$fileName` WHERE id = ?";
                         if (mysqli_query($conn, $sql)) {
-                            echo "Records inserted successfully.";
+                            $statusMsg = "Records inserted successfully.";
                         } else {
                             $statusMsg = "File upload failed, please try again.";
                         }
@@ -60,12 +60,13 @@ die();*/ ?>
                         $statusMsg = "Sorry, there was an error uploading your file.";
                     }
                 } else {
-                    $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
+                    $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
                 }
             } else {
-            }
+            
             // Display status message
             echo $statusMsg;
+            }
             ?>
         </div>
 
@@ -80,13 +81,14 @@ die();*/ ?>
     </div>
 
     <div id="upload">
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="upload.php" method="POST" enctype="multipart/form-data">
             <p><u>Select Image File to Upload:</u></p>
             <input type="file" name="file">
+            <input type="submit" name="submit" value="Upload">
         </form>
     </div>
-    <div id="change">
 
+    <div id="change">
         <form action="upload.php" method="POST" >
             <p><u>Change your Username here:</u></p>
             <input type="text" id="text" name="username" placeholder="Update Username">
