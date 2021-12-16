@@ -91,6 +91,7 @@ form {
 input,
 select {
     background-color: #eee;
+    color: gray;
     border: none;
     padding: 12px 15px;
     margin: 8px 0;
@@ -300,6 +301,89 @@ div.scrollmenu a:hover {
     margin-left: 5px;
 }
 
+.popup {
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+}
+
+
+/* Popup container - can be anything you want */
+
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+/* The actual popup */
+
+.popup .popuptext {
+    visibility: hidden;
+    width: 270px;
+    height: 50px;
+    background-color: rgb(73, 73, 73);
+    color: #fff;
+    text-align: center;
+    border-radius: 60px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: -5px;
+}
+
+.popup .popuptext img {
+    height: 45px;
+    width: 45px;
+    margin-top: -5px
+}
+
+
+/* Popup arrow */
+
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+}
+
+
+/* Toggle this class - hide and show the popup */
+
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn .5s;
+    animation: fadeIn .5s;
+}
+
+
+/* Add animation (fade in the popup) */
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
 
 /* Footer -----------------------------------------------------------------------------*/
@@ -395,42 +479,53 @@ div.scrollmenu a:hover {
     width: 100%;
 }
 
-#channel_cover_pic img{
+#channel_cover_pic img {
     object-fit: cover;
     width: 100%;
     height: 100%;
 }
-/* Add Post/Channel Page ----------------------------------------------------------------*/ 
+
+
+/* Add Post/Channel Page ----------------------------------------------------------------*/
 
 .file_upload {
-	background: purple;
-	border-color: black;
-	width: 50%;
-	border-radius: 5px
+    background: purple;
+    border-color: black;
+    width: 50%;
+    border-radius: 5px
 }
+
 .file_upload::-webkit-file-upload-button {
-  visibility: hidden;
+    visibility: hidden;
 }
+
 .file_upload::before {
-  content: 'Select file';
-  display: inline-block;
-  border: 1px solid white;
-  border-radius: 3px;
-  padding: 5px 8px;
-  outline: none;
-  white-space: nowrap;
-  -webkit-user-select: none;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 10pt;
+    content: 'Select file';
+    display: inline-block;
+    border: 1px solid white;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 10pt;
 }
+
 .file_upload:hover::before {
-  border-color: black;
+    border-color: black;
 }
+
 .file_upload:active::before {
-  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
-#searchChannel, select#postType, #postPhoto, #postVideo, #postText {
+
+#searchChannel,
+select#postType,
+#postPhoto,
+#postVideo,
+#postText {
     width: 50%;
     background: purple;
     border-radius: 5px;
@@ -439,27 +534,33 @@ div.scrollmenu a:hover {
     margin: 2%;
     color: white;
 }
+
 ::placeholder {
     color: white;
 }
-input#photoDescription, input#videoDescription, input#text {
+
+input#photoDescription,
+input#videoDescription,
+input#text {
     background-color: purple;
     color: white;
     border: 1px solid white;
     border-radius: 3px;
     height: 50px;
-
 }
+
 select#postType {
     color: white;
     height: 55px;
 }
+
 input#submitPost {
     width: 30%;
     border-radius: 3px;
     border-color: black;
     color: purple;
 }
+
 #searchChannel::placeholder {
-	text-align:center;
+    text-align: center;
 }
