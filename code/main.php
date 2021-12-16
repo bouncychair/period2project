@@ -54,19 +54,16 @@ $data = Query($conn, $query, "i", $id);
             $currentChannelId = $_GET["C"];
         else
             $currentChannelId = $data[0]["ChannelId"];
-        $following = true;
-    } else
-        $following = false;
-
-
-    if ($following) {
         $query = "SELECT Posts.*, Users.id UserId, Users.Username, Users.ProfilePicture FROM `Posts`, Users WHERE ChannelId = ? AND CreatedByUserId = Users.Id";
         $data = Query($conn, $query, "i", $currentChannelId);
+        $following = true;
     } else {
         $query = "SELECT Channels.id ChannelID, Channels.Name, Channels.MainPicture, Posts.*, Users.id UserId, Users.Username, Users.ProfilePicture FROM Channels, `Posts`, Users WHERE Posts.CreatedByUserId = Users.id AND Posts.ChannelId = Channels.id AND ? ORDER BY (SELECT COUNT(CASE WHEN Likes.PostId = Posts.id THEN 1 ELSE NULL END) Likes FROM Likes) DESC;";
         $data = Query($conn, $query, "i", 1);
+        $following = false;
         echo '<h2>Recommended</h2>';
     }
+
     for ($i = 0; $i < sizeof($data); $i++) {
         $query = "SELECT COUNT(CASE WHEN Comments.PostId = ? THEN 1 ELSE NULL END) Comments FROM Comments";
         $commentsAmount = Query($conn, $query, "i", $data[$i]["id"]);
@@ -79,24 +76,35 @@ $data = Query($conn, $query, "i", $id);
         echo '
         <div class="post">
             <div class="post_header">';
-            if(!$following) 
-                echo '<img src="../uploads/' . $data[$i]['MainPicture'] . '" />';
-        echo   '<img src="../img/' . $data[$i]['ProfilePicture'] . '" />';
-            if(!$following)
-                echo '<a>' . $data[$i]["Name"] . '</a>';
-        echo'   <a>' . $data[$i]["Username"] . '</a>
+        if (!$following)
+            echo '<img src="../uploads/' . $data[$i]['MainPicture'] . '" />';
+        echo   '<img src="../uploads/' . $data[$i]['ProfilePicture'] . '" />
+                <div>';
+        if (!$following)
+            echo '<div><a>' . $data[$i]["Name"] . '</a></div>';
+        echo '   <a>' . $data[$i]["Username"] . '</a>
+            </div>
             </div>
             <div class="post_caption">
                 <p>' . $data[$i]['Caption'] . '</p>
             </div>
             <div><img src="../uploads/' . $data[$i]['ImageName'] . '" alt="Post"></div>
             <div class="like_section" id="Post ' . $data[$i]['id'] . '">
-                <img src="../img/' . $likeIconName . '" onclick="Like(' . $id . ',' . $data[$i]['id'] . ',1, ' . $likesAmount[0]["Likes"] . ' )">
+            <div class="popup">
+                <img onmouseover="OpenReactions()" src="../img/' . $likeIconName . '" onclick="Like(' . $id . ',' . $data[$i]['id'] . ',1, ' . $likesAmount[0]["Likes"] . ' )">
+                <div class="popuptext" id="myPopup">
+                    <img src="../img/like.gif" />
+                    <img src="../img/heart.gif" />
+                    <img src="../img/laugh.gif" />
+                    <img src="../img/heart-eyes.gif" />
+                </div>
+            </div>    
                 <a class="likescount">' . $likesAmount[0]["Likes"] . '</a>
                 <img src="../img/comment.png">
                 <a>' . $commentsAmount[0]["Comments"] . '</a>
             </div>
         </div>
+
         ';
     }
 
@@ -113,6 +121,13 @@ $data = Query($conn, $query, "i", $id);
         url = new URL(window.location.href);
         currentChannel = url.searchParams.get("C");
         document.getElementById(currentChannel).style.boxShadow = "0 0 20px purple";
+
+
+
+        function OpenReactions() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
 
         function Like(UserId, PostId, Reaction, LikesCount) {
             var Like;
