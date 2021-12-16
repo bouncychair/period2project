@@ -5,7 +5,22 @@ include "utils.php";
 
 CheckIdentifier();
 $id = GetUserId($conn);
-$post= $_GET["PostId"]
+$post= $_GET["PostId"];
+if (isset($_POST["submit"])) {
+    $date = date("Y-m-d");
+    $comments = $_POST["comments"];
+    if (!empty($comments)) {
+    if(strlen($comments) < 201){
+            $comments = filter_var($comments, FILTER_SANITIZE_STRING);
+        $sql = "INSERT INTO `Comments` (PostId, UserId,`Text`, `Date`) VALUES (?, ?, ?, ?)";
+        Query($conn, $sql, "iiss", $post, $id, $comments, $date);
+    } else {
+        echo "<p>Comments must be less then 200 charecters</p>";
+    }
+    } else {
+        echo "<p>Comments cannot be empty</p>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,11 +39,10 @@ $post= $_GET["PostId"]
         <h2>TocTic</h2>
     </div>
 <style>
-        
  		.box{border: 3px ;margin: 0px auto 0;padding: 15px;max-width: 100%;height: auto;overflow: scroll;}
  		.box li{display: block;border-bottom: 20px;margin-bottom: 5px;padding: 10px;padding-bottom: 10px;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);}
- 		.box li:last-child{border-bottom: 0 dashed #ddd;}
- 		.box span{color: #888;}
+ 		.box li:last-child{border-bottom: 0 dashed #ddd;margin-bottom:40px}
+ 		.box span{color: #888;}      
 </style>
 <div class="post">
 <div class="post_header">
@@ -37,8 +51,7 @@ $post= $_GET["PostId"]
     $row = Query($conn, $sql, "i", $id);  
         echo "<img src='../uploads/".$row[0]['ProfilePicture']."'>";
         ?>
-        <p><?php echo $row[0]['Username'];?></p>
-         
+        <p><?php echo $row[0]['Username'];?></p>  
 </div>
 <div class="post_caption">
 <?php
@@ -55,7 +68,6 @@ $post= $_GET["PostId"]
 ?>
 </div>
  	<div class="box">
- 		
          <?php
          $sql = "SELECT * FROM `comments` c, users u WHERE PostId=? && c.UserId=u.id ORDER BY `Date` DESC";
          $row = Query($conn, $sql, "i", $post);     
@@ -70,13 +82,12 @@ $post= $_GET["PostId"]
         ?>
  	</div><br><br>
          </div>
-    <div class="footer">
-      <img onClick="location.href='main.php'" id="footer_menu" src="../img/Project2_menu.png" alt="Main_menu">
-      <img onClick="location.href='search.php'" id="footer_channels" src="../img/Project2_channels.png" alt="Channels">
-      <img onClick="location.href='...'" id="footer_notifications" src="../img/Project2_notification.png" alt="Notifications">
-      <img onClick="location.href='...'" id="footer_add_post" src="../img/Project2_add_post.png" alt="Add_post">
-      <img onClick="location.href='profile.php'" id="footer_profile" src="../img/Project2_profile.png" alt="Profile">
-    </div>
-</body>
+         <div class="add_comment">
+             <form action="post.php?PostId=<?php echo $post ?>" class="add_comment_form" method="POST">
+                <input class="insert_comment" type="text" id="comment" name="comments" placeholder="Comment here">
+                <input class="submit_button" type="submit" src='../img/Project2_submit_btn.png' alt="Submit" name="submit">
+             </form>
+         </div>
 
+</body>
 </html>
