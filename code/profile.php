@@ -84,29 +84,20 @@ die();*/ ?>
         <form action="upload.php" method="POST" enctype="multipart/form-data">
             <p><u>Select Image File to Upload:</u></p>
             <input type="file" name="file">
-            <input type="submit" name="submit" value="Upload">
+            <input type="submit" name="submitty" value="Upload">
         </form>
     </div>
 
     <div id="change">
         <form action="upload.php" method="POST" >
             <p><u>Change your Username here:</u></p>
-            <input type="text" id="text" name="username" placeholder="Update Username">
-            <input type="submit" name="submit" onclick="text()">
+           <input type="text" name="username" placeholder="Update Username">
+           <input type="submit" name="submit" value="Change Username">
         </form>
     </div>
     <br><br>
     <?php include "footer.php"; ?>
-
-    <script type="text/javascript">
-        function text() {
-            if (document.getElementById("text").placeholder == "Update Username") {
-                document.getElementById("change").style.display = "block";
-
-            }
-        }
-    </script>
+   
 </body>
 
 </html>
-<!--//add security //looking for user who uploaded-->

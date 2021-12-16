@@ -26,10 +26,10 @@ if (isset($_POST["submit"])) {
     header("Location:profile.php");
 ?>
 <?php
-$upload= $_FILES["file"]["upload"];
-if (isset($_POST["submit"])) {
-    if (!empty($_FILES["file"]["upload"])) {
-        $sql = "INSERT INTO Users (ProfilePicture) VALUES(?) WHERE id=?";
+$upload= $_FILES["file"]["name"];
+if (isset($_POST["submitty"])) {
+    if (!empty($_FILES["file"]["name"])) {
+        $sql = "UPDATE Users SET `ProfilePicture` = ? WHERE id=?";
         $data = Query($conn, $sql, "si", $upload, $id);
     }else
     echo "Please select new Pb";

@@ -611,6 +611,7 @@ input#searchChannel {
     background-color: turquoise;
     color: black;
     border-radius: 20px;
+    text-align: center;
 }
 
 #change ::placeholder{
@@ -637,3 +638,4 @@ input#searchChannel {
 #change p{
     font-size: 17px;
 }
+

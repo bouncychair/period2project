@@ -196,10 +196,12 @@ if (isset($_POST['submit'])) {
             <input type="file" id="photo" name="photo" class="file_upload">
             <input type="text" id="photoDescription" name="photoDescripion" placeholder="Description" maxlength="500">
             <input type="submit" value="Post" id="submitPost"></div>
+
             <div id="postVideo" style="display: none">
             <input type="file" id="video" name="video" class="file_upload">
             <input type="text" id="videoDescription" name="videoDescripion" placeholder="Description" maxlength="500">
             <input type="submit" value="Post" id="submitPost"></div>
+            
             <div id="postText" style="display: none">
             <input type="text" id="text" name="text" placeholder="Your post" maxlength="500">
             <input type="submit" value="Post" id="submitPost"></div>
