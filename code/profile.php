@@ -12,8 +12,9 @@ $data = Query($conn, $query, "i", $id);
 /*$query = "SELECT * FROM users WHERE id = ?"; // ? binding the operator $data
 $data = Query($conn, $query, "i", 1); // i for integer 
 echo $data[0]["Username"]; // gets from array 0 the needed FirstName
-die();*/?>
+die();*/ ?>
 <!DOCTYPE html>
+
 <head>
     <title>Profile</title>
     <link rel="stylesheet" href="Stylesheet.css">
@@ -63,6 +64,7 @@ die();*/?>
                                 $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
                             }
                         } else {
+                            $statusMsg = "File upload failed, please try again.";
                         }
                         // Display status message
                         echo $statusMsg;
@@ -79,8 +81,8 @@ die();*/?>
                 </div>
             </div>
 
-            <div id="upload">
-             <form action="" method="post" enctype="multipart/form-data">
+    <div id="upload">
+        <form action="" method="post" enctype="multipart/form-data">
             <p>Select Image File to Upload:</p>
             <input type="file" name="file">
             <input type="submit" name="submit" value="Upload">
@@ -108,27 +110,24 @@ die();*/?>
                         currentChannel = url.searchParams.get("C");
                         document.getElementById(currentChannel).style.boxShadow = "0 0 20px purple";
 
-                        function Like(UserId, PostId, Reaction) {
-                            $.ajax({
-                                type: 'POST',
-                                url: 'like.php',
-                                dataType: "json",
-                                data: ({
-                                    "UserId": UserId,
-                                    "PostId": PostId,
-                                    "Reaction": Reaction
-                                }),
-                                success: function(data) {
-                                    console.log(data);
-                                }
-                            });
-                            return false;
+        function Like(UserId, PostId, Reaction) {
+            $.ajax({
+                type: 'POST',
+                url: 'like.php',
+                dataType: "json",
+                data: ({
+                    "UserId": UserId,
+                    "PostId": PostId,
+                    "Reaction": Reaction
+                }),
+                success: function(data) {
+                    console.log(data);
                 }
-            </script>
-        </body>
+            });
+            return false;
+        }
+    </script>
+</body>
 
-        </html>
+</html>
 <!--//add security //looking for user who uploaded-->
-
-
-
