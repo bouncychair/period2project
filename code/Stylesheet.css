@@ -600,7 +600,7 @@ input#searchChannel {
     top: 17%;
     left: 13%
 }
-
+/* Profile Page ----------------------------------------------------------------*/
 #change input[type=submit], #upload input[type=submit]{
     background-color: blueviolet;
     color:black;
