@@ -492,7 +492,11 @@ div.scrollmenu a:hover {
     background: purple;
     border-color: black;
     width: 50%;
-    border-radius: 5px
+    border-radius: 5px;
+    background: purple;
+    border-color: black;
+    width: 50%;
+    border-radius: 5px;
 }
 
 .file_upload::-webkit-file-upload-button {
@@ -520,12 +524,11 @@ div.scrollmenu a:hover {
 .file_upload:active::before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
+input.file_upload {
+  color: white;
+}
 
-#searchChannel,
-select#postType,
-#postPhoto,
-#postVideo,
-#postText {
+select#postType, #postPhoto, #postVideo, #postText {
     width: 50%;
     background: purple;
     border-radius: 5px;
@@ -533,12 +536,35 @@ select#postType,
     padding: 5px 8px;
     margin: 2%;
     color: white;
+    min-height: 10%;
+    min-width: 70%;
 }
-
-::placeholder {
+select#postType {
+    position: absolute;
+    top: 30%;
+}
+#postPhoto, #postVideo, #postText {
+    position: absolute;
+    top: 45%;
+}
+input#searchChannel {
+    width: 50%;
+    background: purple;
+    border-radius: 5px;
+}
+input#searchChannel::placeholder {
+    text-align:center;
     color: white;
 }
-
+input#photoDescription::placeholder {
+    color: white;
+}
+input#videoDescription::placeholder {
+    color: white;
+}
+input#text::placeholder {
+    color: white;
+}
 input#photoDescription,
 input#videoDescription,
 input#text {
@@ -560,7 +586,17 @@ input#submitPost {
     border-color: black;
     color: purple;
 }
-
-#searchChannel::placeholder {
-    text-align: center;
+input#searchChannel {
+    width: 50%;
+    background: purple;
+    border-radius: 5px;
+    border-color: black;
+    padding: 5px 8px;
+    margin: 2%;
+    color: white;
+    min-height: 10%;
+    min-width: 70%;
+    position: absolute;
+    top: 17%;
+    left: 13%
 }

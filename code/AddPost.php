@@ -55,6 +55,7 @@ if (isset($_POST['submit'])) {
                                  echo "An error occurred while uploading a file. Please try again";
                                  }
                               }
+                            }
                     } else {
                       echo "An error occurred while uploading a file. Please try again";
                       }
@@ -79,7 +80,7 @@ if (isset($_POST['submit'])) {
                      $oldVideoName = $_FILES['video']['name'];
                      $extensionVideo = pathinfo($oldVideoName, PATHINFO_EXTENSION);
                        if (file_exists("../uploads/" . $_FILES['video']['name'])) {
-                          $newVideoName = $oldVideoName.date('Ymd').'.'$extensionVideo;
+                          $newVideoName = $oldVideoName.date('Ymd').'.'.$extensionVideo;
                           if (strlen($newVideoName) > 255) {
                            $lengVideoName = substr($newVideoName, 0,240);
                            $newLengVideoName = $lengVideoName.date('Ymd').$extensionVideo;
@@ -91,7 +92,7 @@ if (isset($_POST['submit'])) {
                           } else {
                           if (move_uploaded_file($_FILES['video']['tmp_name'], "../uploads/". $newVideoName)) {
                              $_SESSION['channelName'] = $_POST['searchChannel'];
-                             $_SESSION['videoDescription'] $_POST['videoDescription'];
+                             $_SESSION['videoDescription'] = $_POST['videoDescription'];
                              } else {
                                echo "An error occurred while uploading a file. Please try again";
                                }
@@ -112,6 +113,7 @@ if (isset($_POST['submit'])) {
                                 echo "An error occurred while uploading a file. Please try again";
                                 }
                              }
+                           }
                    } else {
                      echo "An error occurred while uploading a file. Please try again";
                      }
