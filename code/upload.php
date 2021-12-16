@@ -24,3 +24,14 @@ if (isset($_POST["submit"])) {
 } else
     echo "Please insert new username";
     header("Location:profile.php");
+?>
+<?php
+$upload= $_FILES["file"]["upload"];
+if (isset($_POST["submit"])) {
+    if (!empty($_FILES["file"]["upload"])) {
+        $sql = "UPDATE Users SET `ProfilePicture` = ? WHERE id=?";
+        $data = Query($conn, $sql, "i", $upload, $id);
+    }else
+    echo "Please select new Pb";
+}
+?>
