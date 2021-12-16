@@ -600,3 +600,49 @@ input#searchChannel {
     top: 17%;
     left: 13%
 }
+
+/* Post page ----------------------------------------------------------------*/
+
+.add_comment {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    background-color: purple;
+    color: white;
+    display: flex;
+    align-items: stretch;
+}
+
+.add_comment_form {
+    background-color: #182952;
+    text-align: center;
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    bottom: 0;
+    height: 100%;
+}
+
+.insert_comment {
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    color: black;
+    border-radius: 25px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.submit_button {
+    width: 20%;
+    height: auto;
+    background-color: white;
+    text-align: right;
+    color: black;
+    border-radius: 25px;
+    display: flex;
+    background-color: #182952;
+    margin: 0;
+}
