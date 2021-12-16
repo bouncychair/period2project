@@ -6,6 +6,7 @@ include "utils.php";
 CheckIdentifier();
 $id = GetUserId($conn);
 $channelId = $_GET['ChannelId'];
+
 ?>
 
 <!DOCTYPE html>
@@ -23,42 +24,20 @@ $channelId = $_GET['ChannelId'];
         <h2 id="company_name">TocTic</h2>
     </div>
     <div class="channel_header">
-
       <div id="channel_cover_pic">
                       <?php 
-                            $sql = "SELECT CoverPicture FROM `Channels` WHERE id = ?";
+                            $sql = "SELECT * FROM `Channels` WHERE id = ?";
                             $data = Query($conn, $sql, "i", $channelId);
-                        if (sizeof($data) > 0) {
-                            for ($i = 0; $i < sizeof($data); $i++) {
-                                echo "
-                                <div>
-                                    <img id='" . $data[0]['id'] . "' src='../uploads/" . $data[0]['CoverPicture'] . "' /></a>
-                                </div>
-                                ";
-                            }
-                        } else {
-                            echo "<p>Why is it not working</p>";
-                        }
+                                echo "<img " . $data[0]['id'] . "' src='../uploads/" . $data[0]['CoverPicture'] . "' /></a>";
                         ?>
          <!-- <img src="../uploads/iss_4567_04174.jpeg" alt="Cover Picture"> -->
       </div>
 
       <div class="post_header_channel">
                       <?php 
-                        $sql = "SELECT MainPicture FROM `Channels` WHERE Channel.id = ?";
+                        $sql = "SELECT * FROM `Channels` WHERE id = ?";
                         $data = Query($conn, $sql, "i", $channelId);
-                    if (sizeof($data) > 0) {
-                        for ($i = 0; $i < sizeof($data); $i++) {
-                            echo "
-                            <div>
-                                <img id='" . $data[0]['Channel.id'] . "' src='../uploads/" . $data[0]['MainPicture'] . "' /></a>
-                            </div>
-                            ";
-                        }
-                    } else {
-                        echo "<p>Why is it not working</p>";
-                    }
-        
+                            echo "<img " . $data[0]['id'] . "' src='../uploads/" . $data[0]['MainPicture'] . "' /></a>";
                       ?>
            <!-- <img id="channel_pic" src="../img/DefaultProfile.png" alt="profilepic"> -->
       </div>
@@ -83,6 +62,9 @@ $channelId = $_GET['ChannelId'];
     </div>
     <hr id="divider">
             <!-- INSERT CONTENT AFTER THAT -->
+
+            
+
       
             
       <!-- Obiviously a footer -->        
