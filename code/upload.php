@@ -13,7 +13,7 @@ if (isset($_POST["submit"])) {
             $query = "SELECT * FROM `Users` WHERE Username = ?";
             $data = Query($conn, $query, "s", $_POST["username"]);
             if (sizeof($data) > 0)
-                echo "tAKEN";
+                echo "Sorry this username is already taken";
             else {
                 $username =  $_POST["username"];
                 $sql = "UPDATE Users SET `Username` = ? WHERE id=?";
