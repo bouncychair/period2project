@@ -117,7 +117,7 @@ if (isset($_POST["Sign_Up"])) {
     $mailSent = false;
     if (!empty($_POST["Fname"]) && !empty($_POST["Lname"]) && !empty($_POST["Username"]) && !empty($_POST["Email"]) && !empty($_POST["Password"]) && !empty($_POST["Age"])) {
         if (strlen($_POST["Fname"]) > 1 && ctype_alpha($_POST["Fname"]) && strlen($_POST["Lname"]) > 1 && ctype_alpha($_POST["Lname"])) {
-            if (strlen($_POST["Username"]) > 1 && ctype_alnum($_POST["Username"])) {
+            if (strlen($_POST["Username"]) > 1 && strlen($_POST["Username"]) < 30  && ctype_alnum($_POST["Username"])) {
                 $query = "SELECT * FROM `Users` WHERE Username = ?";
                 $data = Query($conn, $query, "s", $_POST["Username"]);
                 if (sizeof($data) > 0)

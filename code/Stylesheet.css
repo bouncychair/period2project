@@ -500,21 +500,35 @@ input.searchChannel {
     border-color:blueviolet;
 }
 
-input[type=submit]{
+#change input[type=submit]{
     background-color: blueviolet;
     color:white;
+    border-radius: 20px;
 }
 
-input[type=text] , input[type=file]{
+#change input[type=text] , input[type=file]{
     background-color: turquoise;
     color: black;
+    border-radius: 20px;
 }
 
-#pb{
+#pb img{
     max-width: 50%;
-    border-radius: 50px;
-    display: inline;
+    border-radius: 100px;
     padding: 10px;
     margin: auto;
-    vertical-align: middle;
+    display: block;
+    margin: 0 auto;
+}
+
+.name p{
+    text-align: center;
+    font-size: 17px;
+}
+ 
+#upload p{
+    font-size: 18px;
+}
+#change p{
+    font-size: 17px;
 }
