@@ -1,5 +1,9 @@
-<?php include_once 'connect.php';
+<?php 
+session_start();
+include_once 'connect.php';
 include_once 'utils.php';
+CheckIdentifier();
+$id = GetUserId($conn);
 ?>
 <!doctype html>
 <html lang="en">
@@ -16,20 +20,22 @@ include_once 'utils.php';
 </div>
     <h3>Latest Notifications</h3>
     <div class="main-notifications">
-      <div class="box-notifications">
+      
       <?php
-         $id = GetUserId($conn);
-         $query = "SELECT notifications.* FROM notifications, followed WHERE Notifications.ChannelId = followed.ChanelId AND followed.UserId = ? GROUP BY date";
+         //$postid = $_GET['Postsid'];
+         $query = "SELECT Channels.Name,notifications.* FROM Notifications, Followed, Channels WHERE Channels.id = Notifications.ChannelId AND Notifications.ChannelId = Followed.ChannelId AND Followed.UserId = ? GROUP BY `date`";
          $data = Query($conn, $query, "i", $id);
          if ("SELECT Users.Id, Posts.id FROM `followed`, `Posts` WHERE Followed.UserId = ? AND Channels.UserId = Followed.UserId AND Post.id = ?"){
-           echo $data . "is created a post";
+          echo "<div class='box-notifications'>";
+          echo "<p>" . $data[0]["Name"] . " is created a post </p>
+          </div>";
+
          }
-         for ($i=0; $i < sizeof($data); $i++) { 
-          echo $data[$i]["Posts.id"];
-       }
+     
     ?> 
     <?php
     include "footer.php";
     ?>
   </body>
 </html>
+      
