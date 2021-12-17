@@ -47,7 +47,7 @@ if (isset($_POST["submit"])) {
 <div class="post">
 <div class="post_header">
 <?php
-   $sql = "SELECT * FROM `users` WHERE id=?";
+   $sql = "SELECT * FROM `Users` WHERE id=?";
     $row = Query($conn, $sql, "i", $id);  
         echo "<img src='../uploads/".$row[0]['ProfilePicture']."'>";
         ?>
@@ -55,21 +55,21 @@ if (isset($_POST["submit"])) {
 </div>
 <div class="post_caption">
 <?php
-    $sql = "SELECT * FROM `posts` WHERE id=?";
+    $sql = "SELECT * FROM `Posts` WHERE id=?";
     $row = Query($conn, $sql, "i", $post);
         ?>
         <p><?php echo $row[0]['Caption'];?></p>
 </div>
 <div>
 <?php
-    $sql = "SELECT * FROM `posts` WHERE id=?";
+    $sql = "SELECT * FROM `Posts` WHERE id=?";
     $row = Query($conn, $sql, "i", $post);
     echo "<img src='../uploads/".$row[0]['ImageName']."' >";
 ?>
 </div>
  	<div class="box">
          <?php
-         $sql = "SELECT * FROM `comments` c, users u WHERE PostId=? && c.UserId=u.id ORDER BY `Date` DESC";
+         $sql = "SELECT * FROM `Comments` c, Users u WHERE PostId=? && c.UserId=u.id ORDER BY `Date` DESC";
          $row = Query($conn, $sql, "i", $post);     
          if (sizeof($row) == 0) {
             echo "<h3>No comments yet!</h3>";

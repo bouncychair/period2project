@@ -116,7 +116,7 @@ $data = Query($conn, $query, "i", $id);
                 </div>
             </div>    
                 <a class="likescount">' . $likesAmount[0]["Likes"] . '</a>
-                <img src="../img/comment.png">
+                <img src="../img/comment.png" onclick="OpenPost('.$data[$i]['id'].')">
                 <a>' . $commentsAmount[0]["Comments"] . '</a>
             </div>
         </div>
@@ -128,6 +128,9 @@ $data = Query($conn, $query, "i", $id);
     <br><br>
     <?php include "footer.php"; ?>
     <script>
+        function OpenPost(id){
+            location.href="post.php?PostId="+id;
+        }
         url = new URL(window.location.href);
         currentChannel = url.searchParams.get("C");
         document.getElementById(currentChannel).style.boxShadow = "0 0 20px purple";
