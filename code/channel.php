@@ -17,6 +17,8 @@ $channelId = $_GET['ChannelId'];
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="Stylesheet.css" type="text/css">
+  <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+
   <title>Channel</title>
 </head>
 
