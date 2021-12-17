@@ -674,13 +674,14 @@ input[type=file] {
 }
 .box-notifications{
     background-color: white;
-    height: 100px;
+    height: 50px;
     width: 500px;
     border-radius: 30px;
     margin-bottom: 20px;
 }
 .box-notifications p, a{
     padding-left: 40px;
+    color: black;
 }
 h3 {
 	width: 234,5px;
