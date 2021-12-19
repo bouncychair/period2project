@@ -90,10 +90,19 @@ die();*/ ?>
 
     <div id="change">
         <form action="upload.php" method="POST" >
-            <p><u>Change your Username here:</u></p>
-           <input type="text" name="username" placeholder="Update Username">
-           <input type="submit" name="submit" value="Change Username">
+            <p><u>Change your Password here:</u></p>
+           <input type="text" name="password" placeholder="Update Password">
+           <input type="submit" name="submit" value="Change Password">
         </form>
+    </div>
+
+    <div id="delete">
+            <form action="delete.php" method="POST">
+            <button type="button" onclick="alert('Are You Sure YOU Want To Proceed?')"> Delelte Account</button>
+
+
+            </form>
+
     </div>
     <br><br>
     <?php include "footer.php"; ?>
