@@ -1,7 +1,22 @@
 <div class="footer">
-      <img onClick="location.href='main.php'" id="footer_menu" src="../img/Project2_Home.png" alt="Main_menu">
-      <img onClick="location.href='search.php'" id="footer_channels" src="../img/Project2_channels.png" alt="Channels">
-      <img onClick="location.href='AddPost.php'" id="footer_add_post" src="../img/Project2_add_post.png" alt="Add_post">
-      <img onClick="location.href='notification.php'" id="footer_notifications" src="../img/Project2_notification.png" alt="Notifications">
-      <img onClick="location.href='profile.php'" id="footer_profile" src="../img/Project2_profile.png" alt="Profile">
+  <div id="footer_menu"><img onClick="location.href='main.php'" src="../img/Project2_Home.png" alt="Main_menu"></div>
+  <div id="footer_channels"><img onClick="location.href='search.php'" src="../img/Project2_channels.png" alt="Channels"></div>
+  <div class="create-btn" id="footer_add_post"><img onclick="Create()" src="../img/Project2_add_post.png" alt="Add_post">
+    <div class="popupCreate" id="CreatePopup">
+      <div>
+        <p onClick="location.href='addPost.php'">Create Post</p>
+      </div>
+      <div>
+        <p onClick="location.href='createChannel.php'">Create Channel</p>
+      </div>
     </div>
+  </div>
+  <div id="footer_notifications"><img onClick="location.href='notification.php'" src="../img/Project2_notification.png" alt="Notifications"></div>
+  <div id="footer_profile"><img onClick="location.href='profile.php'" src="../img/Project2_profile.png" alt="Profile"></div>
+</div>
+<script>
+  function Create() {
+    var popup = document.getElementById("CreatePopup");
+    popup.classList.toggle("showCreatePopup");
+  }
+</script>

@@ -33,6 +33,7 @@ p {
     font-weight: 100;
     line-height: 20px;
     letter-spacing: 0.5px;
+    color: white;
     /* margin: 20px 0 30px; */
 }
 
@@ -308,6 +309,33 @@ div.scrollmenu a:hover {
 }
 
 
+/*----------------Search page-----------------*/
+
+.result div {
+    background-color: rgb(7 196 161);
+    display: flex;
+    flex-direction: row;
+}
+
+.result a {
+    margin: 0;
+}
+
+.result div img {
+    object-fit: cover;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    margin-left: 5px;
+}
+
+.result div h4 {
+    float: right;
+    font-size: 20px;
+    margin: 20px;
+}
+
+
 /* Popup container - can be anything you want */
 
 .popup {
@@ -434,6 +462,74 @@ div.scrollmenu a:hover {
     grid-column: 6/7;
     grid-row: 1/2;
     margin-top: 20%;
+}
+
+.create-btn {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+/* The actual popup (appears on top) */
+
+.create-btn .popupCreate {
+    visibility: hidden;
+    width: 160px;
+    background-color: rgb(7 196 161);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 155%;
+    left: 20%;
+    margin-left: -80px;
+}
+
+
+/* Popup arrow */
+
+.create-btn .popupCreate::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+
+.create-btn .showCreatePopup {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+
+
+/* Add animation (fade in the popup) */
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 
@@ -666,28 +762,33 @@ input[type=file] {
 #change p {
     font-size: 17px;
 }
+
+
 /* Notification page ----------------------------------------------------------------*/
-.main-notifications{
+
+.main-notifications {
     background-color: #182952;
     height: 926px;
     width: 100%;
 }
-.box-notifications{
+
+.box-notifications {
     background-color: white;
     height: 50px;
     width: 500px;
     border-radius: 30px;
     margin-bottom: 20px;
 }
-.box-notifications p, a{
+
+.box-notifications p {
     padding-left: 40px;
     color: black;
 }
-h3 {
-	width: 234,5px;
-	margin:0px;
-	color: #E14594;
-	font-size: 35px;
-	padding: 30px;
 
+h3 {
+    width: 234, 5px;
+    margin: 0px;
+    color: #E14594;
+    font-size: 35px;
+    padding: 30px;
 }
