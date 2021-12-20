@@ -8,21 +8,21 @@ include "utils.php";
 $id = GetUserId($conn);
 
 if (isset($_POST["submit"])) {
-    if (!empty($_POST["username"])) {
-        if (strlen($_POST["username"]) > 1 && strlen($_POST["username"]) < 30  && ctype_alnum($_POST["username"])) {
+    if (!empty($_POST["password"])) {
+        if (strlen($_POST["password"]) > 1 && strlen($_POST["password"]) < 10  && ctype_alnum($_POST["password"])) {
             $query = "SELECT * FROM `Users` WHERE Username = ?";
-            $data = Query($conn, $query, "s", $_POST["username"]);
+            $data = Query($conn, $query, "s", $_POST["password"]);
             if (sizeof($data) > 0)
-                echo "Sorry this username is already taken";
+                echo "Sorry this password is already taken";
             else {
-                $username =  $_POST["username"];
-                $sql = "UPDATE Users SET `Username` = ? WHERE id=?";
-                $data = Query($conn, $sql, "si", $username, $id);
+                $password =  $_POST["password"];
+                $sql = "UPDATE Users SET `Password` = ? WHERE id=?";
+                $data = Query($conn, $sql, "si", $password, $id);
             }
         }
     }
 } else
-    echo "Please insert new username";
+    echo "Please insert new Password";
     header("Location:profile.php");
 ?>
 <?php
