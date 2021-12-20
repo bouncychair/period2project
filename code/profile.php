@@ -97,11 +97,16 @@ die();*/ ?>
     </div>
 
     <div id="delete">
-            <form action="delete.php" method="POST">
-            <button type="button" onclick="alert('Are You Sure YOU Want To Proceed?')"> Delelte Account</button>
-
-
+            <form id="del" action="delete.php" method="POST">
+            <button class="delete" onclick="alert('Are You Sure YOU Want To Proceed?')"> Delelte Account</button>
             </form>
+    
+    <div id="loggout">
+            <form id="log" action="" method="POST">
+            <button class="loggoutt"> Logout</button>
+            </form>
+
+    </div>
 
     </div>
     <br><br>
