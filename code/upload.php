@@ -23,7 +23,14 @@ if (isset($_POST["submit"])) {
     }
 } else
     echo "Please insert new Password";
-    header("Location:profile.php");
+    function GoToUrl($url){
+        ?>
+            <script>
+                var url = "<?php echo $url ?>";
+                window.location.href = url;
+            </script>
+        <?php
+        }
 ?>
 <?php
 $upload= $_FILES["file"]["name"];
@@ -34,4 +41,8 @@ if (isset($_POST["submitty"])) {
     }else
     echo "Please select new Pb";
 }
+
+//change function url
+//new pages for delete and logout
+
 ?>

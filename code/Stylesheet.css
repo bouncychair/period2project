@@ -763,6 +763,42 @@ input[type=file] {
     font-size: 17px;
 }
 
+#del{
+    display: inline;
+    float: left;
+    padding: 0%;
+}
+
+#delete button{
+    margin: 34px ;
+    padding: 6px 2px ;
+}
+
+#log{
+    display: inline;
+    float: right;
+    padding: 0%;
+}
+
+#loggout button{
+    position: relative; 
+    border: none;
+    transition: .4s ease-in;
+    z-index: 1;
+    padding: 6px 2px ;
+}
+
+#loggout button::before, #loggout button::after{
+    position: absolute;
+    content: "";
+    z-index: -1;
+}
+
+.loggoutt:hover{
+    background: #03c4a1;
+    box-shadow: 0 0 5px #03c4a1, 0 0 25px #03c4a1,  0 0 50px #03c4a1, 0 0 200px #03c4a1;
+}
+
 
 /* Notification page ----------------------------------------------------------------*/
 
