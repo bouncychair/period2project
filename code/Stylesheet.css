@@ -614,6 +614,7 @@ div.scrollmenu a:hover {
     color: black;
     padding: 10px;
     border-radius: 20px;
+    transition: transform 80ms ease-in;
 }
 
 #channel_menu{
