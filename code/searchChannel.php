@@ -2,8 +2,7 @@
 include "connect.php";
 include "utils.php";
 
-CheckIdentifier();
-$id = GetUserId($conn);
+
 
 // Check connection
 if($conn === false){
@@ -11,12 +10,13 @@ if($conn === false){
 }
 
 if(isset($_REQUEST["term"])){
+    $id = $_REQUEST["id"];
     // Prepare a select statement
-    $sql = "SELECT Channels.Name FROM Channels, Followed WHERE `Name` LIKE ? AND Channels.Id = Followed.ChannelId AND Followed.UserId = $id";
+    $sql = "SELECT Channels.* FROM Channels, Followed WHERE Channels.Name LIKE ? AND Channels.Id = Followed.ChannelId AND Followed.UserId = ?";
 
     if($stmt = mysqli_prepare($conn, $sql)){
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "sss", $param_term);
+        mysqli_stmt_bind_param($stmt, "ss", $param_term, $id);
 
         // Set parameters
         $param_term ='%'. $_REQUEST["term"] . '%';
@@ -29,7 +29,7 @@ if(isset($_REQUEST["term"])){
             if(mysqli_num_rows($result) > 0){
                 // Fetch result rows as an associative array
                 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                    echo "<div style='background-color:purple;'><a style = 'text-decoration: none; color:white' href ='#".$row['Name']."' ><img width='100px' src='../uploads/" . $row["MainPic"] . "' ></img><p>".$row["Name"]."</p></a></div>";
+                    echo "<div class='searchResultBox'><a style = 'text-decoration: none; color:white'><img width='100px' src='../uploads/" . $row["MainPicture"] . "' ></img><h4>".$row["Name"]."</h4></a></div>";
                 }
             } else{
                 echo "<p>No matches found</p>";

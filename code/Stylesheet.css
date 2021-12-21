@@ -719,6 +719,42 @@ input#searchChannel {
     left: 13%
 }
 
+.searchResult {
+    display: flex;
+    flex-direction: column;
+    margin-top: 90px;
+}
+
+.searchResultBox {
+    z-index: 3;
+    width: 100%;
+    background: rgb(7 196 161);
+    border-radius: 5px;
+    border-color: black;
+    padding: 5px 8px;
+    color: white;
+    min-height: 5%;
+    max-height: 8%;
+    min-width: 70%;
+    top: 17%;
+    left: 13%;
+}
+
+.searchResultBox img {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    margin-left: 5px;
+}
+
+.searchResultBox h4 {
+    float: right;
+    margin-left: 30px;
+    margin-top: 5px;
+    font-size: 18px;
+}
+
 
 /* Profile Page ----------------------------------------------------------------*/
 
@@ -763,40 +799,41 @@ input[type=file] {
     font-size: 17px;
 }
 
-#del{
+#del {
     display: inline;
     float: left;
     padding: 0%;
 }
 
-#delete button{
-    margin: 34px ;
-    padding: 6px 2px ;
+#delete button {
+    margin: 34px;
+    padding: 6px 2px;
 }
 
-#log{
+#log {
     display: inline;
     float: right;
     padding: 0%;
 }
 
-#loggout button{
-    position: relative; 
+#loggout button {
+    position: relative;
     border: none;
     transition: .4s ease-in;
     z-index: 1;
-    padding: 6px 2px ;
+    padding: 6px 2px;
 }
 
-#loggout button::before, #loggout button::after{
+#loggout button::before,
+#loggout button::after {
     position: absolute;
     content: "";
     z-index: -1;
 }
 
-.loggoutt:hover{
+.loggoutt:hover {
     background: #03c4a1;
-    box-shadow: 0 0 5px #03c4a1, 0 0 25px #03c4a1,  0 0 50px #03c4a1, 0 0 200px #03c4a1;
+    box-shadow: 0 0 5px #03c4a1, 0 0 25px #03c4a1, 0 0 50px #03c4a1, 0 0 200px #03c4a1;
 }
 
 

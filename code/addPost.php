@@ -154,29 +154,31 @@ if (isset($_POST['submit'])) {
 <body>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
-    $(document).ready(function() {
-      $('.searchChannel input[type="text"]').on("keyup input", function() {
-        /* Get input value on change */
-        var inputVal = $(this).val();
-        var resultDropdown = $(this).siblings(".searchResult");
-        if (inputVal.length) {
-          $.get("backend-search.php", {
-            term: inputVal
-          }).done(function(data) {
-            // Display the returned data in browser
-            resultDropdown.html(data);
-          });
-        } else {
-          resultDropdown.empty();
-        }
-      });
+    var id = <?php echo $id?>;
+      $(document).ready(function() {
+        $('.searchChannel input[type="text"]').on("keyup input", function() {
+          /* Get input value on change */
+          var inputVal = $(this).val();
+          var resultDropdown = $(this).siblings(".searchResult");
+          if (inputVal.length) {
+            $.get("searchChannel.php", {
+              term: inputVal,
+              id: id
+            }).done(function(data) {
+              // Display the returned data in browser
+              resultDropdown.html(data);
+            });
+          } else {
+            resultDropdown.empty();
+          }
+        });
 
-      // Set search input value on click of result item
-      $(document).on("click", ".searchResult p", function() {
-        $(this).parents(".searchChannel").find('input[type="text"]').val($(this).text());
-        $(this).parent(".searchResult").empty();
+        // Set search input value on click of result item
+        $(document).on("click", ".searchResultBox", function() {
+          $(this).parents(".searchChannel").find('input[type="text"]').val($(this).text());
+          $(this).parent(".searchResult").empty();
+        });
       });
-    });
   </script>
   <div class="header">
     <img src="../img/logo1.png" alt="TocTic Logo" />
