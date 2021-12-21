@@ -7,6 +7,7 @@ CheckIdentifier();
 $id = GetUserId($conn);
 $channelId = $_GET['ChannelId'];
 
+
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +19,7 @@ $channelId = $_GET['ChannelId'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="Stylesheet.css" type="text/css">
   <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+  
 
   <title>Channel</title>
 </head>
@@ -62,8 +64,76 @@ $channelId = $_GET['ChannelId'];
       ?>
       <!-- CLOSE THE PHP CONNECTION AFTER THAT -->
     </div>
+    <div id="follow_btn">
+      <?php 
+        $query = "SELECT `UserId`, `ChannelId` FROM Followed WHERE ChannelId = ? AND UserId = ?";
+        $data = Query($conn, $query, "ii", $channelId, $id);
+        if (sizeof($data) > 0){ 
+            echo '<input type="submit" name="Followed" value="Unfollow">';
+            echo '<script type="text/javascript">alert("You already follow this channel")</script>';
+        }else {
+            echo '<input type="submit" name="Follow" value="Follow">';
+            if (isset($_POST['Follow'])) {
+                $query = "INSERT INTO `Followed` (UserId, ChannelId) VALUES (?, ?)";
+                Query($conn, $query, "ii", $channelId, $id);
+                echo '<script type="text/javascript">alert("Youre now following this channel")</script>';
+            }
+            //echo '<input type="submit" name="Followed" value="Unfollow">';
+        }
+      ?>
 
+
+       <!-- <input type="submit" name="Follow" value="Follow"> -->
+      
+    </div>
+    <div id="channel_menu">
+        <?php 
+          $query = "SELECT `CreatedByUserId` FROM `Channels` WHERE id = ?";
+          $data = Query($conn, $query, "i", $id);
+          if("SELECT Channels.id FROM `Channels` WHERE Channels.CreatedByUserId = ?") {
+            echo '<button id="channel_menu" onClick="Toggle()">Menu</button>';
+            } 
+        ?>
+    </div>
   </div>
+
+
+          <div id="change_channel">
+<hr id="divider">
+             <div id="channel_change_name">
+                <form action="channelChange.php" method="POST" enctype="multipart/form-data">
+                  <p><u>Change name of the channel </u></p>
+                  <input type="text" name="ChannelName" placeholder="Change Name">
+                  <input type="submit" name="NameSubmit" value="Update">
+                </form>
+             </div> 
+
+              <div id="channel_change_description">
+                <form action="channelChange.php" method="POST" enctype="multipart/form-data">
+                  <p><u>Change the description</u></p>
+                  <input type="text" placeholder="Change Description">
+                  <input type="submit" name="DescriptionSubmit" value="Update"> 
+                </form>
+              </div>
+
+              <div id="channel_change_mainpic">
+                <p><u>Change main picture</u></p>
+                <input type="file" id="picUpload">
+                <input type="submit" name="MainPictureSubmit" value="Update">
+              </div>
+
+              <div id="channel_change_cover">
+                <p><u>Change cover page</u></p>
+                <input type="file" id="coverUpload">
+                 <input type="submit" name="CoverSubmit" value="Update">
+              </div>
+
+              <div id="channel_delete">
+                <input type="submit" name="ChannelDeleteSubmit" value="Delete Channel">
+              </div>  
+
+          </div>
+  
   <hr id="divider">
   <!-- INSERT CONTENT AFTER THAT -->
   <?php
@@ -182,6 +252,15 @@ $channelId = $_GET['ChannelId'];
       OpenReactions(PostId);
       return false;
 
+    }
+
+    function Toggle(){
+      var x = document.getElementById("change_channel");
+       if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+      }
     }
   </script>
 </body>
