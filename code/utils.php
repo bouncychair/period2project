@@ -69,7 +69,7 @@ function SendVerificationMail($emailTo){
         $mail->Port = 587;
 
         $mail->Username = 'botfortesting1234@gmail.com'; // YOUR gmail email
-        $mail->Password = 'botfortesting4321'; // YOUR gmail  password
+        $mail->Password = 'assemblyisnothard';  //previous password: botfortesting4321 // YOUR gmail  password
 
         // Sender and recipient settings
         $mail->setFrom('test@gmail.com', 'Email Verification');
