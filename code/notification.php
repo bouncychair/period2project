@@ -22,14 +22,18 @@ $id = GetUserId($conn);
     <div class="main-notifications">
       
       <?php
-         //$postid = $_GET['Postsid'];
+      //$postid = $_GET['Postsid'];
          $query = "SELECT Channels.Name,notifications.* FROM Notifications, Followed, Channels WHERE Channels.id = Notifications.ChannelId AND Notifications.ChannelId = Followed.ChannelId AND Followed.UserId = ? GROUP BY `date`";
          $data = Query($conn, $query, "i", $id);
          if ("SELECT Users.Id, Posts.id FROM `followed`, `Posts` WHERE Followed.UserId = ? AND Channels.UserId = Followed.UserId AND Post.id = ?"){
-          echo "<div class='box-notifications'>";
-          echo "<p>" . $data[0]["Name"] . " is created a post </p>
+            echo "<div class='box-notifications'>";
+            echo "<p>" . $data[0]['Name']. " is created a post </p>
           </div>";
-
+         }else{
+           echo "You are not subscribed to the channel!";
+         }
+         for ($i = 15; $i < sizeof($data); $i++ ){
+          echo $data[0]['Name']. " is created a post";
          }
      
     ?> 

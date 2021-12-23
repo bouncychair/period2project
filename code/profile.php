@@ -98,7 +98,14 @@ die();*/ ?>
 
     <div id="delete">
             <form id="del" action="delete.php" method="POST">
-            <button class="delete" onclick="alert('Are You Sure YOU Want To Proceed?')"> Delelte Account</button>
+            <button class="delete" name="deleteUser" onclick="alert('Zour Accound is now deleted')"> Delete Account</button>
+                <?php
+                    if(isset($_POST['deleteUser'])) {
+                        $query = "DELETE FROM `Users` WHERE id = ?";
+                        $data = Query($conn, $query, "i", $id);
+                   
+                }
+              ?>
             </form>
     
     <div id="loggout">
