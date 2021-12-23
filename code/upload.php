@@ -23,7 +23,7 @@ if (isset($_POST["submit"])) {
     }
 } else
     echo "Please insert new Password";
-   
+    header("profile.php");
 ?>
 <?php
 $upload= $_FILES["file"]["name"];
@@ -32,7 +32,8 @@ if (isset($_POST["submitty"])) {
         $sql = "UPDATE Users SET `ProfilePicture` = ? WHERE id=?";
         $data = Query($conn, $sql, "si", $upload, $id);
     }else
-    echo "Please select new Pb";
+    echo "Please select new Profile Picture";
+    header("profile.php");
 }
 
 //change function url
