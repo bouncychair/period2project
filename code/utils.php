@@ -73,7 +73,7 @@ function SendVerificationMail($emailTo){
 
         // Sender and recipient settings
         $mail->setFrom('toctic@email.com', 'Toctic Bot');
-        $mail->addAddress('sahibzulfigar4@gmail.com');
+        $mail->addAddress($emailTo);
         $mail->addReplyTo('toctic@email.com', 'Toctic Bot'); // to set the reply to
 
         // Setting the email content
