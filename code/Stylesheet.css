@@ -973,6 +973,10 @@ input[type=file] {
     width: 500px;
     border-radius: 30px;
     margin-bottom: 20px;
+    padding: 1px;
+    font-family: 'Tepeno Sans';
+    font-size: large;
+    margin-inline: auto;
 }
 
 .box-notifications p {
@@ -980,13 +984,13 @@ input[type=file] {
     color: black;
 }
 
-/* h3 {
+h3 {
     width: 234, 5px;
     margin: 0px;
     color: #E14594;
     font-size: 35px;
     padding: 30px;
-}*/
+}
 
 /* Post page ------------------------------------------------------------------------*/
 
