@@ -63,24 +63,24 @@ function SendVerificationMail($emailTo){
         // Server settings
         //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = 'smtp.mail.com';
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->Username = 'botfortesting1234@gmail.com'; // YOUR gmail email
-        $mail->Password = 'botfortesting4321'; // YOUR gmail  password
+        $mail->Username = 'toctic@email.com'; // YOUR gmail email
+        $mail->Password = 'Tocticbot12345'; // YOUR gmail  password
 
         // Sender and recipient settings
-        $mail->setFrom('test@gmail.com', 'Email Verification');
-        $mail->addAddress($emailTo, 'Bot');
-        $mail->addReplyTo('example@gmail.com', 'Sender Name'); // to set the reply to
+        $mail->setFrom('toctic@email.com', 'Toctic Bot');
+        $mail->addAddress('sahibzulfigar4@gmail.com');
+        $mail->addReplyTo('toctic@email.com', 'Toctic Bot'); // to set the reply to
 
         // Setting the email content
         $_SESSION['rand'] = mt_rand(1000, 9999);
         $mail->IsHTML(true);
         $mail->Subject = "Verify your email";
-        $mail->Body = 'Your code for verification is: ' . $_SESSION['rand'] . '';
+        $mail->Body = '<h3>Welcome to Toctic <br> Your code for verification:<b> ' . $_SESSION['rand'] . '</b></h3>';
         $mail->send();
         echo "Sent";
     } catch (Exception $e) {
