@@ -61,32 +61,38 @@ $channelId = $_GET['ChannelId'];
           ?>
       </div>
 
-
       <div id="follow_btn">
+        <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
           <?php 
             $query = "SELECT `UserId`, `ChannelId` FROM Followed WHERE ChannelId = ? AND UserId = ?";
             $data = Query($conn, $query, "ii", $channelId, $id);
-              if (sizeof($data) > 0){ 
-                  echo '<input type="submit" name="Followed" value="Unfollow">';
-                  //echo '<script type="text/javascript">alert("You already follow this channel")</script>';
-              }else {
-                  echo '<input type="submit" name="Follow" value="Follow">';
-                  if (isset($_POST['Follow'])) {
-                      $query = "INSERT INTO `Followed` (UserId, ChannelId) VALUES (?, ?)";
-                      Query($conn, $query, "ii", $channelId, $id);
+              if (sizeof($data) > 0){ ?>
+                  <!--<form action=" <?php //htmlentities($_SERVER['PHP_SELF']); ?>"method="POST">
+                  <input type="submit" name="Unfollow" value="Unfollow"></form> --> <?php
+                  if(isset($_POST['submit'])) {
+                      $query = "DELETE FROM `Followed` WHERE UserId = ? AND ChannelId = ?";
+                      $data = Query($conn, $query, "ii", $id, $channelId); 
+                  } ?>
+                  <input type="submit" name="submit" value="Unfollow" /> <?php
+              }else{
+                    if (isset($_POST['Follow'])) {
+                      $UserIdFollow = $_SESSION['Identifier'];
+                      $ChannelIdFollow = $_POST['ChannelId'];
+                      $query = "INSERT INTO `Followed` (`ChannelId`, `UserId`) VALUES (?, ?)";
+                      Query($conn, $query, "ii", $ChannelIdFollow, $UserIdFollow);
                       echo '<script type="text/javascript">alert("Youre now following this channel")</script>';
-                  }
-                  //echo '<input type="submit" name="Followed" value="Unfollow">';
-              } 
+                    }
+                  echo '<form action="' .htmlentities($_SERVER['PHP_SELF']).  '"method="POST"><input type="submit" name="Follow" value="Follow"></form>';
+              }
           ?>
-                  <!-- <input type="submit" name="Follow" value="Follow"> -->
+        </form>      
       </div>
 
       <div id="channel_menu">
           <?php 
-            $query = "SELECT `CreatedByUserId` FROM `Channels` WHERE id = ?";
-            $data = Query($conn, $query, "i", $id);
-              if("SELECT * FROM `Channels` WHERE Channels.CreatedByUserId = ?") {
+            $query = "SELECT `CreatedByUserId` `id` FROM `Channels` WHERE CreatedByUserId = ? AND id = ?";
+            $data = Query($conn, $query, "ii", $id, $channelId);
+              if(sizeof($data) > 0) {
                 echo '<button id="channel_menu" onClick="Toggle()">Menu</button>';
               } 
           ?>
@@ -95,19 +101,19 @@ $channelId = $_GET['ChannelId'];
 
           <?php 
             $targetDir = "../uploads/";
-            $fileName = @basename($_FILES["file"]["name"]);
+            $fileName = @basename($_FILES["file1"]["name"]);
             $targetFilePath = $targetDir . $fileName;
             $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
-              if (isset($_POST["MainPictureSubmit"]) && !empty($_FILES["file"]["name"])) {
+              if (isset($_POST["allSubmit"]) && !empty($_FILES["file1"]["name"])) {
                   // Allow certain file formats
                   $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
                   if (in_array($fileType, $allowTypes)) {
                       // Upload file to server
-                      if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
+                      if (move_uploaded_file($_FILES["file1"]["tmp_name"], $targetFilePath)) {
                           // Insert image file name into database
                           $sql = "INSERT INTO Channels (`MainPicture`) VALUES = (?) WHERE id = ?";
-                          if (mysqli_query($conn, $sql)) {
+                          if (Query($conn, $sql, "s", $channelId)) {
                               $statusMsg = "Records inserted successfully.";
                           } else {
                               $statusMsg = "File upload failed, please try again.";
@@ -127,7 +133,7 @@ $channelId = $_GET['ChannelId'];
         <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
           <div id="channel_change_name">
               <?php 
-                if(isset($_POST['NameSubmit'])) {
+                if(isset($_POST['allSubmit'])) {
                   if(!empty($_POST['ChannelName'])){
                     if (strlen($_POST['ChannelName']) > 1 && strlen($_POST['ChannelName']) < 30 && ctype_alnum($_POST['ChannelName'])) {
                       $query = "SELECT * FROM `Channels` WHERE Name = ?";
@@ -137,7 +143,7 @@ $channelId = $_GET['ChannelId'];
                           $channelName = $_POST['ChannelName'];
                           $query = "UPDATE Channels SET `Name` = ? WHERE id = ?";
                           $data = Query($conn, $query, "si", $channelName, $channelId);
-                            echo "Adding succesful";
+                            echo "Adding succesful!";
                         }
                     }
                   }
@@ -145,12 +151,11 @@ $channelId = $_GET['ChannelId'];
               ?>
               <p><u>Change name of the channel </u></p>
               <input type="text" name="ChannelName" placeholder="Change Name">
-              <input type="submit" name="NameSubmit" value="Update">
           </div> 
 
           <div id="channel_change_description">
               <?php 
-                if(isset($_POST['DescriptionSubmit'])) {
+                if(isset($_POST['allSubmit'])) {
                   if(!empty($_POST['ChannelDescription'])) {
                     if(strlen($_POST['ChannelDescription']) > 1 && strlen($_POST['ChannelDescription']) < 201   /*&& ctype_alnum($_POST['ChannelDescription'])*/  ) {
                       $query = "SELECT * FROM `Channels` WHERE Description = ?";
@@ -160,8 +165,7 @@ $channelId = $_GET['ChannelId'];
                           $channelDescription = $_POST['ChannelDescription'];
                           $query = "UPDATE Channels SET `Description` = ? WHERE id = ?";
                           $data = Query($conn, $query, "si", $channelDescription, $channelId);
-                            echo "Adding succesful";
-                                  
+                            echo "Adding succesful!";
                         }
                     }
                   }
@@ -169,30 +173,42 @@ $channelId = $_GET['ChannelId'];
               ?>
               <p><u>Change the description</u></p>
               <input type="text" name="ChannelDescription" placeholder="Change Description">
-              <input type="submit" name="DescriptionSubmit" value="Update"> 
           </div>
 
           <div id="channel_change_mainpic">
               <?php
-              /*$upload = $_FILES['file']['name'];
-                if(isset($_POST['MainPictureSubmit'])) {
-                  if(!empty($_FILES['file']['name'])) {
+              /*$upload = $_FILES['file1']['name'];
+                if(isset($_POST['allSubmit'])) {
+                  if(!empty($_FILES['file1']['name'])) {
+                    $dir = "../uploads/".basename($upload);
                     $sql = "UPDATE Channels SET `MainPicture` = ? WHERE id = ?";
+                    $data = Query($conn, $sql, "si", $upload, $channelId);
+                    var_dump($data);
+                  } else {
+                    echo "You didnt select anything";
+                        }
+                }*/
+              ?>
+              <p><u>Change main picture</u></p>
+              <input type="file" name="file1">
+          </div> 
+
+          <div id="channel_change_cover">
+              <?php
+              /*$upload = $_FILES['file2']['name'];
+                if(isset($_POST['allSubmit'])) {
+                  if(!empty($_FILES['file']['name'])) {
+                    $dir = "../uploads/".basename($upload);
+                    $sql = "UPDATE Channels SET `CoverPicture` = ? WHERE id = ?";
                     $data = Query($conn, $sql, "si", $upload, $channelId);
                   } else {
                     echo "Select something else";
                         }
                 }*/
               ?>
-              <p><u>Change main picture</u></p>
-              <input type="file" name="file">
-              <input type="submit" name="MainPictureSubmit" value="Update">
-          </div> 
-
-          <div id="channel_change_cover">
               <p><u>Change cover page</u></p>
-              <input type="file" id="coverUpload">
-                <input type="submit" name="CoverSubmit" value="Update">
+              <input type="file" name="file2">
+              <input type="submit" name="allSubmit" value="Update">
           </div>
 
           <div id="channel_delete">
