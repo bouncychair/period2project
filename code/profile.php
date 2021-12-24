@@ -81,8 +81,8 @@ die();*/ ?>
     </div>
 
     <div id="upload">
-        <form action="" method="POST" enctype="multipart/form-data"> <!-- does not take the uploaded files because it overwrites it with 2x submitty-->
-            <p><u>Select Image File to Upload:</u></p>
+        <form action="upload.php" method="POST" enctype="multipart/form-data"> <!-- does not take the uploaded files because it overwrites it with 2x submitty-->
+            <p><u>Choose a new Profile Picture:</u></p>
             <label for="photo-upload"> <b> Choose Photo</b></label> 
             <input type="file" name="file" id="photo-upload" style="display: none">
             <input type="submit" name="submitty" value="Upload">
