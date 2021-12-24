@@ -73,7 +73,8 @@ $channelId = $_GET['ChannelId'];
                       $query = "DELETE FROM `Followed` WHERE UserId = ? AND ChannelId = ?";
                       $data = Query($conn, $query, "ii", $id, $channelId); 
                   } ?>
-                  <input type="submit" name="submit" value="Unfollow" /> <?php
+                  <!-- <form action=<?php //$_SERVER['PHP_SELF'] ?> method="post" name="Unfollow"> -->
+                  <input type="submit" name="submit" value="Unfollow" /> <!-- </form> --> <?php
               }else{
                     if (isset($_POST['Follow'])) {
                       $UserIdFollow = $_SESSION['Identifier'];
@@ -82,7 +83,7 @@ $channelId = $_GET['ChannelId'];
                       Query($conn, $query, "ii", $ChannelIdFollow, $UserIdFollow);
                       echo '<script type="text/javascript">alert("Youre now following this channel")</script>';
                     }
-                  echo '<form action="' .htmlentities($_SERVER['PHP_SELF']).  '"method="POST"><input type="submit" name="Follow" value="Follow"></form>';
+                  echo '<form action="' .$_SERVER['PHP_SELF'].  '"method="POST"><input type="submit" name="Follow" value="Follow"></form>';
               }
           ?>
         </form>      
@@ -101,16 +102,16 @@ $channelId = $_GET['ChannelId'];
 
           <?php 
             $targetDir = "../uploads/";
-            $fileName = @basename($_FILES["file1"]["name"]);
+            $fileName = @basename($_FILES["file"]["name"]);
             $targetFilePath = $targetDir . $fileName;
             $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
-              if (isset($_POST["allSubmit"]) && !empty($_FILES["file1"]["name"])) {
+              if (isset($_POST["allSubmit"]) && !empty($_FILES["file"]["name"])) {
                   // Allow certain file formats
                   $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
                   if (in_array($fileType, $allowTypes)) {
                       // Upload file to server
-                      if (move_uploaded_file($_FILES["file1"]["tmp_name"], $targetFilePath)) {
+                      if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
                           // Insert image file name into database
                           $sql = "INSERT INTO Channels (`MainPicture`) VALUES = (?) WHERE id = ?";
                           if (Query($conn, $sql, "s", $channelId)) {
@@ -130,7 +131,7 @@ $channelId = $_GET['ChannelId'];
       <div id="change_channel">
 <hr id="divider">
 
-        <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
+        <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
           <div id="channel_change_name">
               <?php 
                 if(isset($_POST['allSubmit'])) {
@@ -149,7 +150,7 @@ $channelId = $_GET['ChannelId'];
                   }
                 } 
               ?>
-              <p><u>Change name of the channel </u></p>
+              <p><u>Change content of the channel </u></p>
               <input type="text" name="ChannelName" placeholder="Change Name">
           </div> 
 
@@ -171,26 +172,25 @@ $channelId = $_GET['ChannelId'];
                   }
                 }
               ?>
-              <p><u>Change the description</u></p>
+              <!-- <p><u>Change the description</u></p> -->
               <input type="text" name="ChannelDescription" placeholder="Change Description">
           </div>
 
           <div id="channel_change_mainpic">
               <?php
-              /*$upload = $_FILES['file1']['name'];
+              /*$upload = $_FILES['file']['name'];
                 if(isset($_POST['allSubmit'])) {
-                  if(!empty($_FILES['file1']['name'])) {
-                    $dir = "../uploads/".basename($upload);
+                  if(!empty($_FILES['file']['name'])) {
                     $sql = "UPDATE Channels SET `MainPicture` = ? WHERE id = ?";
                     $data = Query($conn, $sql, "si", $upload, $channelId);
-                    var_dump($data);
                   } else {
                     echo "You didnt select anything";
-                        }
+                    }
                 }*/
               ?>
-              <p><u>Change main picture</u></p>
-              <input type="file" name="file1">
+              <!-- <p><u>Change main picture</u></p> -->
+              <label for="MainUpload">Change Main Picture</label>
+              <input type="file" name="file" id="MainUpload">
           </div> 
 
           <div id="channel_change_cover">
@@ -206,10 +206,11 @@ $channelId = $_GET['ChannelId'];
                         }
                 }*/
               ?>
-              <p><u>Change cover page</u></p>
-              <input type="file" name="file2">
-              <input type="submit" name="allSubmit" value="Update">
+              <!-- <p><u>Change cover page</u></p> -->
+              <label for="CoverUpload">Change Cover Picture</label>
+              <input type="file" name="file" id="CoverUpload">
           </div>
+              <input type="submit" name="allSubmit" value="Update">
 
           <div id="channel_delete">
               <?php
