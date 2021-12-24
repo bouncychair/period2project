@@ -116,7 +116,7 @@ $data = Query($conn, $query, "i", $id);
                 </div>
             </div>    
                 <a class="likescount">' . $likesAmount[0]["Likes"] . '</a>
-                <img src="../img/comment.png" onclick="OpenPost('.$data[$i]['id'].')">
+                <img src="../img/comment.png" onclick="OpenPost(' . $data[$i]['id'] . ')">
                 <a>' . $commentsAmount[0]["Comments"] . '</a>
             </div>
         </div>
@@ -128,19 +128,56 @@ $data = Query($conn, $query, "i", $id);
     <br><br>
     <?php include "footer.php"; ?>
     <script>
-        function OpenPost(id){
-            location.href="post.php?PostId="+id;
-        }
         url = new URL(window.location.href);
-        currentChannel = url.searchParams.get("C");
-        document.getElementById(currentChannel).style.boxShadow = "0 0 20px purple";
+        if (url.searchParams.get("C")) {
+            currentChannel = url.searchParams.get("C");
+            document.getElementById(currentChannel).style.boxShadow = "0 0 20px purple";
+        }
 
-
+        function OpenPost(id) {
+            location.href = "post.php?PostId=" + id;
+        }
 
         function OpenReactions(id) {
             var popup = document.getElementById("Popup " + id);
             popup.classList.toggle("show");
         }
+        $(document).ready(function() {
+            var posts = document.getElementsByClassName("post");
+            for (let i = 0; i < posts.length; i++) {
+                var postId = posts[i].getElementsByClassName("like_section")[0].id;
+
+                postId = postId.substr(postId.length - 1);
+                var like = "GetLikes";
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'like.php',
+                    dataType: "json",
+                    data: ({
+                        "PostId": postId,
+                        "Like": like
+                    }),
+
+                    success: function(data) {
+                        postId = data[0].postId
+                        var likeText = document.getElementById("Post " + postId).getElementsByClassName("likescount")[0];
+                        var likeGifText = document.getElementById("Post " + postId).getElementsByClassName("like-gif-count")[0];
+                        var thinkGifText = document.getElementById("Post " + postId).getElementsByClassName("think-gif-count")[0];
+                        var laughGifText = document.getElementById("Post " + postId).getElementsByClassName("laugh-gif-count")[0];
+                        var angryGifText = document.getElementById("Post " + postId).getElementsByClassName("angry-gif-count")[0];
+                        var sadGidText = document.getElementById("Post " + postId).getElementsByClassName("sad-gif-count")[0];
+                        likeText.innerHTML = data[0].all;
+                        likeGifText.innerHTML = data[0].like;
+                        thinkGifText.innerHTML = data[0].think;
+                        laughGifText.innerHTML = data[0].laugh;
+                        angryGifText.innerHTML = data[0].angry;
+                        sadGidText.innerHTML = data[0].sad;
+
+                    }
+                });
+            }
+        });
 
         function Like(UserId, PostId, Reaction, LikesCount) {
             var Like;
