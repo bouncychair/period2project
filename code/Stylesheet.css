@@ -958,6 +958,18 @@ input[type=file] {
     box-shadow: 0 0 5px #03c4a1, 0 0 25px #03c4a1, 0 0 50px #03c4a1, 0 0 200px #03c4a1;
 }
 
+label{
+    cursor: pointer;
+}
+
+#file {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+    color: #03c4a1;
+}
+
+
 
 /* Notification page ----------------------------------------------------------------*/
 
