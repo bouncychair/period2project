@@ -35,8 +35,4 @@ if (isset($_POST["submitty"])) {
     echo "Please select new Profile Picture";
     header("Location:profile.php");
 }
-
-//change function url
-//new pages for delete and logout
-
 ?>
