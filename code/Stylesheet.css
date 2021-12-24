@@ -604,6 +604,9 @@ div.scrollmenu a:hover {
 #follow_btn {
     grid-row: 4;
     grid-column: 4;
+    display: flex;
+    justify-content: left;
+    padding: 0;
 }
 
 #follow_btn input[type=submit] {
@@ -615,6 +618,11 @@ div.scrollmenu a:hover {
     padding: 10px;
     border-radius: 20px;
     transition: transform 80ms ease-in;
+    cursor: pointer;
+}
+
+#follow_btn form{
+    padding: 0;
 }
 
 #channel_menu{
@@ -622,6 +630,7 @@ div.scrollmenu a:hover {
     grid-column: 4;
     display: flex;
     justify-content: right;
+    align-items: center;
 }
 
 #channel_menu button{
@@ -637,7 +646,6 @@ div.scrollmenu a:hover {
     font-weight: 100;
     align-items: center;
     justify-content: center;
-
 }
 
 /* Menu for changing channel ------------------------------------------------------------------------*/
@@ -646,19 +654,20 @@ div.scrollmenu a:hover {
     justify-content: center;
     flex-wrap: wrap;
 }
+
 #change_channel input[type=submit] {
     background-color: blueviolet;
     padding: 5px;
     margin: 0px;
     height: 35px;
     width: 100px;
-    color: black;
+    color: white;
     border-radius: 20px;
     margin-bottom: 10px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-
+    cursor: pointer;
 }
 
 #change_channel input[type=text] {
@@ -690,6 +699,7 @@ div.scrollmenu a:hover {
     text-align: center;
     align-items: center;
     overflow: hidden;
+    display: none;
 }
 
 /*#change_channel input[type=file]::file-selector-button {
@@ -706,6 +716,13 @@ div.scrollmenu a:hover {
 
 #change_channel p {
     font-size: 18px;
+}
+
+#change_channel label{
+    cursor: pointer;
+    color: turquoise;
+    font-size: 25px;
+    margin-bottom: 15px;
 }
 
 
@@ -994,13 +1011,13 @@ label{
     color: black;
 }
 
-h3 {
+/*h3 {
     width: 234, 5px;
     margin: 0px;
     color: #E14594;
     font-size: 35px;
     padding: 30px;
-}
+}*/
 
 /* Post page ------------------------------------------------------------------------*/
 
