@@ -5,9 +5,41 @@ require "utils.php";
 
 CheckIdentifier();
 $id = GetUserId($conn);
+?>
 
-if (isset($_POST['submit'])) {
-  if (!empty($_POST['searchChannel'])) {
+<?php
+//if (isset($_POST['submit'])) {
+/*  $targetDir = "../uploads/";
+  $fileName = @basename($_FILES["photoUpload"]["name"]);
+  $targetFilePath = $targetDir . $fileName;
+  $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+
+  if (isset($_POST["submitPhoto"]) && !empty($_FILES["photoUpload"]["name"])) {
+      // Allow certain file formats
+      $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
+      if (in_array($fileType, $allowTypes)) {
+          // Upload file to server
+          if (move_uploaded_file($_FILES["photoUpload"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . '../uploads/' . $_FILES["photoUpload"]["name"])) {
+              // Insert image file name into database
+              /*$sql = "INSERT INTO Users (`ProfilePicture`) VALUES = (?) WHERE id = ?";
+              if (mysqli_query($conn, $sql)) {
+                  $statusMsg = "Records inserted successfully.";
+              } else {
+                  $statusMsg = "File upload failed, please try again.";
+              }
+              echo "uploaded";
+          } else {
+              $statusMsg = "Sorry, there was an error uploading your file.";
+          }
+      } else {
+          $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
+      }
+  }// else {
+
+  // Display status message
+  //echo $statusMsg;
+
+  /*if (!empty($_POST['searchChannel'])) {
     if ($_POST['postType'] == 'photo') {
       if (!empty($_POST['photo'])) {
         if ($_FILES['photo']['size'] < 2000000) {
@@ -136,8 +168,8 @@ if (isset($_POST['submit'])) {
     }
   } else {
     echo "Enter the name of the channel";
-  }
-}
+  }*/
+//}
 ?>
 <!DOCTYPE html>
 
@@ -185,8 +217,51 @@ if (isset($_POST['submit'])) {
     <h2>TocTic</h2>
   </div>
   <h2>Create Post</h2>
+  <?php
+  if (isset($_POST['submitPhoto'])) {
+  if ($_FILES["photoUpload"]["size"] < 60000)
+  {
+      //The user may only upload .gif or .jpeg files
+      $acceptedFileTypes = ["image/gif", "image/jpg", "image/jpeg"];
+      $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+      $uploadedFileType = finfo_file($fileinfo, $_FILES["photoUpload"]["tmp_name"]);
+      //A shorter version of line 9 - 11
+      //$uploadedFileType = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $_FILES["uploadedFile"]["tmp_name"]);
+
+      //If the type is in the array, proceed
+      if(in_array($uploadedFileType, $acceptedFileTypes))
+      {
+          if ($_FILES["photoUpload"]["error"] > 0)
+          {
+              echo "Error: " . $_FILES["photoUpload"]["error"] . "<br />";
+          }else{
+              echo "Upload: " . $_FILES["photoUpload"]["name"] . "<br />";
+              echo "Type: " . $uploadedFileType . "<br />";
+              echo "Size: " . ($_FILES["photoUpload"]["size"] / 1024) . " Kb<br />";
+              echo "Stored in: " . $_FILES["photoUpload"]["tmp_name"];
+
+              //Check if the file exists on the server (as we want to upload it with the original name)
+              if (file_exists("../uploads/" . $_FILES["photoUpload"]["name"])){
+                  echo $_FILES["photoUpload"]["name"] . " already exists. ";
+              }else{
+                  //If the file does not exist, transfer the file from the temporary folder to the upload folder using the original upload name
+                  if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $_FILES["photoUpload"]["name"])){
+                      echo "Stored";
+                  }else{
+                      echo "Something went wrong while uploading.";
+                  }
+              }
+          }
+      }else{
+          echo "Invalid file type. Must be gif, jpg or jpeg.";
+      }
+  }else{
+      echo "Invalid file size. Must be less than 60kb.";
+  }
+  }
+  ?>
   <div class="post_type">
-    <form action="<?= htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
+    <form action="<?= htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
       <div class="searchChannel">
         <input type="text" id="searchChannel" name="searchChannel" placeholder="Channel name">
         <div class="searchResult"></div>
@@ -197,20 +272,20 @@ if (isset($_POST['submit'])) {
         <option value="text">Text</option>
       </select>
       <div id="postPhoto" style="display: block">
-        <input type="file" id="photo" name="photo" class="file_upload">
+        <input type="file" id="photoUpload" name="photoUpload">
         <input type="text" id="photoDescription" name="photoDescripion" placeholder="Description" maxlength="500">
-        <input type="submit" value="Post" id="submitPost">
+        <input type="submit" value="Post" id="submitPhoto" name="submitPhoto">
       </div>
 
       <div id="postVideo" style="display: none">
-        <input type="file" id="video" name="video" class="file_upload">
+        <input type="file" id="videoUpload" name="videoUpload">
         <input type="text" id="videoDescription" name="videoDescripion" placeholder="Description" maxlength="500">
-        <input type="submit" value="Post" id="submitPost">
+        <input type="submit" value="Post" id="submitVideo" name="submitVideo">
       </div>
 
       <div id="postText" style="display: none">
-        <input type="text" id="text" name="text" placeholder="Your post" maxlength="500">
-        <input type="submit" value="Post" id="submitPost">
+        <input type="text" id="textUpload" name="textUpload" placeholder="Your post" maxlength="500">
+        <input type="submit" value="Post" id="submitText" name="submitText">
       </div>
     </form>
   </div>
