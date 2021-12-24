@@ -960,13 +960,13 @@ input[type=file] {
 
 label{
     cursor: pointer;
+    color: #03c4a1;
+    font-size: 25px;
 }
-
 #file {
     opacity: 0;
     position: absolute;
     z-index: -1;
-    color: #03c4a1;
 }
 
 

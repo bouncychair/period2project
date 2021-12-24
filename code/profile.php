@@ -34,7 +34,7 @@ die();*/ ?>
             $sql = "SELECT ProfilePicture FROM Users WHERE id = ?";
             $data = Query($conn, $sql, "i", $id);
             $imageURL = '../uploads/' . $data[0]["ProfilePicture"];
-            echo "<img width=400px src='$imageURL' alt='' />";
+            echo "<img max-width=400px src='$imageURL' alt='' />";
             $statusMsg = '';
 
             // File upload path
@@ -84,7 +84,7 @@ die();*/ ?>
     <div id="upload">
         <form action="upload.php" method="POST" enctype="multipart/form-data">
             <p><u>Select Image File to Upload:</u></p>
-            <label for="photo-upload"> Choose Photo...</label> 
+            <label for="photo-upload"> Choose Photo</label> 
             <input type="file" name="file" id="photo-upload" style="display: none">
             <input type="submit" name="submitty" value="Upload">
         </form>
