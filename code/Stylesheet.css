@@ -565,6 +565,13 @@ div.scrollmenu a:hover {
     grid-column: 4;
 }
 
+#channel_name h3 {
+    /*padding: 0;
+    margin: 0;
+    color: white;*/ 
+    font-size: 35px;
+}
+
 #channel_description {
     grid-row: 3;
     grid-column: 4;
@@ -646,6 +653,8 @@ div.scrollmenu a:hover {
     font-weight: 100;
     align-items: center;
     justify-content: center;
+    letter-spacing: 0;
+    font-weight: 400;
 }
 
 /* Menu for changing channel ------------------------------------------------------------------------*/
@@ -1011,13 +1020,13 @@ label{
     color: black;
 }
 
-/*h3 {
+h3 {
     width: 234, 5px;
     margin: 0px;
     color: #E14594;
     font-size: 35px;
     padding: 30px;
-}*/
+}
 
 /* Post page ------------------------------------------------------------------------*/
 

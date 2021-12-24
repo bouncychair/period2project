@@ -94,7 +94,7 @@ $channelId = $_GET['ChannelId'];
             $query = "SELECT `CreatedByUserId` `id` FROM `Channels` WHERE CreatedByUserId = ? AND id = ?";
             $data = Query($conn, $query, "ii", $id, $channelId);
               if(sizeof($data) > 0) {
-                echo '<button id="channel_menu" onClick="Toggle()">Menu</button>';
+                echo '<button id="channel_menu" onClick="Toggle()">Settings</button>';
               } 
           ?>
       </div>
