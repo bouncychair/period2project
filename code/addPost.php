@@ -120,7 +120,7 @@ $id = GetUserId($conn);
                                    $channelId = "SELECT Followed.ChannelId FROM 'Followed', 'Channels' WHERE Channels.Name = ? AND Followed.UserId = ?";
                                    $chId = Query($conn, $channelId, "ss", $_POST['searchChannel'], $id);
                                    $insertPhoto2 = "INSERT INTO 'posts' ('id','ChannelId','CreatedByUserId','ImageName','Caption','Date') VALUES (?,?,?,?,?,?)";
-                                   $insertP2 = Query($conn, $insertPhoto2, "sssss", $postId, $channelId, $id, $newPhotoName, $photoDescription, $date);
+                                   $insertP2 = Query($conn, $insertPhoto2, "iiisss", $postId, $channelId, $id, $newPhotoName, $photoDescription, $date);
                                    if (mysqli_query($conn, $insertPhoto2)) {
                                        echo "Your post has been sent.";
                                    } else {
@@ -149,7 +149,7 @@ $id = GetUserId($conn);
                                                              if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $_FILES["photoUpload"]["name"])) {
                                                                $insertPhoto4 = "INSERT INTO Posts ('ImageName') VALUES (?) WHERE CreatedByUserId = ?";
                                                                $insertP4 = Query($conn, $insertPhoto4,"si", $uploadPhoto4, $id);
-                                                               if (mysqli_query($conn, $insertPhoto4)) {
+                                                               if (1) {
                                                                    echo "Your post has been sent.";
                                                                } else {
                                                                    echo "Something went wrong while uploading.";
