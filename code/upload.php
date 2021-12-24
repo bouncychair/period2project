@@ -15,7 +15,7 @@ if (isset($_POST["submit"])) {
             if (sizeof($data) > 0)
                 echo "Sorry this password is already taken";
             else {
-                $password =  $_POST["password"];
+                $password =  password_hash($_POST["password"], PASSWORD_DEFAULT);
                 $sql = "UPDATE Users SET `Password` = ? WHERE id=?";
                 $data = Query($conn, $sql, "si", $password, $id);
             }
@@ -23,14 +23,7 @@ if (isset($_POST["submit"])) {
     }
 } else
     echo "Please insert new Password";
-    function GoToUrl($url){
-        ?>
-            <script>
-                var url = "<?php echo $url ?>";
-                window.location.href = url;
-            </script>
-        <?php
-        }
+    header("Location:profile.php");
 ?>
 <?php
 $upload= $_FILES["file"]["name"];
@@ -39,7 +32,8 @@ if (isset($_POST["submitty"])) {
         $sql = "UPDATE Users SET `ProfilePicture` = ? WHERE id=?";
         $data = Query($conn, $sql, "si", $upload, $id);
     }else
-    echo "Please select new Pb";
+    echo "Please select new Profile Picture";
+    header("Location:profile.php");
 }
 
 //change function url

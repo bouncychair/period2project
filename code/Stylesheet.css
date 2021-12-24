@@ -540,8 +540,8 @@ div.scrollmenu a:hover {
     width: 100%;
     display: grid;
     grid-template-columns: 5% 10% 20% 60% 5%;
-    grid-template-rows: 10% 30% 25% 25% 10%; 
-} 
+    grid-template-rows: 10% 30% 25% 25% 10%;
+}
 
 .channel_header h3 {
     padding-bottom: 10px;
@@ -563,6 +563,13 @@ div.scrollmenu a:hover {
 #channel_name {
     grid-row: 2;
     grid-column: 4;
+}
+
+#channel_name h3 {
+    /*padding: 0;
+    margin: 0;
+    color: white;*/ 
+    font-size: 35px;
 }
 
 #channel_description {
@@ -604,6 +611,9 @@ div.scrollmenu a:hover {
 #follow_btn {
     grid-row: 4;
     grid-column: 4;
+    display: flex;
+    justify-content: left;
+    padding: 0;
 }
 
 #follow_btn input[type=submit] {
@@ -615,6 +625,11 @@ div.scrollmenu a:hover {
     padding: 10px;
     border-radius: 20px;
     transition: transform 80ms ease-in;
+    cursor: pointer;
+}
+
+#follow_btn form{
+    padding: 0;
 }
 
 #channel_menu{
@@ -622,6 +637,7 @@ div.scrollmenu a:hover {
     grid-column: 4;
     display: flex;
     justify-content: right;
+    align-items: center;
 }
 
 #channel_menu button{
@@ -637,8 +653,9 @@ div.scrollmenu a:hover {
     font-weight: 100;
     align-items: center;
     justify-content: center;
-
-}   
+    letter-spacing: 0;
+    font-weight: 400;
+}
 
 /* Menu for changing channel ------------------------------------------------------------------------*/
 #change_channel, #channel_change_name, #channel_change_description, #channel_change_mainpic, #channel_change_cover, #channel_delete {
@@ -646,19 +663,20 @@ div.scrollmenu a:hover {
     justify-content: center;
     flex-wrap: wrap;
 }
+
 #change_channel input[type=submit] {
     background-color: blueviolet;
     padding: 5px;
     margin: 0px;
     height: 35px;
     width: 100px;
-    color: black;
+    color: white;
     border-radius: 20px;
     margin-bottom: 10px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    
+    cursor: pointer;
 }
 
 #change_channel input[type=text] {
@@ -671,7 +689,7 @@ div.scrollmenu a:hover {
     margin-bottom: 10px;
     color: black;
     text-align: center;
-    
+
 }
 
 #change_channel ::placeholder {
@@ -689,11 +707,12 @@ div.scrollmenu a:hover {
     color: black;
     text-align: center;
     align-items: center;
-    overflow: hidden; 
+    overflow: hidden;
+    display: none;
 }
 
-/*#change_channel input[type=file]::file-selector-button {    
-    visibility: hidden; 
+/*#change_channel input[type=file]::file-selector-button {
+    visibility: hidden;
 }*/
 
 #channel_delete input[type=submit] {
@@ -708,18 +727,24 @@ div.scrollmenu a:hover {
     font-size: 18px;
 }
 
+#change_channel label{
+    cursor: pointer;
+    color: turquoise;
+    font-size: 25px;
+    margin-bottom: 15px;
+}
 
 
 
-/* Add Post/Channel Page ----------------------------------------------------------------*/
+
+/* Add Post Page ----------------------------------------------------------------*/
 
 .file_upload {
     background: purple;
     border-color: black;
     width: 50%;
     border-radius: 5px;
-    background: purple;
-    border-color: black;
+    border-color: white;
     width: 50%;
     border-radius: 5px;
 }
@@ -740,10 +765,8 @@ div.scrollmenu a:hover {
     cursor: pointer;
     font-weight: 700;
     font-size: 10pt;
-}
-
-.file_upload:hover::before {
-    border-color: black;
+    color: white;
+    margin-left: 7px;
 }
 
 .file_upload:active::before {
@@ -819,7 +842,7 @@ select#postType {
     height: 55px;
 }
 
-input#submitPost {
+input#submitPhoto, input#submitVideo, input#submitText {
     width: 30%;
     border-radius: 3px;
     border-color: black;
@@ -844,22 +867,20 @@ input#searchChannel {
 .searchResult {
     display: flex;
     flex-direction: column;
-    margin-top: 90px;
+    position: absolute;
+    left: 15%;
+    top: 28%;
 }
 
 .searchResultBox {
     z-index: 3;
-    width: 100%;
+    width: 187%;
     background: rgb(7 196 161);
     border-radius: 5px;
     border-color: black;
     padding: 5px 8px;
     color: white;
     min-height: 5%;
-    max-height: 8%;
-    min-width: 70%;
-    top: 17%;
-    left: 13%;
 }
 
 .searchResultBox img {
@@ -868,6 +889,7 @@ input#searchChannel {
     height: 50px;
     border-radius: 100%;
     margin-left: 5px;
+    float: left;
 }
 
 .searchResultBox h4 {
@@ -876,8 +898,10 @@ input#searchChannel {
     margin-top: 5px;
     font-size: 18px;
 }
-
-
+.submitPost {
+  position: absolute;
+  top: 80%;
+}
 /* Profile Page ----------------------------------------------------------------*/
 
 #change input[type=submit],
@@ -958,6 +982,18 @@ input[type=file] {
     box-shadow: 0 0 5px #03c4a1, 0 0 25px #03c4a1, 0 0 50px #03c4a1, 0 0 200px #03c4a1;
 }
 
+label{
+    cursor: pointer;
+    color: #03c4a1;
+    font-size: 25px;
+}
+#file {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+
 
 /* Notification page ----------------------------------------------------------------*/
 
@@ -973,6 +1009,10 @@ input[type=file] {
     width: 500px;
     border-radius: 30px;
     margin-bottom: 20px;
+    padding: 1px;
+    font-family: 'Tepeno Sans';
+    font-size: large;
+    margin-inline: auto;
 }
 
 .box-notifications p {
@@ -980,13 +1020,13 @@ input[type=file] {
     color: black;
 }
 
-/* h3 {
+h3 {
     width: 234, 5px;
     margin: 0px;
     color: #E14594;
     font-size: 35px;
     padding: 30px;
-}*/
+}
 
 /* Post page ------------------------------------------------------------------------*/
 
@@ -1062,7 +1102,7 @@ input[type=file] {
     padding: 10px;
     margin: 10px;
     text-align: center;
-}  
+}
 
 .comments_button {
     margin-top: 15px;

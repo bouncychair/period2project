@@ -225,6 +225,6 @@ $data = Query($conn, $query, "i", $id);
 
         }
     </script>
-</body>
-
-</html>
+</body> 
+        
+</html> 
