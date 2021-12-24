@@ -22,8 +22,8 @@ $id = GetUserId($conn);
     <div class="main-notifications">
       
       <?php
-      //$postid = $_GET['Postsid'];
-         $query = "SELECT Channels.Name,notifications.* FROM Notifications, Followed, Channels WHERE Channels.id = Notifications.ChannelId AND Notifications.ChannelId = Followed.ChannelId AND Followed.UserId = ? GROUP BY `date`";
+         //$postid = $_GET['Postsid'];
+         $query = "SELECT Channels.Name,Notifications.* FROM Notifications, Followed, Channels WHERE Channels.id = Notifications.ChannelId AND Notifications.ChannelId = Followed.ChannelId AND Followed.UserId = ? GROUP BY `date`";
          $data = Query($conn, $query, "i", $id);
          if ("SELECT Users.Id, Posts.id FROM `followed`, `Posts` WHERE Followed.UserId = ? AND Channels.UserId = Followed.UserId AND Post.id = ?"){
             echo "<div class='box-notifications'>";

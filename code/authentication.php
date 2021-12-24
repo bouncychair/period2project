@@ -152,7 +152,6 @@ if (isset($_POST["Sign_Up"])) {
         AddParam("page=signup");
 }
 if (isset($_POST['Verify'])) {
-    if ($_POST["vertext"] == $_SESSION['rand']) {
         $url = 'https://ip-api.io/json';
         $json = file_get_contents($url);
         $obj = json_decode($json);
@@ -169,10 +168,7 @@ if (isset($_POST['Verify'])) {
         $identifier = uniqid("", true);
 
         $sql = "INSERT INTO `Users` (`FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `Identifier` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Query($conn, $sql,"sssssssiss",$fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $identifier);
-    } else {
-        echo "incorrect code";
-    }
+        Query($conn, $sql,"sssssssiss",$fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $identifier); 
 }
 
 if (isset($_POST['Sign_In'])) {
