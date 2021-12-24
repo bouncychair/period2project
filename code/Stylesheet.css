@@ -872,7 +872,10 @@ input#searchChannel {
     margin-top: 5px;
     font-size: 18px;
 }
-
+.submitPost {
+  position: absolute;
+  top: 80%;
+}
 /* Profile Page ----------------------------------------------------------------*/
 
 #change input[type=submit],
