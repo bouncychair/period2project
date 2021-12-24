@@ -34,7 +34,7 @@ die();*/ ?>
             $sql = "SELECT ProfilePicture FROM Users WHERE id = ?";
             $data = Query($conn, $sql, "i", $id);
             $imageURL = '../uploads/' . $data[0]["ProfilePicture"];
-            echo "<img width=400px src='$imageURL' alt='' />";
+            echo "<img max-width=400px src='$imageURL' alt='' />";
             $statusMsg = '';
 
             // File upload path
@@ -48,9 +48,10 @@ die();*/ ?>
                 $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
                 if (in_array($fileType, $allowTypes)) {
                     // Upload file to server
-                    if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
+                    if (move_uploaded_file($_FILES["file"]["name"], $targetFilePath)) {
                         // Insert image file name into database
                         $sql = "INSERT INTO Users (`ProfilePicture`) VALUES = (?) WHERE id = ?";
+                        $data = Query($conn, $sql, "si", $upload, $id);
                         if (mysqli_query($conn, $sql)) {
                             $statusMsg = "Records inserted successfully.";
                         } else {
@@ -68,7 +69,7 @@ die();*/ ?>
             echo $statusMsg;
             }
             ?>
-        </div>
+        </div>  
 
         <div class="name">
             <p><?php
@@ -83,7 +84,8 @@ die();*/ ?>
     <div id="upload">
         <form action="upload.php" method="POST" enctype="multipart/form-data">
             <p><u>Select Image File to Upload:</u></p>
-            <input type="file" name="file">
+            <label for="photo-upload"> <b> Choose Photo</b></label> 
+            <input type="file" name="file" id="photo-upload" style="display: none">
             <input type="submit" name="submitty" value="Upload">
         </form>
     </div>
@@ -97,13 +99,27 @@ die();*/ ?>
     </div>
 
     <div id="delete">
-            <form id="del" action="delete.php" method="POST">
-            <button class="delete" onclick="alert('Are You Sure YOU Want To Proceed?')"> Delelte Account</button>
+            <form id="del" action="" method="POST">
+            <button class="delete" name="deleteUser" onclick="alert('Your Accound is now deleted! Please confirm')"> Delete Account</button>
+                <?php
+                    if(isset($_POST['deleteUser'])) {
+                        $query = "DELETE FROM `Users` WHERE id = ?";
+                        $data = Query($conn, $query, "i", $id);
+                   
+                }
+              ?>
             </form>
     
     <div id="loggout">
             <form id="log" action="" method="POST">
-            <button class="loggoutt"> Logout</button>
+            <button class="loggoutt" name="out"> Logout</button>
+           <?php
+            if(isset($_POST['out'])) {
+                unset($_SESSION["id"]);
+                unset($_SESSION["name"]);
+                header("Location:authentication.php");
+            }
+            ?>
             </form>
 
     </div>

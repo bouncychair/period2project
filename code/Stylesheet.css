@@ -540,8 +540,8 @@ div.scrollmenu a:hover {
     width: 100%;
     display: grid;
     grid-template-columns: 5% 10% 20% 60% 5%;
-    grid-template-rows: 10% 30% 25% 25% 10%; 
-} 
+    grid-template-rows: 10% 30% 25% 25% 10%;
+}
 
 .channel_header h3 {
     padding-bottom: 10px;
@@ -563,6 +563,13 @@ div.scrollmenu a:hover {
 #channel_name {
     grid-row: 2;
     grid-column: 4;
+}
+
+#channel_name h3 {
+    /*padding: 0;
+    margin: 0;
+    color: white;*/ 
+    font-size: 35px;
 }
 
 #channel_description {
@@ -604,6 +611,9 @@ div.scrollmenu a:hover {
 #follow_btn {
     grid-row: 4;
     grid-column: 4;
+    display: flex;
+    justify-content: left;
+    padding: 0;
 }
 
 #follow_btn input[type=submit] {
@@ -614,6 +624,12 @@ div.scrollmenu a:hover {
     color: black;
     padding: 10px;
     border-radius: 20px;
+    transition: transform 80ms ease-in;
+    cursor: pointer;
+}
+
+#follow_btn form{
+    padding: 0;
 }
 
 #channel_menu{
@@ -621,6 +637,7 @@ div.scrollmenu a:hover {
     grid-column: 4;
     display: flex;
     justify-content: right;
+    align-items: center;
 }
 
 #channel_menu button{
@@ -636,8 +653,9 @@ div.scrollmenu a:hover {
     font-weight: 100;
     align-items: center;
     justify-content: center;
-
-}   
+    letter-spacing: 0;
+    font-weight: 400;
+}
 
 /* Menu for changing channel ------------------------------------------------------------------------*/
 #change_channel, #channel_change_name, #channel_change_description, #channel_change_mainpic, #channel_change_cover, #channel_delete {
@@ -645,19 +663,20 @@ div.scrollmenu a:hover {
     justify-content: center;
     flex-wrap: wrap;
 }
+
 #change_channel input[type=submit] {
     background-color: blueviolet;
     padding: 5px;
     margin: 0px;
     height: 35px;
     width: 100px;
-    color: black;
+    color: white;
     border-radius: 20px;
     margin-bottom: 10px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    
+    cursor: pointer;
 }
 
 #change_channel input[type=text] {
@@ -670,7 +689,7 @@ div.scrollmenu a:hover {
     margin-bottom: 10px;
     color: black;
     text-align: center;
-    
+
 }
 
 #change_channel ::placeholder {
@@ -688,11 +707,12 @@ div.scrollmenu a:hover {
     color: black;
     text-align: center;
     align-items: center;
-    overflow: hidden; 
+    overflow: hidden;
+    display: none;
 }
 
-/*#change_channel input[type=file]::file-selector-button {    
-    visibility: hidden; 
+/*#change_channel input[type=file]::file-selector-button {
+    visibility: hidden;
 }*/
 
 #channel_delete input[type=submit] {
@@ -707,18 +727,24 @@ div.scrollmenu a:hover {
     font-size: 18px;
 }
 
+#change_channel label{
+    cursor: pointer;
+    color: turquoise;
+    font-size: 25px;
+    margin-bottom: 15px;
+}
 
 
 
-/* Add Post/Channel Page ----------------------------------------------------------------*/
+
+/* Add Post Page ----------------------------------------------------------------*/
 
 .file_upload {
     background: purple;
     border-color: black;
     width: 50%;
     border-radius: 5px;
-    background: purple;
-    border-color: black;
+    border-color: white;
     width: 50%;
     border-radius: 5px;
 }
@@ -739,10 +765,8 @@ div.scrollmenu a:hover {
     cursor: pointer;
     font-weight: 700;
     font-size: 10pt;
-}
-
-.file_upload:hover::before {
-    border-color: black;
+    color: white;
+    margin-left: 7px;
 }
 
 .file_upload:active::before {
@@ -818,7 +842,7 @@ select#postType {
     height: 55px;
 }
 
-input#submitPost {
+input#submitPhoto, input#submitVideo, input#submitText {
     width: 30%;
     border-radius: 3px;
     border-color: black;
@@ -840,7 +864,44 @@ input#searchChannel {
     left: 13%
 }
 
+.searchResult {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 15%;
+    top: 28%;
+}
 
+.searchResultBox {
+    z-index: 3;
+    width: 187%;
+    background: rgb(7 196 161);
+    border-radius: 5px;
+    border-color: black;
+    padding: 5px 8px;
+    color: white;
+    min-height: 5%;
+}
+
+.searchResultBox img {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    margin-left: 5px;
+    float: left;
+}
+
+.searchResultBox h4 {
+    float: right;
+    margin-left: 30px;
+    margin-top: 5px;
+    font-size: 18px;
+}
+.submitPost {
+  position: absolute;
+  top: 80%;
+}
 /* Profile Page ----------------------------------------------------------------*/
 
 #change input[type=submit],
@@ -884,41 +945,54 @@ input[type=file] {
     font-size: 17px;
 }
 
-#del{
+#del {
     display: inline;
     float: left;
     padding: 0%;
 }
 
-#delete button{
-    margin: 34px ;
-    padding: 6px 2px ;
+#delete button {
+    margin: 34px;
+    padding: 6px 2px;
 }
 
-#log{
+#log {
     display: inline;
     float: right;
     padding: 0%;
 }
 
-#loggout button{
-    position: relative; 
+#loggout button {
+    position: relative;
     border: none;
     transition: .4s ease-in;
     z-index: 1;
-    padding: 6px 2px ;
+    padding: 6px 2px;
 }
 
-#loggout button::before, #loggout button::after{
+#loggout button::before,
+#loggout button::after {
     position: absolute;
     content: "";
     z-index: -1;
 }
 
-.loggoutt:hover{
+.loggoutt:hover {
     background: #03c4a1;
-    box-shadow: 0 0 5px #03c4a1, 0 0 25px #03c4a1,  0 0 50px #03c4a1, 0 0 200px #03c4a1;
+    box-shadow: 0 0 5px #03c4a1, 0 0 25px #03c4a1, 0 0 50px #03c4a1, 0 0 200px #03c4a1;
 }
+
+label{
+    cursor: pointer;
+    color: #03c4a1;
+    font-size: 25px;
+}
+#file {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
 
 
 /* Notification page ----------------------------------------------------------------*/
@@ -935,6 +1009,10 @@ input[type=file] {
     width: 500px;
     border-radius: 30px;
     margin-bottom: 20px;
+    padding: 1px;
+    font-family: 'Tepeno Sans';
+    font-size: large;
+    margin-inline: auto;
 }
 
 .box-notifications p {
@@ -942,10 +1020,123 @@ input[type=file] {
     color: black;
 }
 
-/* h3 {
+h3 {
     width: 234, 5px;
     margin: 0px;
     color: #E14594;
     font-size: 35px;
     padding: 30px;
-}*/
+}
+
+/* Post page ------------------------------------------------------------------------*/
+
+.post_comments {
+    background-color: purple;
+    color: white;
+    width: 100vw;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.post_comments img {
+    width: 100%;
+}
+
+.post_comments_header {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding-top: 10px;
+    position: relative;
+    padding-left: 10px;
+}
+
+.post_comments_header img {
+    object-fit: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    margin-right: 5px;
+}
+
+.comments {
+    border: 3px ;margin:
+    0px auto 0px;
+    padding: 15px 15px 5px 15px;
+    max-width: 100%;
+    height: auto;
+    overflow: scroll;
+}
+
+.comments li {
+    display: block;
+    margin-bottom: 5px;
+    padding: 10px;
+    padding-bottom: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+.comments li:last-child {
+    border-bottom: 0 dashed #ddd;
+    margin-bottom:0px
+}
+
+.comments span {
+    color: #888;
+}
+
+.insert_comment {
+    width: 100%;
+    height:60px;
+    border: 1px solid white;
+    background: none;
+    padding: 5px 10px;
+    border-radius:5px;
+    color: white;
+    margin-top: 15px;
+    resize: none;
+}
+
+.error_comments {
+    background-color: rgb(241, 74, 74);
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+}
+
+.comments_button {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+    border: 1px solid #FF4B2B;
+    background-color: #FF4B2B;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.comments_form {
+    background-color: #182952;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.back_button {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    height: 40px;
+    width: 100vh;
+}
+
+.back_button img {
+    display: flex;
+    height: 30px;
+}

@@ -5,140 +5,8 @@ require "utils.php";
 
 CheckIdentifier();
 $id = GetUserId($conn);
-
-if (isset($_POST['submit'])) {
-  if (!empty($_POST['searchChannel'])) {
-    if ($_POST['postType'] == 'photo') {
-      if (!empty($_POST['photo'])) {
-        if ($_FILES['photo']['size'] < 2000000) {
-          $acceptedFileTypes = ['image/gif', 'image/jpg', 'image/jpeg', 'image/png'];
-          $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-          $uploadedFileType = finfo_file($fileinfo, $_FILES['photo']['tmp_name']);
-          if (in_array($uploadedFileType, $acceptedFileTypes)) {
-            if ($_FILES['photo']['error'] = 0) {
-              $oldPhotoName = $_FILES['photo']['name'];
-              $extensionPhoto = pathinfo($oldPhotoName, PATHINFO_EXTENSION);
-              if (file_exists("../uploads/" . $_FILES['photo']['name'])) {
-                $newPhotoName = $oldPhotoName . date('Ymd') . '.' . $extensionPhoto;
-                if (strlen($newPhotoName) > 255) {
-                  $lengPhotoName = substr($newPhotoName, 0, 240);
-                  $newLengPhotoName = $lengPhotoName . date('Ymd') . $extensionPhoto;
-                  if (move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/" . $newLengPhotoName)) {
-                    $_SESSION['channelName'] = $_POST['searchChannel'];
-                    $_SESSION['photoDescription'] = $_POST['photoDescription'];
-                  } else {
-                    echo "An error occurred while uploading a file. Please try again";
-                  }
-                } else {
-                  if (move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/" . $newPhotoName)) {
-                    $_SESSION['channelName'] = $_POST['searchChannel'];
-                    $_SESSION['photoDescription'] = $_POST['photoDescription'];
-                  } else {
-                    echo "An error occurred while uploading a file. Please try again";
-                  }
-                }
-              } else {
-                if (strlen($newPhotoName) > 255) {
-                  $leng2PhotoName = substr($oldPhotoName, 0, 240);
-                  $newLeng2PhotoName = $leng2PhotoName . $extensionPhoto;
-                  if (move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/" . $newLeng2PhotoName)) {
-                    $_SESSION['channelName'] = $_POST['searchChannel'];
-                    $_SESSION['photoDescription'] = $_POST['photoDescription'];
-                  } else {
-                    echo "An error occurred while uploading a file. Please try again";
-                  }
-                } else {
-                  if (move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/" . $_FILES['photo']['name'])) {
-                    $_SESSION['channelName'] = $_POST['searchChannel'];
-                    $_SESSION['photoDescription'] = $_POST['photoDescription'];
-                  } else {
-                    echo "An error occurred while uploading a file. Please try again";
-                  }
-                }
-              }
-            } else {
-              echo "An error occurred while uploading a file. Please try again";
-            }
-          } else {
-            echo "File must be gif, jpg, jpeg, png";
-          }
-        } else {
-          echo "File must be less than 2MB";
-        }
-      } else {
-        echo "Choose a file to upload";
-      }
-    }
-    if ($_POST['postType'] == 'video') {
-      if (!empty($_POST['video'])) {
-        if ($_FILES['video']['size'] < 100000000) {
-          $acceptedFileTypes = ['video/mov', 'video/swf', 'video/mp4', 'video/mkv', 'video/flv', 'video/wmv', 'video/avi', 'video/3gp', 'video/vob', 'video/aaf', 'video/mod', 'video/mpeg'];
-          $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-          $uploadedFileType = finfo_file($fileinfo, $_FILES['video']['tmp_name']);
-          if (in_array($uploadedFileType, $acceptedFileTypes)) {
-            if ($_FILES['video']['error'] = 0) {
-              $oldVideoName = $_FILES['video']['name'];
-              $extensionVideo = pathinfo($oldVideoName, PATHINFO_EXTENSION);
-              if (file_exists("../uploads/" . $_FILES['video']['name'])) {
-                $newVideoName = $oldVideoName . date('Ymd') . '.' . $extensionVideo;
-                if (strlen($newVideoName) > 255) {
-                  $lengVideoName = substr($newVideoName, 0, 240);
-                  $newLengVideoName = $lengVideoName . date('Ymd') . $extensionVideo;
-                  if (move_uploaded_file($_FILES['video']['tmp_name'], "../uploads/" . $newLengVideoName)) {
-                    //uploaded
-                  } else {
-                    echo "An error occurred while uploading a file. Please try again";
-                  }
-                } else {
-                  if (move_uploaded_file($_FILES['video']['tmp_name'], "../uploads/" . $newVideoName)) {
-                    $_SESSION['channelName'] = $_POST['searchChannel'];
-                    $_SESSION['videoDescription'] = $_POST['videoDescription'];
-                  } else {
-                    echo "An error occurred while uploading a file. Please try again";
-                  }
-                }
-              } else {
-                if (strlen($newVideoName) > 255) {
-                  $leng2VideoName = substr($oldVideoName, 0, 240);
-                  $newLeng2VideoName = $leng2VideoName . $extensionVideo;
-                  if (move_uploaded_file($_FILES['video']['tmp_name'], "../uploads/" . $newLeng2VideoName)) {
-                    //uploaded
-                  } else {
-                    echo "An error occurred while uploading a file. Please try again";
-                  }
-                } else {
-                  if (move_uploaded_file($_FILES['video']['tmp_name'], "../uploads/" . $_FILES['video']['name'])) {
-                    //uploaded
-                  } else {
-                    echo "An error occurred while uploading a file. Please try again";
-                  }
-                }
-              }
-            } else {
-              echo "An error occurred while uploading a file. Please try again";
-            }
-          } else {
-            echo "File must be mov, swf, mp4, mkv, flv, wmv, avi, 3gp, vob, aaf, mod, mpeg";
-          }
-        } else {
-          echo "File must be less than 100MB";
-        }
-      } else {
-        echo "Choose a file to upload";
-      }
-    }
-    if ($_POST['postType'] == 'text') {
-      if (!empty($_POST['text'])) {
-        //db text
-      } else {
-        echo "Please enter text";
-      }
-    }
-  } else {
-    echo "Enter the name of the channel";
-  }
-}
 ?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -154,29 +22,31 @@ if (isset($_POST['submit'])) {
 <body>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
-    $(document).ready(function() {
-      $('.searchChannel input[type="text"]').on("keyup input", function() {
-        /* Get input value on change */
-        var inputVal = $(this).val();
-        var resultDropdown = $(this).siblings(".searchResult");
-        if (inputVal.length) {
-          $.get("backend-search.php", {
-            term: inputVal
-          }).done(function(data) {
-            // Display the returned data in browser
-            resultDropdown.html(data);
-          });
-        } else {
-          resultDropdown.empty();
-        }
-      });
+    var id = <?php echo $id?>;
+      $(document).ready(function() {
+        $('.searchChannel input[type="text"]').on("keyup input", function() {
+          /* Get input value on change */
+          var inputVal = $(this).val();
+          var resultDropdown = $(this).siblings(".searchResult");
+          if (inputVal.length) {
+            $.get("searchChannel.php", {
+              term: inputVal,
+              id: id
+            }).done(function(data) {
+              // Display the returned data in browser
+              resultDropdown.html(data);
+            });
+          } else {
+            resultDropdown.empty();
+          }
+        });
 
-      // Set search input value on click of result item
-      $(document).on("click", ".searchResult p", function() {
-        $(this).parents(".searchChannel").find('input[type="text"]').val($(this).text());
-        $(this).parent(".searchResult").empty();
+        // Set search input value on click of result item
+        $(document).on("click", ".searchResultBox", function() {
+          $(this).parents(".searchChannel").find('input[type="text"]').val($(this).text());
+          $(this).parent(".searchResult").empty();
+        });
       });
-    });
   </script>
   <div class="header">
     <img src="../img/logo1.png" alt="TocTic Logo" />
@@ -184,7 +54,7 @@ if (isset($_POST['submit'])) {
   </div>
   <h2>Create Post</h2>
   <div class="post_type">
-    <form action="<?= htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
+    <form action="<?= htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
       <div class="searchChannel">
         <input type="text" id="searchChannel" name="searchChannel" placeholder="Channel name">
         <div class="searchResult"></div>
@@ -195,23 +65,209 @@ if (isset($_POST['submit'])) {
         <option value="text">Text</option>
       </select>
       <div id="postPhoto" style="display: block">
-        <input type="file" id="photo" name="photo" class="file_upload">
-        <input type="text" id="photoDescription" name="photoDescripion" placeholder="Description" maxlength="500">
-        <input type="submit" value="Post" id="submitPost">
+        <input type="file" id="photoUpload" name="photoUpload" class="file_upload">
+        <input type="text" id="photoDescription" name="photoDescription" placeholder="Description" maxlength="500">
+        <input type="submit" value="Post" id="submitPhoto" name="submitPhoto">
       </div>
 
       <div id="postVideo" style="display: none">
-        <input type="file" id="video" name="video" class="file_upload">
-        <input type="text" id="videoDescription" name="videoDescripion" placeholder="Description" maxlength="500">
-        <input type="submit" value="Post" id="submitPost">
+        <input type="file" id="videoUpload" name="videoUpload" class="file_upload">
+        <input type="text" id="videoDescription" name="videoDescription" placeholder="Description" maxlength="500">
+        <input type="submit" value="Post" id="submitVideo" name="submitVideo">
       </div>
 
       <div id="postText" style="display: none">
-        <input type="text" id="text" name="text" placeholder="Your post" maxlength="500">
-        <input type="submit" value="Post" id="submitPost">
+        <input type="text" id="textUpload" name="textUpload" placeholder="Your post" maxlength="500">
+        <input type="submit" value="Post" id="submitText" name="submitText">
       </div>
     </form>
   </div>
+  <div class="submitPost">
+  <?php
+  $postId = uniqid("", true);
+  $date = date("Y-m-d");
+  if (isset($_POST['submitPhoto'])) {
+    if (!empty($_POST['searchChannel'])) {
+      $photoDescription = $_POST["photoDescription"];;
+      if ($_FILES["photoUpload"]["size"] < 3000000) {
+        $acceptedPhotoTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
+        $photoinfo = finfo_open(FILEINFO_MIME_TYPE);
+        $uploadedPhotoType = finfo_file($photoinfo, $_FILES["photoUpload"]["tmp_name"]);
+          if(in_array($uploadedPhotoType, $acceptedPhotoTypes)) {
+            if ($_FILES["photoUpload"]["error"] > 0) {
+              echo "Error: " . $_FILES["photoUpload"]["error"] . "<br />";
+                }else{
+                  $oldPhotoName = $_FILES["photoUpload"]["name"];
+                  $extensionPhoto = pathinfo($oldPhotoName, PATHINFO_EXTENSION);
+                   if (file_exists("../uploads/" . $_FILES["photoUpload"]["name"])) {
+                     $newPhotoName = $oldPhotoName . date('His') . '.' . $extensionPhoto;
+                       if (strlen($newPhotoName) > 255) {
+                         $lengPhotoName = substr($newPhotoName, 0, 240);
+                         $newLengPhotoName = $lengPhotoName . date('His') . $extensionPhoto;
+                         if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $newLengPhotoName)) {
+                           $insertPhoto = "INSERT INTO Posts ('ImageName') VALUES (?) WHERE CreatedByUserId = ?";
+                           $insertP = Query($conn, $insertPhoto,"si",$uploadPhoto, $id);
+                           if (mysqli_query($conn, $insertPhoto)) {
+                               echo "Your post has been sent.";
+                           } else {
+                               echo "Something went wrong while uploading.";
+                           }
+                             }else{
+                               echo "Something went wrong while uploading.";
+                                 }
+                               }else{
+                                 if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $newPhotoName)) {
+                                   $channelId = "SELECT Followed.ChannelId FROM 'Followed', 'Channels' WHERE Channels.Name = ? AND Followed.UserId = ?";
+                                   $chId = Query($conn, $channelId, "ss", $_POST['searchChannel'], $id);
+                                   $insertPhoto2 = "INSERT INTO 'posts' ('id','ChannelId','CreatedByUserId','ImageName','Caption','Date') VALUES (?,?,?,?,?,?)";
+                                   $insertP2 = Query($conn, $insertPhoto2, "sssss", $postId, $channelId, $id, $newPhotoName, $photoDescription, $date);
+                                   if (mysqli_query($conn, $insertPhoto2)) {
+                                       echo "Your post has been sent.";
+                                   } else {
+                                       echo "Something went wrong while uploading.";
+                                   }
+                                     }else{
+                                       echo "Something went wrong while uploading.";
+                                         }
+                                           }
+                                             }else{
+                                               if (strlen($oldPhotoName) > 255) {
+                                                 $leng2PhotoName = substr($oldPhotoName, 0, 240);
+                                                 $newLeng2PhotoName = $leng2PhotoName . date('His') . $extensionPhoto;
+                                                 if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $newLeng2PhotoName)) {
+                                                   $insertPhoto3 = "INSERT INTO Posts ('ImageName') VALUES (?) WHERE CreatedByUserId = ?";
+                                                   $insertP3 = Query($conn, $insertPhoto3,"si", $uploadPhoto3, $id);
+                                                   if (mysqli_query($conn, $insertPhoto3)) {
+                                                       echo "Your post has been sent.";
+                                                   } else {
+                                                       echo "Something went wrong while uploading.";
+                                                   }
+                                                     }else{
+                                                       echo "Something went wrong while uploading.";
+                                                         }
+                                                           }else{
+                                                             if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $_FILES["photoUpload"]["name"])) {
+                                                               $insertPhoto4 = "INSERT INTO Posts ('ImageName') VALUES (?) WHERE CreatedByUserId = ?";
+                                                               $insertP4 = Query($conn, $insertPhoto4,"si", $uploadPhoto4, $id);
+                                                               if (mysqli_query($conn, $insertPhoto4)) {
+                                                                   echo "Your post has been sent.";
+                                                               } else {
+                                                                   echo "Something went wrong while uploading.";
+                                                               }
+                                                                 }else{
+                                                                   echo "Something went wrong while uploading.";
+                                                                     }
+                                                                       }
+                                                                         }
+                                                                           }
+                                                                             }else{
+                                                                               echo "Invalid file type. Must be gif, jpg, png or jpeg.";
+                                                                                 }
+                                                                                   }else{
+                                                                                     echo "Invalid file size. Must be less than 3MB.";
+                                                                                       }
+                                                                                         }else{
+                                                                                           echo "Please select a channel.";
+                                                                                             }
+                                                                                               }
+
+if (isset($_POST['submitVideo'])) {
+  if (!empty($_POST['searchChannel'])) {
+    $videoDescription = $_POST["videoDescription"];
+    if ($_FILES["videoUpload"]["size"] < 100000000) {
+      $acceptedVideoTypes = ["video/mov", "video/swf", "video/mp4", "video/mkv", "video/flv", "video/wmv", "video/avi", "video/3gp", "video/vob", "video/aaf", "video/mod", "video/mpeg"];
+      $videoinfo = finfo_open(FILEINFO_MIME_TYPE);
+      $uploadedVideoType = finfo_file($videoinfo, $_FILES["videoUpload"]["tmp_name"]);
+        if(in_array($uploadedVideoType, $acceptedVideoTypes)) {
+          if ($_FILES["videoUpload"]["error"] > 0) {
+            echo "Error: " . $_FILES["videoUpload"]["error"] . "<br />";
+              }else{
+                $oldVideoName = $_FILES["videoUpload"]["name"];
+                $extensionVideo = pathinfo($oldVideoName, PATHINFO_EXTENSION);
+                  if (file_exists("../uploads/" . $_FILES["videoUpload"]["name"])) {
+                    $newVideoName = $oldVideoName . date('His') . '.' . $extensionVideo;
+                      if (strlen($newVideoName) > 255) {
+                        $lengVideoName = substr($newVideoName, 0, 240);
+                        $newLengVideoName = $lengVideoName . date('His') . $extensionVideo;
+                          if(move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/". $newLengVideoName)) {
+                            $insertVideo = "INSERT INTO Posts ('VideoName') VALUES (?) WHERE CreatedByUserId = ?";
+                            $insertV = Query($conn, $insertVideo,"si", $uploadVideo, $id);
+                            if (mysqli_query($conn, $insertVideo)) {
+                                echo "Your post has been sent.";
+                            } else {
+                                echo "Something went wrong while uploading.";
+                            }
+                              }else{
+                                echo "Something went wrong while uploading.";
+                                  }
+                                    }else{
+                                      if(move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/". $newVideoName)) {
+                                        $insertVideo2 = "INSERT INTO Posts ('VideoName') VALUES (?) WHERE CreatedByUserId = ?";
+                                        $insertV2 = Query($conn, $insertVideo2,"si", $uploadVideo2, $id);
+                                        if (mysqli_query($conn, $insertVideo2)) {
+                                            echo "Your post has been sent.";
+                                        } else {
+                                            echo "Something went wrong while uploading.";
+                                        }
+                                          }else{
+                                            echo "Something went wrong while uploading.";
+                                              }
+                                                }
+                                                  }else{
+                                                    if (strlen($oldVideoName) > 255) {
+                                                      $leng2VideoName = substr($oldVideoName, 0, 240);
+                                                      $newLeng2VideoName = $leng2VideoName . date('His') . $extensionVideo;
+                                                        if(move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/". $newLeng2VideoName)) {
+                                                          $insertVideo3 = "INSERT INTO Posts ('VideoName') VALUES (?) WHERE CreatedByUserId = ?";
+                                                          $insertV3 = Query($conn, $insertVideo3,"si", $uploadVideo3, $id);
+                                                          if (mysqli_query($conn, $insertVideo3)) {
+                                                              echo "Your post has been sent.";
+                                                          } else {
+                                                              echo "Something went wrong while uploading.";
+                                                          }
+                                                            }else{
+                                                              echo "Something went wrong while uploading.";
+                                                                }
+                                                                  }else{
+                                                                    if(move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/". $_FILES["videoUpload"]["name"])) {
+                                                                      $insertVideo4 = "INSERT INTO Posts ('VideoName') VALUES (?) WHERE CreatedByUserId = ?";
+                                                                      $insertV4 = Query($conn, $insertVideo4,"si", $uploadVideo4, $id);
+                                                                      if (mysqli_query($conn, $insertVideo4)) {
+                                                                          echo "Your post has been sent.";
+                                                                      } else {
+                                                                          echo "Something went wrong while uploading.";
+                                                                      }
+                                                                        }else{
+                                                                          echo "Something went wrong while uploading.";
+                                                                            }
+                                                                              }
+                                                                                }
+                                                                                  }
+                                                                                    }else{
+                                                                                      echo "Invalid file type. Must be mov, swf, mp4, mkv, flv, wmv, avi, 3gp, vob, aaf, mod or mpeg.";
+                                                                                        }
+                                                                                          }else{
+                                                                                            echo "Invalid file size. Must be less than 100MB.";
+                                                                                              }
+                                                                                                }else{
+                                                                                                  echo "Please select a channel.";
+                                                                                                    }
+                                                                                                      }
+
+  if(isset($_POST['submitText'])) {
+    if(!empty($_POST['searchChannel'])) {
+      $text = $_POST["textUpload"];
+      if(!empty($_POST['textUpload'])) {
+        echo "Your post has been uploaded.";
+      }else{
+        echo "Please enter text.";
+      }
+    }else{
+      echo "Please select a channel.";
+    }
+  }
+  ?>
+</div>
   <?php
   include "footer.php";
   ?>
