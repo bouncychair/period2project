@@ -69,7 +69,7 @@ die();*/ ?>
             echo $statusMsg;
             }
             ?>
-        </div>
+        </div>  
 
         <div class="name">
             <p><?php
@@ -84,7 +84,7 @@ die();*/ ?>
     <div id="upload">
         <form action="upload.php" method="POST" enctype="multipart/form-data">
             <p><u>Select Image File to Upload:</u></p>
-            <label for="photo-upload"> Choose Photo</label> 
+            <label for="photo-upload"> <b> Choose Photo</b></label> 
             <input type="file" name="file" id="photo-upload" style="display: none">
             <input type="submit" name="submitty" value="Upload">
         </form>
