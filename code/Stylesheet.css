@@ -724,7 +724,7 @@ div.scrollmenu a:hover {
 
 #change_channel p {
     font-size: 18px;
-    
+
 }
 
 #change_channel label{
@@ -795,6 +795,7 @@ select#postType,
 select#postType {
     position: absolute;
     top: 30%;
+    font-size: 17px;
 }
 
 #postPhoto,
@@ -808,6 +809,7 @@ input#searchChannel {
     width: 50%;
     background: purple;
     border-radius: 5px;
+    font-size: 17px;
 }
 
 input#searchChannel::placeholder {
@@ -823,18 +825,20 @@ input#videoDescription::placeholder {
     color: white;
 }
 
-input#text::placeholder {
+input#textUpload::placeholder {
     color: white;
 }
 
 input#photoDescription,
 input#videoDescription,
-input#text {
+input#textUpload {
     background-color: purple;
     color: white;
     border: 1px solid white;
     border-radius: 3px;
     height: 50px;
+    font-size: 17px;
+    font-style: italic;
 }
 
 select#postType {
