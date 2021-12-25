@@ -36,6 +36,17 @@ die();*/ ?>
             $imageURL = '../uploads/' . $data[0]["ProfilePicture"];
             echo "<img max-width=400px src='$imageURL' alt='' />";
             $statusMsg = '';
+        ?></div> 
+        <?php
+            $upload= $_FILES["file"]["name"];
+            if (isset($_POST["submitty"])) {
+                if (!empty($_FILES["file"]["name"])) {
+                    $sql = "UPDATE Users SET `ProfilePicture` = ? WHERE id=?";
+                    $data = Query($conn, $sql, "si", $upload, $id);
+                }else
+                echo "Please select new Profile Picture";
+                header("Location:profile.php");
+            }
 
             // File upload path
             $targetDir = "../uploads/";
@@ -68,7 +79,7 @@ die();*/ ?>
             echo $statusMsg;
             }
             ?>
-        </div>  
+         
 
         <div class="name">
             <p><?php
@@ -81,7 +92,7 @@ die();*/ ?>
     </div>
 
     <div id="upload">
-        <form action="upload.php" method="POST" enctype="multipart/form-data"> <!-- does not take the uploaded files because it overwrites it with 2x submitty-->
+        <form action="" method="POST" enctype="multipart/form-data"> <!-- does not take the uploaded files because it overwrites it with 2x submitty-->
             <p><u>Choose a new Profile Picture:</u></p>
             <label for="photo-upload"> <b> Choose Photo</b></label> 
             <input type="file" name="file" id="photo-upload" style="display: none">

@@ -1,7 +1,7 @@
 <?php
-$servername = "mysql";
+$servername = "localhost";
 $username = "root";
-$password = "qwerty";
+$password = "";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, "toctic");
@@ -10,7 +10,5 @@ $conn = new mysqli($servername, $username, $password, "toctic");
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
-else{
-  echo "Connected successfully";
-}
+
 ?> 
