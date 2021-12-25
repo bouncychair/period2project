@@ -118,7 +118,7 @@ $id = GetUserId($conn);
                                  if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $newPhotoName)) {
                                    $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
                                    $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
-                                   $insertPhoto = "INSERT INTO Posts ('CreatedByUserId','ChannelId','ImageName','Caption','Date') VALUES (?,?,?,?,?)";
+                                   $insertPhoto = "INSERT INTO posts ('CreatedByUserId','ChannelId','ImageName','Caption','Date') VALUES (?,?,?,?,?)";
                                    $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $newPhotoName, $photoDescription, $date);
                                    if (mysqli_query($conn, $insertPhoto)) {
                                        echo "Your post has been sent.";
@@ -259,6 +259,10 @@ if (isset($_POST['submitVideo'])) {
     if(!empty($_POST['searchChannel'])) {
       $text = $_POST["textUpload"];
       if(!empty($_POST['textUpload'])) {
+        $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
+        $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
+        $insertText = "INSERT INTO Posts ('CreatedByUserId','ChannelId','Caption','Date') VALUES (?,?,?,?)";
+        $insertT = Query($conn, $insertText, "iiss", $id, $chId[0]["ChannelId"], $text, $date);
         echo "Your post has been uploaded.";
       }else{
         echo "Please enter text.";
