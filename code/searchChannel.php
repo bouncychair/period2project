@@ -31,9 +31,7 @@ if(isset($_REQUEST["term"])){
                 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
                     echo "<div class='searchResultBox'><a style = 'text-decoration: none; color:white'><img width='100px' src='../uploads/" . $row["MainPicture"] . "' ></img><h4>".$row["Name"]."</h4></a></div>";
                 }
-            } else{
-                echo "<p>No matches found</p>";
-            }
+            } 
         } else{
             echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
         }

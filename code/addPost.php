@@ -84,11 +84,10 @@ $id = GetUserId($conn);
   </div>
   <div class="submitPost">
   <?php
-  $postId = uniqid("", true);
   $date = date("Y-m-d");
   if (isset($_POST['submitPhoto'])) {
+  $photoDescription = $_POST["photoDescription"];
     if (!empty($_POST['searchChannel'])) {
-      $photoDescription = $_POST["photoDescription"];;
       if ($_FILES["photoUpload"]["size"] < 3000000) {
         $acceptedPhotoTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
         $photoinfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -117,11 +116,11 @@ $id = GetUserId($conn);
                                  }
                                }else{
                                  if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $newPhotoName)) {
-                                   $channelId = "SELECT Followed.ChannelId FROM 'Followed', 'Channels' WHERE Channels.Name = ? AND Followed.UserId = ?";
-                                   $chId = Query($conn, $channelId, "ss", $_POST['searchChannel'], $id);
-                                   $insertPhoto2 = "INSERT INTO 'posts' ('id','ChannelId','CreatedByUserId','ImageName','Caption','Date') VALUES (?,?,?,?,?,?)";
-                                   $insertP2 = Query($conn, $insertPhoto2, "iiisss", $postId, $channelId, $id, $newPhotoName, $photoDescription, $date);
-                                   if (mysqli_query($conn, $insertPhoto2)) {
+                                   $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
+                                   $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
+                                   $insertPhoto = "INSERT INTO Posts ('CreatedByUserId','ChannelId','ImageName','Caption','Date') VALUES (?,?,?,?,?)";
+                                   $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $newPhotoName, $photoDescription, $date);
+                                   if (mysqli_query($conn, $insertPhoto)) {
                                        echo "Your post has been sent.";
                                    } else {
                                        echo "Something went wrong while uploading.";
@@ -147,8 +146,10 @@ $id = GetUserId($conn);
                                                          }
                                                            }else{
                                                              if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $_FILES["photoUpload"]["name"])) {
-                                                               $insertPhoto4 = "INSERT INTO Posts ('ImageName') VALUES (?) WHERE CreatedByUserId = ?";
-                                                               $insertP4 = Query($conn, $insertPhoto4,"si", $uploadPhoto4, $id);
+                                                               $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
+                                                               $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
+                                                               $insertPhoto = "INSERT INTO Posts ('CreatedByUserId','ChannelId','ImageName','Caption','Date') VALUES (?,?,?,?,?)";
+                                                               $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $_FILES["photoUpload"]["name"], $photoDescription, $date);
                                                                if (1) {
                                                                    echo "Your post has been sent.";
                                                                } else {
