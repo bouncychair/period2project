@@ -18,7 +18,7 @@ $id = GetUserId($conn);
         <img src="../img/logo1.png" alt="TocTic Logo" />
         <h2>TocTic</h2>
 </div>
-    <h3>Latest Notifications</h3>
+    <div class "texth3">Latest Notifications</div>
     <div class="main-notifications">
       
       <?php
