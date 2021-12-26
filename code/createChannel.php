@@ -38,13 +38,14 @@ $id = GetUserId($conn);
 
         
         <select id="postType" name="postType" onchange="post()">
-        <option value="photo" selected>Photo</option>
-        <option value="video">Video</option>
-        <option value="text">Text</option>
+            <option value="photo" selected>Photo</option>
+            <option value="video">Video</option>
+            <option value="text">Text</option>
+            <option value="Everything">Everything</option>
         </select>
       
         <div class="user-image mb-3 text-center">
-        <div style="width: 100px; height: 100px; overflow: hidden; background: #cccccc; margin: 0 auto">
+        <div style="width: 100px; height: 100px; overflow: hidden; background: transparent; margin: 0 auto">
           <img src="..." class="figure-img img-fluid rounded" id="imgPlaceholder" alt="">
         </div>
       </div>
@@ -57,6 +58,16 @@ $id = GetUserId($conn);
             Select your cover photo
             <input type="file" name="coverphoto">
             <input type="submit" name="submit" value="Enter">
+            <style>
+                input[type=button], input[type=submit], input[type=reset] {
+                background-color: white;
+                border-radius: 35px;
+                color: grey;
+                width: 60%;
+            }
+
+
+            </style>
         </div>
       
         
@@ -71,22 +82,21 @@ $id = GetUserId($conn);
                 {
                     $channelName = $_POST['channelName'];
                     //Checking if the Channel name is taken
-                    $sql_channelName = "SELECT * FROM channels WHERE Name='$channelName'";
-                    $result_channel_name = mysqli_query($conn, $sql_channelName);
-                    if(mysqli_num_rows($result_channel_name) > 0)
+                    $sql_channelName = "SELECT * FROM channels WHERE Name = ?";
+                    $result_channel_name = Query($conn, $sql_channelName, "i", $id);
+                    if(sizeof($result_channel_name) > 0)
                     {
-                        echo "This name is already taken";   
+                         echo'<span style="color:red;text-align:center;font-size:18px;">This name is already taken</span>';
                     }
                     else
                     {   
                         $count_upload += 1;
-                        echo "name is free";
                     }
                    
                     
                 }
                 else{
-                    echo "Please enter channel name";
+                    echo'<span style="color:red;text-align:center;font-size:18px;">Please enter channel name</span>';
                 }
                 //checking if the channel description is empty
                 if(!empty($_POST['channelDescription']))
@@ -96,7 +106,8 @@ $id = GetUserId($conn);
                     
                 }
                 else{
-                    echo "Please enter channel description";
+                    echo'<span style="color:red;text-align:center;font-size:18px;">Please enter channel description</span>';
+                    
                 }
 
 
@@ -105,9 +116,12 @@ $id = GetUserId($conn);
                                     //
                 //Checking MAIN picture
 
+                //Changing name
+                $randomno=rand(0,100000);
+	            $rename='Picture'.date('Ymd').$randomno;
                 $target_dir = "../uploads//";
                 // Get file path
-                $target_file_main = $target_dir . basename($_FILES["mainphoto"]["name"]);   
+                $target_file_main = $target_dir .$rename . basename($_FILES["mainphoto"]["name"] ); 
                 // Get file extension
                 $imageExtension = strtolower(pathinfo($target_file_main, PATHINFO_EXTENSION));
                 // Allowed file types
@@ -115,39 +129,29 @@ $id = GetUserId($conn);
                 //checking if there is an uploaded file
                 if (!file_exists($_FILES["mainphoto"]["tmp_name"])) 
                 {
-                    echo "Please select main image to upload.";
+                    echo '<span style="color:red;text-align:center;font-size:18px;">Please select main image to upload.</span>';
                 }
                 else if (!in_array($imageExtension, $allowd_file_ext)) 
                 {
-                            
-                    echo "Allowed file formats are jpg, jpeg or png.";
-                    echo "Please use one of them.";
+                    echo '<span style="color:red;text-align:center;font-size:18px;">Allowed file formats are jpg, jpeg or png.</span>';
                 }
                 else if ($_FILES["mainphoto"]["size"] > 2097152) 
                 {
-                    echo "File is too large. File size should be less than 2 megabytes.";
-                    echo "Please compress the file and try again.";
+                    echo '<span style="color:red;text-align:center;font-size:18px;">File is too large. File size should be less than 2 megabytes.</span>';
                 }
                 else if (file_exists($target_file_main)) 
                 {
-                   echo "Main picture already exists.";
+                    echo '<span style="color:red;text-align:center;font-size:18px;">Main picture already exists.</span>';
                 }
                 else 
                 {
                     if (move_uploaded_file($_FILES["mainphoto"]["tmp_name"], $target_file_main)) 
                     {
-                        //$sql = "INSERT INTO user (file_path) VALUES ('$target_file')";
-                        //$stmt = $conn->prepare($sql);
-                         //if($stmt->execute()){
-                            //$resMessage = array(
-                                //"status" => "alert-success",
-                                //"message" => "Image uploaded successfully."
-                            //);
                             $count_upload += 1;            
                     }
                     else 
                     {
-                       echo "Main picture coudn't be uploaded.";
+                        echo '<span style="color:red;text-align:center;font-size:18px;">Error uploading main picture</span>';
                     }
                 }
 
@@ -157,45 +161,35 @@ $id = GetUserId($conn);
                 // Checking COVER photo
 
                 // Get file path
-                $target_file_cover = $target_dir . basename($_FILES["coverphoto"]["name"]);
+                $target_file_cover = $target_dir .$rename . basename($_FILES["coverphoto"]["name"]);
                 // Get file extension
                 $imageExtension = strtolower(pathinfo($target_file_cover, PATHINFO_EXTENSION));
                 //checking if there is an uploaded file
                 if (!file_exists($_FILES["coverphoto"]["tmp_name"])) 
                 {
-                    echo "Please select cover image to upload.";
+                    echo '<span style="color:red;text-align:center;font-size:18px;">Please select cover image to upload.</span>';
                 }
                 else if (!in_array($imageExtension, $allowd_file_ext)) 
-                {
-                            
-                    echo "Allowed file formats are jpg, jpeg or png.";
-                    echo "Please use one of them.";
+                {   
+                    echo '<span style="color:red;text-align:center;font-size:18px;">Allowed file formats are jpg, jpeg or png.</span>';
                 }
                 else if ($_FILES["coverphoto"]["size"] > 2097152) 
                 {
-                    echo "File is too large. File size should be less than 2 megabytes.";
-                    echo "Please compress the file and try again.";
+                    echo '<span style="color:red;text-align:center;font-size:18px;">File is too large. File size should be less than 2 megabytes.</span>';
                 }
                 else if (file_exists($target_file_cover)) 
                 {   
-                   echo "Cover picture already exists.";
+                    echo '<span style="color:red;text-align:center;font-size:18px;">Cover picture already exists.</span>';
                 }
                 else 
                 {
                     if (move_uploaded_file($_FILES["coverphoto"]["tmp_name"], $target_file_cover)) 
                     {
-                        //$sql = "INSERT INTO user (file_path) VALUES ('$target_file')";
-                        //$stmt = $conn->prepare($sql);
-                         //if($stmt->execute()){
-                            //$resMessage = array(
-                                //"status" => "alert-success",
-                                //"message" => "Image uploaded successfully."
-                            //);
-                            $count_upload += 1;                
+                        $count_upload += 1;                
                     }
                     else 
                     {
-                       echo "Cover picture coudn't be uploaded.";
+                        echo '<span style="color:red;text-align:center;font-size:18px;">Error uploading cover picture</span>';
                     }
                 }
 
@@ -203,12 +197,12 @@ $id = GetUserId($conn);
                 {   
                     $channel_type = $_POST['postType'];
                     $regdate = date("Y-m-d");
-                    $stmt_insert = "INSERT INTO `channels` (`CreatedByUserId`,`Name`,`MainPicture`,`CoverPicture`,`Description`,`RegDate`,`Type`) VALUES ('$id', '$channelName', '$target_file_main', '$target_file_cover', '$channelDescription', '$regdate', '$channel_type')"; 
-                    
-
-                    if(mysqli_query($conn, $stmt_insert)){
+                    //$stmt_insert = "INSERT INTO `channels` (`CreatedByUserId`,`Name`,`MainPicture`,`CoverPicture`,`Description`,`RegDate`,`Type`) VALUES ('$id', '$channelName', '$target_file_main', '$target_file_cover', '$channelDescription', '$regdate', '$channel_type')"; 
+                    $insert_info = "INSERT INTO 'channels' ('CreatedByUserId','Name','MainPicture','CoverPicture','Description','RegDate','Type') VALUES (?,?,?,?,?,?,?)";
+                    $insertQ = Query($conn, $insert_info, "issssis",$id,$channelName,$target_file_main,$target_file_cover,$channelDescription,$regdate,$channel_type);
+                    if(mysqli_query($conn, $insertQ)){
                         echo "<br>";
-                        echo "Records added successfully.";
+                        echo '<span style="color:red;text-align:center;font-size:18px;">Channel created successfully</span>';
                     } else{
                         echo "ERROR: Could not able to execute. " . mysqli_error($conn);
                     }
@@ -216,7 +210,7 @@ $id = GetUserId($conn);
                 else
                 {
                     echo "<br>";
-                    echo "Sorry, there is a problem.";
+                    echo '<span style="color:red;text-align:center;font-size:18px;">An error occured</span>';
                 }
 
 

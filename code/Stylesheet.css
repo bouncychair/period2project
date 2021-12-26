@@ -1144,3 +1144,178 @@ label{
     display: flex;
     height: 30px;
 }
+
+
+
+/* Create page ------------------------------------------------------------------------*/
+
+
+
+
+.file_upload {
+    background: purple;
+    border-color: black;
+    width: 50%;
+    border-radius: 5px;
+    border-color: white;
+    width: 50%;
+    border-radius: 5px;
+}
+
+.file_upload::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.file_upload::before {
+    content: 'Select file';
+    display: inline-block;
+    border: 1px solid white;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 10pt;
+    color: white;
+    margin-left: 7px;
+}
+
+.file_upload:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+input.file_upload {
+    color: white;
+}
+
+select#postType,
+#postPhoto,
+#postVideo,
+#postText {
+    width: 50%;
+    background: purple;
+    border-radius: 5px;
+    border-color: black;
+    padding: 5px 8px;
+    margin: 2%;
+    color: white;
+    min-height: 10%;
+    min-width: 70%;
+}
+
+select#postType {
+    position: absolute;
+    top: 30%;
+    font-size: 17px;
+}
+
+#postPhoto,
+#postVideo,
+#postText {
+    position: absolute;
+    top: 45%;
+}
+
+input#searchChannel {
+    width: 50%;
+    background: purple;
+    border-radius: 5px;
+    font-size: 17px;
+}
+
+input#searchChannel::placeholder {
+    text-align: center;
+    color: white;
+}
+
+input#photoDescription::placeholder {
+    color: white;
+}
+
+input#videoDescription::placeholder {
+    color: white;
+}
+
+input#textUpload::placeholder {
+    color: white;
+}
+
+input#photoDescription,
+input#videoDescription,
+input#textUpload {
+    background-color: purple;
+    color: white;
+    border: 1px solid white;
+    border-radius: 3px;
+    height: 50px;
+    font-size: 17px;
+    font-style: italic;
+}
+
+select#postType {
+    color: white;
+    height: 55px;
+}
+
+input#submitPhoto, input#submitVideo, input#submitText {
+    width: 30%;
+    border-radius: 3px;
+    border-color: black;
+    color: purple;
+}
+
+input#searchChannel {
+    width: 50%;
+    background: purple;
+    border-radius: 5px;
+    border-color: black;
+    padding: 5px 8px;
+    margin: 2%;
+    color: white;
+    min-height: 10%;
+    min-width: 70%;
+    position: absolute;
+    top: 17%;
+    left: 13%
+}
+
+.searchResult {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 15%;
+    top: 28%;
+}
+
+.searchResultBox {
+    z-index: 3;
+    width: 187%;
+    background: rgb(7 196 161);
+    border-radius: 5px;
+    border-color: black;
+    padding: 5px 8px;
+    color: white;
+    min-height: 5%;
+}
+
+.searchResultBox img {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    margin-left: 5px;
+    float: left;
+}
+
+.searchResultBox h4 {
+    float: right;
+    margin-left: 30px;
+    margin-top: 5px;
+    font-size: 18px;
+}
+.submitPost {
+  position: absolute;
+  top: 80%;
+}
