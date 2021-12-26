@@ -86,8 +86,10 @@ $id = GetUserId($conn);
   <?php
   $date = date("Y-m-d");
   if (isset($_POST['submitPhoto'])) {
-  $photoDescription = $_POST["photoDescription"];
     if (!empty($_POST['searchChannel'])) {
+      $photoDescription = $_POST["photoDescription"];
+      $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
+      $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
       if ($_FILES["photoUpload"]["size"] < 3000000) {
         $acceptedPhotoTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
         $photoinfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -104,8 +106,8 @@ $id = GetUserId($conn);
                          $lengPhotoName = substr($newPhotoName, 0, 240);
                          $newLengPhotoName = $lengPhotoName . date('His') . $extensionPhoto;
                          if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $newLengPhotoName)) {
-                           $insertPhoto = "INSERT INTO Posts ('ImageName') VALUES (?) WHERE CreatedByUserId = ?";
-                           $insertP = Query($conn, $insertPhoto,"si",$uploadPhoto, $id);
+                           $insertPhoto = "INSERT INTO posts ('CreatedByUserId','ChannelId','ImageName','Caption','Date') VALUES (?,?,?,?,?)";
+                           $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $newLengPhotoName, $photoDescription, $date);
                            if (mysqli_query($conn, $insertPhoto)) {
                                echo "Your post has been sent.";
                            } else {
@@ -116,8 +118,6 @@ $id = GetUserId($conn);
                                  }
                                }else{
                                  if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $newPhotoName)) {
-                                   $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
-                                   $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
                                    $insertPhoto = "INSERT INTO posts ('CreatedByUserId','ChannelId','ImageName','Caption','Date') VALUES (?,?,?,?,?)";
                                    $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $newPhotoName, $photoDescription, $date);
                                    if (mysqli_query($conn, $insertPhoto)) {
@@ -134,9 +134,9 @@ $id = GetUserId($conn);
                                                  $leng2PhotoName = substr($oldPhotoName, 0, 240);
                                                  $newLeng2PhotoName = $leng2PhotoName . date('His') . $extensionPhoto;
                                                  if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $newLeng2PhotoName)) {
-                                                   $insertPhoto3 = "INSERT INTO Posts ('ImageName') VALUES (?) WHERE CreatedByUserId = ?";
-                                                   $insertP3 = Query($conn, $insertPhoto3,"si", $uploadPhoto3, $id);
-                                                   if (mysqli_query($conn, $insertPhoto3)) {
+                                                   $insertPhoto = "INSERT INTO posts ('CreatedByUserId','ChannelId','ImageName','Caption','Date') VALUES (?,?,?,?,?)";
+                                                   $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $newLeng2PhotoName, $photoDescription, $date);
+                                                   if (mysqli_query($conn, $insertPhoto)) {
                                                        echo "Your post has been sent.";
                                                    } else {
                                                        echo "Something went wrong while uploading.";
@@ -146,11 +146,9 @@ $id = GetUserId($conn);
                                                          }
                                                            }else{
                                                              if(move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/". $_FILES["photoUpload"]["name"])) {
-                                                               $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
-                                                               $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
-                                                               $insertPhoto = "INSERT INTO Posts ('CreatedByUserId','ChannelId','ImageName','Caption','Date') VALUES (?,?,?,?,?)";
+                                                               $insertPhoto = "INSERT INTO posts ('CreatedByUserId','ChannelId','ImageName','Caption','Date') VALUES (?,?,?,?,?)";
                                                                $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $_FILES["photoUpload"]["name"], $photoDescription, $date);
-                                                               if (1) {
+                                                               if (mysqli_query($conn, $insertPhoto)) {
                                                                    echo "Your post has been sent.";
                                                                } else {
                                                                    echo "Something went wrong while uploading.";
@@ -174,6 +172,8 @@ $id = GetUserId($conn);
 
 if (isset($_POST['submitVideo'])) {
   if (!empty($_POST['searchChannel'])) {
+    $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
+    $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
     $videoDescription = $_POST["videoDescription"];
     if ($_FILES["videoUpload"]["size"] < 100000000) {
       $acceptedVideoTypes = ["video/mov", "video/swf", "video/mp4", "video/mkv", "video/flv", "video/wmv", "video/avi", "video/3gp", "video/vob", "video/aaf", "video/mod", "video/mpeg"];
@@ -191,8 +191,8 @@ if (isset($_POST['submitVideo'])) {
                         $lengVideoName = substr($newVideoName, 0, 240);
                         $newLengVideoName = $lengVideoName . date('His') . $extensionVideo;
                           if(move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/". $newLengVideoName)) {
-                            $insertVideo = "INSERT INTO Posts ('VideoName') VALUES (?) WHERE CreatedByUserId = ?";
-                            $insertV = Query($conn, $insertVideo,"si", $uploadVideo, $id);
+                            $insertVideo = "INSERT INTO posts ('CreatedByUserId','ChannelId','VideoName','Caption','Date') VALUES (?,?,?,?,?)";
+                            $insertV = Query($conn, $insertVideo, "iisss", $id, $chId[0]["ChannelId"], $newLengVideoName, $videoDescription, $date);
                             if (mysqli_query($conn, $insertVideo)) {
                                 echo "Your post has been sent.";
                             } else {
@@ -203,9 +203,9 @@ if (isset($_POST['submitVideo'])) {
                                   }
                                     }else{
                                       if(move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/". $newVideoName)) {
-                                        $insertVideo2 = "INSERT INTO Posts ('VideoName') VALUES (?) WHERE CreatedByUserId = ?";
-                                        $insertV2 = Query($conn, $insertVideo2,"si", $uploadVideo2, $id);
-                                        if (mysqli_query($conn, $insertVideo2)) {
+                                        $insertVideo = "INSERT INTO posts ('CreatedByUserId','ChannelId','VideoName','Caption','Date') VALUES (?,?,?,?,?)";
+                                        $insertV = Query($conn, $insertVideo, "iisss", $id, $chId[0]["ChannelId"], $newVideoName, $videoDescription, $date);
+                                        if (mysqli_query($conn, $insertVideo)) {
                                             echo "Your post has been sent.";
                                         } else {
                                             echo "Something went wrong while uploading.";
@@ -219,9 +219,9 @@ if (isset($_POST['submitVideo'])) {
                                                       $leng2VideoName = substr($oldVideoName, 0, 240);
                                                       $newLeng2VideoName = $leng2VideoName . date('His') . $extensionVideo;
                                                         if(move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/". $newLeng2VideoName)) {
-                                                          $insertVideo3 = "INSERT INTO Posts ('VideoName') VALUES (?) WHERE CreatedByUserId = ?";
-                                                          $insertV3 = Query($conn, $insertVideo3,"si", $uploadVideo3, $id);
-                                                          if (mysqli_query($conn, $insertVideo3)) {
+                                                          $insertVideo = "INSERT INTO posts ('CreatedByUserId','ChannelId','VideoName','Caption','Date') VALUES (?,?,?,?,?)";
+                                                          $insertV = Query($conn, $insertVideo, "iisss", $id, $chId[0]["ChannelId"], $newLeng2VideoName, $videoDescription, $date);
+                                                          if (mysqli_query($conn, $insertVideo)) {
                                                               echo "Your post has been sent.";
                                                           } else {
                                                               echo "Something went wrong while uploading.";
@@ -231,9 +231,9 @@ if (isset($_POST['submitVideo'])) {
                                                                 }
                                                                   }else{
                                                                     if(move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/". $_FILES["videoUpload"]["name"])) {
-                                                                      $insertVideo4 = "INSERT INTO Posts ('VideoName') VALUES (?) WHERE CreatedByUserId = ?";
-                                                                      $insertV4 = Query($conn, $insertVideo4,"si", $uploadVideo4, $id);
-                                                                      if (mysqli_query($conn, $insertVideo4)) {
+                                                                      $insertVideo = "INSERT INTO posts ('CreatedByUserId','ChannelId','VideoName','Caption','Date') VALUES (?,?,?,?,?)";
+                                                                      $insertV = Query($conn, $insertVideo, "iisss", $id, $chId[0]["ChannelId"], $_FILES["videoUpload"]["name"], $videoDescription, $date);
+                                                                      if (mysqli_query($conn, $insertVideo)) {
                                                                           echo "Your post has been sent.";
                                                                       } else {
                                                                           echo "Something went wrong while uploading.";
@@ -258,12 +258,16 @@ if (isset($_POST['submitVideo'])) {
   if(isset($_POST['submitText'])) {
     if(!empty($_POST['searchChannel'])) {
       $text = $_POST["textUpload"];
+      $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
+      $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
       if(!empty($_POST['textUpload'])) {
-        $channelId = "SELECT `ChannelId` FROM Followed, Channels WHERE UserId = ? AND Name = ?";
-        $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
         $insertText = "INSERT INTO Posts ('CreatedByUserId','ChannelId','Caption','Date') VALUES (?,?,?,?)";
         $insertT = Query($conn, $insertText, "iiss", $id, $chId[0]["ChannelId"], $text, $date);
-        echo "Your post has been uploaded.";
+        if (mysqli_query($conn, $insertVideo)) {
+            echo "Your post has been sent.";
+        } else {
+            echo "Something went wrong while uploading.";
+        }
       }else{
         echo "Please enter text.";
       }
