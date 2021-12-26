@@ -62,31 +62,24 @@ $channelId = $_GET['ChannelId'];
       </div>
 
       <div id="follow_btn">
-        <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
           <?php 
-            $query = "SELECT `UserId`, `ChannelId` FROM Followed WHERE ChannelId = ? AND UserId = ?";
-            $data = Query($conn, $query, "ii", $channelId, $id);
-              if (sizeof($data) > 0){ ?>
-                  <!--<form action=" <?php //htmlentities($_SERVER['PHP_SELF']); ?>"method="POST">
-                  <input type="submit" name="Unfollow" value="Unfollow"></form> --> <?php
-                  if(isset($_POST['submit'])) {
-                      $query = "DELETE FROM `Followed` WHERE UserId = ? AND ChannelId = ?";
-                      $data = Query($conn, $query, "ii", $id, $channelId); 
-                  } ?>
-                  <!-- <form action=<?php //$_SERVER['PHP_SELF'] ?> method="post" name="Unfollow"> -->
-                  <input type="submit" name="submit" value="Unfollow" /> <!-- </form> --> <?php
-              }else{
-                    if (isset($_POST['Follow'])) {
-                      $UserIdFollow = $_SESSION['Identifier'];
-                      $ChannelIdFollow = $_POST['ChannelId'];
-                      $query = "INSERT INTO `Followed` (`ChannelId`, `UserId`) VALUES (?, ?)";
-                      Query($conn, $query, "ii", $ChannelIdFollow, $UserIdFollow);
-                      echo '<script type="text/javascript">alert("Youre now following this channel")</script>';
-                    }
-                  echo '<form action="' .$_SERVER['PHP_SELF'].  '"method="POST"><input type="submit" name="Follow" value="Follow"></form>';
-              }
-          ?>
-        </form>      
+            $userCheck = "SELECT `id`, `CreatedByUserId` FROM `Channels` WHERE id = ? AND CreatedByUserId = ?";
+            $result = Query($conn, $userCheck, "ii", $channelId, $id);
+              if(sizeof($result) > 0) {
+              }else {
+                $query = "SELECT `UserId`, `ChannelId` FROM Followed WHERE ChannelId = ? AND UserId = ?";
+                $data = Query($conn, $query, "ii", $channelId, $id);
+                  if (sizeof($data) > 0){ 
+                       echo '<form action="follow.php?ChannelId='.$channelId.'"method="post">
+                      <input type="submit" name="Unfollow" value="Unfollow">
+                      </form>';
+                  }else{
+                    echo '<form action="follow.php?ChannelId='.$channelId.'"method="post">
+                      <input type="submit" name="Follow" value="Follow">
+                      </form>';
+                  }
+                }
+          ?>   
       </div>
 
       <div id="channel_menu">
@@ -94,13 +87,14 @@ $channelId = $_GET['ChannelId'];
             $query = "SELECT `CreatedByUserId` `id` FROM `Channels` WHERE CreatedByUserId = ? AND id = ?";
             $data = Query($conn, $query, "ii", $id, $channelId);
               if(sizeof($data) > 0) {
-                echo '<button id="channel_menu" onClick="Toggle()">Settings</button>';
-              } 
+                echo '<button id="channel_menu" onClick="Toggle()">Settings</button>'; 
+              }
           ?>
+            
       </div>
   </div>
 
-      <div id="change_channel">
+      <div id="change_channel" style="display: none">
 <hr id="divider">
 
         <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
@@ -184,8 +178,10 @@ $channelId = $_GET['ChannelId'];
                           <button>No</button>
                         </div>-->
           </div>  
+          <?php //} ?>
       </div>
   
+
   <hr id="divider">
   <!-- INSERT CONTENT AFTER THAT -->
               <?php
