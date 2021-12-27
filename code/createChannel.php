@@ -119,7 +119,7 @@ $id = GetUserId($conn);
                 //Changing name
                 $randomno=rand(0,100000);
 	            $rename='Picture'.date('Ymd').$randomno;
-                $target_dir = "../uploads//";
+                $target_dir = "../uploads/";
                 // Get file path
                 $target_file_main = $target_dir .$rename . basename($_FILES["mainphoto"]["name"] ); 
                 // Get file extension
@@ -225,9 +225,10 @@ $id = GetUserId($conn);
         ?>
             
        </form>
-       
+    
         
   </div>
+  <?php include "footer.php"; ?>
   <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script>
