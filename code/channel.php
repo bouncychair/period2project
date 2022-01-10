@@ -169,6 +169,7 @@ $channelId = $_GET['ChannelId'];
                 if(isset($_POST['ChannelDeleteSubmit'])) {
                   $query = "DELETE FROM `Channels` WHERE id = ?";
                   $data = Query($conn, $query, "i", $channelId);
+                  header("Location: main.php");
                 }
               ?>
 <hr id="divider">
