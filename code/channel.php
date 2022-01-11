@@ -33,7 +33,7 @@ $channelId = $_GET['ChannelId'];
           <?php
           $sql = "SELECT * FROM `Channels` WHERE id = ?";
           $data = Query($conn, $sql, "i", $channelId);
-          echo "<img " . $data[0]['id'] . "' src='../uploads/" . $data[0]['CoverPicture'] . "' /></a>";
+          echo "<img id='" . $data[0]['id'] . "' src='../uploads/" . $data[0]['CoverPicture'] . "' /></a>";
           ?>
       </div>
 
@@ -41,7 +41,7 @@ $channelId = $_GET['ChannelId'];
           <?php
           $sql = "SELECT * FROM `Channels` WHERE id = ?";
           $data = Query($conn, $sql, "i", $channelId);
-          echo "<img " . $data[0]['id'] . "' src='../uploads/" . $data[0]['MainPicture'] . "' /></a>";
+          echo "<img id='" . $data[0]['id'] . "' src='../uploads/" . $data[0]['MainPicture'] . "' /></a>";
           ?>
       </div>
 
