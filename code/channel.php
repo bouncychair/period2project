@@ -162,6 +162,7 @@ $channelId = $_GET['ChannelId'];
               <input type="file" name="coverUpload" id="CoverUpload">
           </div>
               <input type="submit" name="fileSubmit" value="Update">
+<hr id="divider">              
         </div>
 
           <div id="channel_delete">
@@ -172,7 +173,6 @@ $channelId = $_GET['ChannelId'];
                   header("Location: main.php");
                 }
               ?>
-<hr id="divider">
               <input type="submit" onClick="Delete()" value="Delete Channel" name="ChannelDeleteSubmit" />
                       <!--  <div id="channel_delete_toggle">
                           <input type="submit" name="ChannelDeleteSubmit" value="Yes">
