@@ -5,6 +5,8 @@ include "utils.php";
 CheckIdentifier();
 $id = GetUserId($conn);
 $channelId = $_GET['ChannelId'];
+$query = "SELECT `Name` FROM Channels WHERE id = ?";
+$result = Query($conn, $query, "i", $channelId);
 ?>
 
 <!DOCTYPE html>
@@ -16,9 +18,7 @@ $channelId = $_GET['ChannelId'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="Stylesheet.css" type="text/css">
   <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-  
-
-  <title>Channel</title>
+  <title><?php echo $result[0]['Name'] ?></title>
 </head>
 
 <body>
