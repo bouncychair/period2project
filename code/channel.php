@@ -130,7 +130,7 @@ $result = Query($conn, $query, "i", $channelId);
                         $query = "SELECT * FROM `Channels` WHERE Description = ?";
                         $data = Query($conn, $query, "s", $_POST['ChannelDescription']);
                         if (sizeof($data) > 0) {
-                            echo "<p>Bad boy</p>";
+                            echo "<p>You cannot add the same description</p>";
                         } else {
                             $channelDescription = $_POST['ChannelDescription'];
                             $query = "UPDATE Channels SET `Description` = ? WHERE id = ?";
