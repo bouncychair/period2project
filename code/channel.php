@@ -95,7 +95,7 @@ $result = Query($conn, $query, "i", $channelId);
   </div>
 
       <div id="change_channel" style="display: none">
-<hr id="bigdivider">
+<hr id="divider">
 
         <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
           <div id="channel_change_name">
@@ -183,7 +183,7 @@ $result = Query($conn, $query, "i", $channelId);
       </div>
   
 
-  <hr id="divider">
+  <hr id="bigdivider">
   <!-- INSERT CONTENT AFTER THAT -->
               <?php
                 $query = "SELECT Posts.*, Users.id UserId, Users.Username, Users.ProfilePicture FROM `Posts`, Users WHERE ChannelId = ? AND CreatedByUserId = Users.Id";
