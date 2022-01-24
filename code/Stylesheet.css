@@ -574,11 +574,17 @@ div.scrollmenu a:hover {
 #channel_description {
     grid-row: 3;
     grid-column: 4;
+    margin: 50px 0;
 }
 
 #divider {
     border: solid purple 1px;
     width: 100%;
+}
+#bigdivider {
+    border: solid purple 1px;
+    width: 100%;
+    margin: 40px 0;
 }
 
 .post_header_channel {

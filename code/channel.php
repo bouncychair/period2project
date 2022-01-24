@@ -95,7 +95,7 @@ $result = Query($conn, $query, "i", $channelId);
   </div>
 
       <div id="change_channel" style="display: none">
-<hr id="divider">
+<hr id="bigdivider">
 
         <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
           <div id="channel_change_name">
