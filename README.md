@@ -1,4 +1,4 @@
-# period2project
+<h1>Toctic - Social Media</h1>
 <p>TocTic is a social network made for university project. It is full-fledged web application with functionalities such as:<br>
 - Encrypted Login & Registration system<br>
 - Changing your profile picture, password and username<br>
