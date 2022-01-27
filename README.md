@@ -1,4 +1,12 @@
 # period2project
+<p>TocTic is a social network made for university project. It is full-fledged web application with functionalities such as:
+- Encrypted Login & Registration system
+- Changing your profile picture, password and username
+- Creating channels system
+- Follow system
+- Reacting to posts with emojis system
+- Comment system
+- Creating photo/video/text posts system</p>
 <h3>Software required:</h3>
 >XAMPP (Apache and MySQL running)<br/>
 >IDE(Visual Studio preferable)<br/>
