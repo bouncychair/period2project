@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,19 +13,10 @@
 </body>
 </html>
 <?php
-session_start();
 include "connect.php";
 include "utils.php";
 $id = GetUserId($conn);
 $channelId = $_GET['ChannelId'];
-
-
-/* CHANGE NAME OF THE CHANNEL -------------------------------------------------------------------- */
-
-
-
-/* CHANGE DESCRIPTION OF THE CHANNEL --------------------------------------------------------- */
-
 
 
 /* CHANGE MAIN PICTURE OF THE CHANNEL ----------------------------------------------------------------- */
@@ -34,8 +26,9 @@ $upload = $_FILES['mainUpload']['name'];
 if(isset($_POST['fileSubmit'])) {
     if(!empty($_FILES['mainUpload']['name'])) {
         $sql = "UPDATE Channels SET `MainPicture` = ? WHERE id = ?";
-        $data = Query($conn, $sql, "si", $upload, $channelId);
-        header("location: channel.php?ChannelId=$channelId");
+        $data = Query($conn, $sql, "si", $upload, $channelId); ?> <script>
+        window.location = 'channel.php?ChannelId=<?php echo $channelId ?>'; 
+        </script> <?php
     } else {
         ?> <script>
         window.setTimeout(function() {
@@ -47,14 +40,15 @@ if(isset($_POST['fileSubmit'])) {
 
 
             $targetDir = "../uploads/";
-            $fileName = @basename($_FILES["mainUpload"]["name"]);
+            $fileName = $_FILES["mainUpload"]["name"];
+            $tmpFile1 = $_FILES["mainUpload"]["tmp_name"];
             $targetFilePath = $targetDir . $fileName;
-            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+            $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
 
               if (isset($_POST["fileSubmit"]) && !empty($_FILES["mainUpload"]["name"])) {
-                  $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
-                  if (in_array($fileType, $allowTypes)) {
-                    if($_FILES["coverUpload"]["size"] < 10000000) {
+                  $allowTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
+                  if (in_array($fileinfo, $allowTypes)) {
+                    if($_FILES["mainUpload"]["size"] < 10000000) {
                       if (move_uploaded_file($_FILES["mainUpload"]["tmp_name"], $targetFilePath)) {
                           $sql = "INSERT INTO Channels (`MainPicture`) VALUES = (?) WHERE id = ?";
                           if (Query($conn, $sql, "i", $channelId)) {
@@ -80,8 +74,9 @@ $upload1 = $_FILES['coverUpload']['name'];
 if(isset($_POST['fileSubmit'])) {
     if(!empty($_FILES['coverUpload']['name'])) {
         $sql = "UPDATE Channels SET `CoverPicture` = ? WHERE id = ?";
-        $data = Query($conn, $sql, "si", $upload1, $channelId);
-        header("location: channel.php?ChannelId=$channelId");
+        $data = Query($conn, $sql, "si", $upload1, $channelId); ?> <script>
+        window.location = 'channel.php?ChannelId=<?php echo $channelId ?>'; 
+        </script> <?php
     } else {
         ?> <script> alert("Please, select a file");
         window.setTimeout(function() {
@@ -92,13 +87,14 @@ if(isset($_POST['fileSubmit'])) {
 }
 
             $targetDir = "../uploads/";
-            $fileName = @basename($_FILES["coverUpload"]["name"]);
+            $fileName = $_FILES["coverUpload"]["name"];
+            $tmpFile2 = $_FILES["coverUpload"]["tmp_name"];
             $targetFilePath = $targetDir . $fileName;
-            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+            $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
 
               if (isset($_POST["fileSubmit"]) && !empty($_FILES["coverUpload"]["name"])) {
-                  $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
-                  if (in_array($fileType, $allowTypes)) {
+                  $allowTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
+                  if (in_array($fileinfo, $allowTypes)) {
                     if($_FILES["coverUpload"]["size"] < 10000000) {
                         if (move_uploaded_file($_FILES["coverUpload"]["tmp_name"], $targetFilePath)) {
                           $sql = "INSERT INTO Channels (`CoverPicture`) VALUES = (?) WHERE id = ?";

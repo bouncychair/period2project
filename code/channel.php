@@ -111,7 +111,7 @@ $result = Query($conn, $query, "i", $channelId);
                           $query = "UPDATE Channels SET `Name` = ? WHERE id = ?";
                           $data = Query($conn, $query, "si", $channelName, $channelId);
                             echo "Adding succesful!";
-                            header("location: channel.php?ChannelId=$channelId");
+                            ?> <script> window.location = 'channel.php?ChannelId=<?php echo $channelId ?>'; </script> <?php
                         }
                     }
                   }
@@ -135,7 +135,7 @@ $result = Query($conn, $query, "i", $channelId);
                             $channelDescription = $_POST['ChannelDescription'];
                             $query = "UPDATE Channels SET `Description` = ? WHERE id = ?";
                             $data = Query($conn, $query, "si", $channelDescription, $channelId);
-                            header("location: channel.php?ChannelId=$channelId");
+                            ?> <script> window.location = 'channel.php?ChannelId=<?php echo $channelId ?>'; </script> <?php
                         }
                     }
                 }
@@ -170,7 +170,7 @@ $result = Query($conn, $query, "i", $channelId);
                 if(isset($_POST['ChannelDeleteSubmit'])) {
                   $query = "DELETE FROM `Channels` WHERE id = ?";
                   $data = Query($conn, $query, "i", $channelId);
-                  header("Location: main.php");
+                  ?> <script> window.location = 'main.php'; </script> <?php
                 }
               ?>
               <input type="submit" onClick="Delete()" value="Delete Channel" name="ChannelDeleteSubmit" />
