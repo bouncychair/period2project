@@ -40,14 +40,14 @@ die();*/ ?>
         <?php
             
 
-            // File upload path
-            $targetDir = "../uploads/";
-            $fileName = $_FILES["file"]["name"];
-            $file= $_FILES["file"]['tmp_name'];
-            $targetFilePath = $targetDir . $fileName;
-            $info= finfo_open(FILEINFO_MIME_TYPE);
-
+            
             if (isset($_POST["submitty"]) && !empty($fileName)) {
+                // File upload path
+                $targetDir = "../uploads/";
+                $fileName = $_FILES["file"]["name"];
+                $file= $_FILES["file"]['tmp_name'];
+                $targetFilePath = $targetDir . $fileName;
+                $info= finfo_open(FILEINFO_MIME_TYPE);
                 // Allow certain file formats
                 $allowTypes =["image/jpg", "image/jpeg", "image/png", "image/gif"];
                 if (in_array($info, $allowTypes)) {
@@ -62,12 +62,10 @@ die();*/ ?>
                             $statusMsg = "File upload failed, please try again.";
                         }
                     } else {
-                        $statusMsg = "Sorry, there was an error uploading your file.";
+                        $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
                     }
-                } else {
-                    $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
-                }
-                echo $statusMsg;
+                    echo $statusMsg;
+                } 
             ?>
          
 
@@ -116,9 +114,8 @@ die();*/ ?>
             <button class="loggoutt" name="out"> Logout</button>
            <?php
             if(isset($_POST['out'])) {
-                unset($_SESSION["id"]);
-                unset($_SESSION["name"]);
-                header("Location:authentication.php");
+                unset($_SESSION["Identifier"]);
+                GoToUrl("authentication.php");
             }
             ?>
             </form>

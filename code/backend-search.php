@@ -1,55 +1,42 @@
 <?php
 include "connect.php";
+include "utils.php";
 
-// Check connection
-if($conn === false){
-    die("ERROR: Could not connect. " . mysqli_connect_error());
-}
 
-if(isset($_REQUEST["term"])){
-    
+if (isset($_REQUEST["term"]) && isset($_REQUEST["id"])) {
+    $id = $_REQUEST["id"];
+    // Prepare a select statement
+    $sql = "SELECT Channels.* FROM Channels, Followed WHERE Channels.Name LIKE ? AND Channels.Id = Followed.ChannelId AND Followed.UserId = ?";
+    $param_term = '%' . $_REQUEST["term"] . '%';
+    $data = Query($conn, $sql, "ss", $param_term, $id);
+
+
+    // Check number of rows 
+    if (sizeof($data) > 0) {
+        for ($i=0; $i < sizeof($data); $i++) { 
+            echo "<div class='searchResultBox'><a style = 'text-decoration: none; color:white'><img width='100px' src='../uploads/" . $data[$i]["MainPicture"] . "' ></img><h4>" . $data[$i]["Name"] . "</h4></a></div>";
+        }
+    }else{
+        echo "<center><div>No results found</div></center>";
+    }
+}else if (isset($_REQUEST["term"]) && !isset($_REQUEST["id"])) {
+
     // Prepare a select statement
     $sql = "SELECT * FROM Channels WHERE `Name` LIKE ?";
+    $param_term = '%' . $_REQUEST["term"] . '%';
+    $data = Query($conn, $sql, "s", $param_term);
 
-    if($stmt = mysqli_prepare($conn, $sql)){
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "s", $param_term);
-        
-        // Set parameters
-        $param_term ='%'. $_REQUEST["term"] . '%';
-        
 
-        // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt)){
-            $result = mysqli_stmt_get_result($stmt);
-
-            // Check number of rows in the result set
-            if(mysqli_num_rows($result) > 0){
-                // Fetch result rows as an associative array
-                while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                    echo "<div><a href ='channel.php?ChannelId=".$row['id']."' ><img width='100px' src='../uploads/" . $row["MainPicture"] . "' ></img><h4> ".$row["Name"]."</h4></a></div>";
-                }
-            }else{
-                echo "<center><img width='200px' src='../img/no.png' /></center>";
-            }
-        } else{
-            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+    // Check number of rows
+    if (sizeof($data) > 0) {
+        for ($i=0; $i < sizeof($data); $i++) { 
+            echo "<div><a href ='channel.php?ChannelId=" . $data[$i]['id'] . "' ><img width='100px' src='../uploads/" . $data[$i]["MainPicture"] . "' ></img><h4> " . $data[$i]["Name"] . "</h4></a></div>";
         }
+    } else {
+        echo "<center><img width='200px' src='../img/no.png' /></center>";
     }
-
-    // Close statement
-    //mysqli_stmt_close($stmt);
 }
+
 
 // close connection
 mysqli_close($conn);
-?>
-
-
-
-<!-- else if($param_term == ""){
-                echo "<center id='notfound'>
-                <img width='100px' src='../img/think.gif' />
-                <div><h2>Search for a channel</h2></div>
-                </center>";
-            }  -->

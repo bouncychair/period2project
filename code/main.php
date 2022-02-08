@@ -159,7 +159,7 @@ $data = Query($conn, $query, "i", $id);
             for (let i = 0; i < posts.length; i++) {
                 var postId = posts[i].getElementsByClassName("like_section")[0].id;
 
-                postId = postId.substr(postId.length - 1);
+                postId = postId.substr(5);
                 var like = "GetLikes";
 
                 $.ajax({

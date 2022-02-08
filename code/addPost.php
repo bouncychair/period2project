@@ -29,7 +29,7 @@ $id = GetUserId($conn);
         var inputVal = $(this).val();
         var resultDropdown = $(this).siblings(".searchResult");
         if (inputVal.length) {
-          $.get("searchChannel.php", {
+          $.get("backend-search.php", {
             term: inputVal,
             id: id
           }).done(function(data) {
