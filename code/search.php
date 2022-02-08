@@ -21,6 +21,8 @@ $id = GetUserId($conn);
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         $(document).ready(function() {
+
+
             $('.search-box input[type="text"]').on("keyup input", function() {
                 document.getElementById("notfound").style.visibility = "hidden";
                 /* Get input value on change */
@@ -35,6 +37,7 @@ $id = GetUserId($conn);
                     });
                 } else {
                     resultDropdown.empty();
+                    document.getElementById("notfound").style.visibility = "visible";
                 }
             });
 
@@ -52,7 +55,12 @@ $id = GetUserId($conn);
     <div class="search-box">
         <input type="text" autocomplete="off" placeholder="Search video..." />
         <div class="result"></div>
-        <center id="notfound"><img width='300px' src='../img/q.gif' /></center>
+        <center id="notfound">
+            <img width='100px' src='../img/think.gif' />
+            <div>
+                <h2>Search for a channel</h2>
+            </div>
+        </center>
     </div>
     <?php include "footer.php"; ?>
 </body>

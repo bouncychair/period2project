@@ -7,15 +7,17 @@ if($conn === false){
 }
 
 if(isset($_REQUEST["term"])){
+    
     // Prepare a select statement
     $sql = "SELECT * FROM Channels WHERE `Name` LIKE ?";
 
     if($stmt = mysqli_prepare($conn, $sql)){
         // Bind variables to the prepared statement as parameters
         mysqli_stmt_bind_param($stmt, "s", $param_term);
-
+        
         // Set parameters
         $param_term ='%'. $_REQUEST["term"] . '%';
+        
 
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
@@ -27,8 +29,8 @@ if(isset($_REQUEST["term"])){
                 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
                     echo "<div><a href ='channel.php?ChannelId=".$row['id']."' ><img width='100px' src='../uploads/" . $row["MainPicture"] . "' ></img><h4> ".$row["Name"]."</h4></a></div>";
                 }
-            } else{
-                echo "<center><img width='200px' src='../img/no-results.png' /></center>";
+            }else{
+                echo "<center><img width='200px' src='../img/no.png' /></center>";
             }
         } else{
             echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
@@ -42,3 +44,12 @@ if(isset($_REQUEST["term"])){
 // close connection
 mysqli_close($conn);
 ?>
+
+
+
+<!-- else if($param_term == ""){
+                echo "<center id='notfound'>
+                <img width='100px' src='../img/think.gif' />
+                <div><h2>Search for a channel</h2></div>
+                </center>";
+            }  -->

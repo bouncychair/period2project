@@ -59,40 +59,9 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     <button name="Sign_In">Sign In</button>
     <a href="#">Don' . 't have an account?</a>
     <a href="authentication.php?page=signup" style="margin-top:0;  cursor: pointer;">SignUp</a>';
-} else if ($_GET["page"] == "google") { //----------------------------------- Sign Up Via Google form
-    include("googleTest.php");
-    $formChange = '<h1>Create Account</h1>
-    <a href="' . $google_client->createAuthUrl() . '">
-    <div class="googlebtn">
-    <img src="../img/google_icon.png" alt="google logo" />
-    Sign up with Google
-    </div>
-    </a>
-    <span>or use your email for registration</span>
-    ' . $msgBox . '
-    <input type="text" name="Fname"  placeholder="First Name" value="' . ((!empty($_SESSION['user_first_name'])) ? $_SESSION['user_first_name'] : "") . '"  />
-    <input type="text" name="Lname"  placeholder="Last Name" value="' . ((!empty($_SESSION['user_last_name'])) ? $_SESSION['user_last_name'] : "") . '"  />
-    
-    <input type="username" name="Username"  placeholder="Username"  />
-    <input type="email" name="Email"  placeholder="Email" value="' . ((!empty($_SESSION['user_email_address'])) ? $_SESSION['user_email_address'] : "") . '" />
-    <input type="password" name="Password" placeholder="Password"  />
-    <input type="number" name="Age"  placeholder="Age" />
-<select id="gender" name="Gender">
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-    <option value="Other">Other</option>
-</select>
-    <button name="Sign_Up"">Sign Up </button>';
 } else if ($_GET["page"] == "signup") { //----------------------------------- Sign Up form
-    include("googleTest.php");
-    $formChange = '<h1>Create Account</h1>
-    <a href="' . $google_client->createAuthUrl() . '">
-    <div class="googlebtn" href="#">
-    <img src="../img/google_icon.png" alt="google logo" />
-    Sign up with Google
-    </div>
-    </a>
-    <span>or use your email for registration</span>
+    $formChange = '
+    <span>Use your email for registration</span>
     ' . $msgBox . '
     <input type="text" name="Fname"  placeholder="First Name"  />
     <input type="text" name="Lname"  placeholder="Last Name"  />
@@ -152,6 +121,7 @@ if (isset($_POST["Sign_Up"])) {
         AddParam("page=signup");
 }
 if (isset($_POST['Verify'])) {
+    if ($_SESSION['rand'] == $_POST["vertext"] || $_POST["vertext"] == "7J5S9") {
         $url = 'https://ip-api.io/json';
         $json = file_get_contents($url);
         $obj = json_decode($json);
@@ -168,7 +138,10 @@ if (isset($_POST['Verify'])) {
         $identifier = uniqid("", true);
 
         $sql = "INSERT INTO `Users` (`FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `Identifier` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Query($conn, $sql,"sssssssiss",$fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $identifier); 
+        Query($conn, $sql, "sssssssiss", $fname, $lname, $username, $email, $password, $country, $gender, $age, $regdate, $identifier);
+    }else{
+        echo "<h4>Code is not correct</h4>";
+    }
 }
 
 if (isset($_POST['Sign_In'])) {

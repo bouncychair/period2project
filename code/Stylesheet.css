@@ -97,6 +97,7 @@ select {
     padding: 12px 15px;
     margin: 8px 0;
     width: 100%;
+    border-radius: 20px;
 }
 
 #signin {
@@ -581,6 +582,7 @@ div.scrollmenu a:hover {
     border: solid purple 1px;
     width: 100%;
 }
+
 #bigdivider {
     border: solid purple 1px;
     width: 100%;
@@ -797,7 +799,6 @@ select#postType,
     padding: 5px 8px;
     margin: 2%;
     color: white;
-    min-height: 10%;
     min-width: 70%;
 }
 
@@ -852,7 +853,7 @@ input#textUpload {
 
 select#postType {
     color: white;
-    height: 55px;
+    height: 7%;
 }
 
 input#submitPhoto,
@@ -1212,7 +1213,6 @@ select#postType,
     padding: 5px 8px;
     margin: 2%;
     color: white;
-    min-height: 10%;
     min-width: 70%;
 }
 

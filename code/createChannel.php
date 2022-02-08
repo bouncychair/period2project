@@ -122,8 +122,6 @@ $id = GetUserId($conn);
                     echo '<span style="color:red;text-align:center;font-size:18px;">Allowed file formats are jpg, jpeg or png.</span>';
                 } else if ($_FILES["mainphoto"]["size"] > 2097152) {
                     echo '<span style="color:red;text-align:center;font-size:18px;">File is too large. File size should be less than 2 megabytes.</span>';
-                } else if (file_exists($target_file_main)) {
-                    echo '<span style="color:red;text-align:center;font-size:18px;">Main picture already exists.</span>';
                 } else {
                     if (move_uploaded_file($_FILES["mainphoto"]["tmp_name"], $target_file_main)) {
                         $count_upload += 1;
@@ -149,8 +147,6 @@ $id = GetUserId($conn);
                     echo '<span style="color:red;text-align:center;font-size:18px;">Allowed file formats are jpg, jpeg or png.</span>';
                 } else if ($_FILES["coverphoto"]["size"] > 2097152) {
                     echo '<span style="color:red;text-align:center;font-size:18px;">File is too large. File size should be less than 2 megabytes.</span>';
-                } else if (file_exists($target_file_cover)) {
-                    echo '<span style="color:red;text-align:center;font-size:18px;">Cover picture already exists.</span>';
                 } else {
                     if (move_uploaded_file($_FILES["coverphoto"]["tmp_name"], $target_file_cover)) {
                         $count_upload += 1;

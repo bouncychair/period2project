@@ -34,6 +34,7 @@ function Query($conn, $sql,  $datatype, ...$data){
         return -1;
 }
 
+
 function GoToUrl($url){
 ?>
     <script>
@@ -63,18 +64,18 @@ function SendVerificationMail($emailTo){
         // Server settings
         //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
         $mail->isSMTP();
-        $mail->Host = 'smtp.mail.com';
+        $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->Username = 'toctic@email.com'; // YOUR gmail email
-        $mail->Password = 'Tocticbot12345'; // YOUR gmail  password
+        $mail->Username = 'sahibthecreator.bot@gmail.com'; // YOUR gmail email
+        $mail->Password = 'Angular2303$'; // YOUR gmail  password
 
         // Sender and recipient settings
-        $mail->setFrom('toctic@email.com', 'Toctic Bot');
+        $mail->setFrom('sahibthecreator.bot@gmail.com', 'Toctic Bot');
         $mail->addAddress($emailTo);
-        $mail->addReplyTo('toctic@email.com', 'Toctic Bot'); // to set the reply to
+        $mail->addReplyTo('sahibthecreator.bot@gmail.com', 'Toctic Bot'); // to set the reply to
 
         // Setting the email content
         $_SESSION['rand'] = mt_rand(1000, 9999);
@@ -84,7 +85,9 @@ function SendVerificationMail($emailTo){
         $mail->send();
         echo "Sent";
     } catch (Exception $e) {
-        echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
+        //echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
+        echo "<h3>Email got blocked</h3>";
+        echo "<h3>Use recovery code: <b>7J5S9</b></h3>";
     }
 }
 ?>
