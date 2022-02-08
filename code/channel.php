@@ -5,6 +5,8 @@ include "utils.php";
 CheckIdentifier();
 $id = GetUserId($conn);
 $channelId = $_GET['ChannelId'];
+$query = "SELECT `Name` FROM Channels WHERE id = ?";
+$result = Query($conn, $query, "i", $channelId);
 ?>
 
 <!DOCTYPE html>
@@ -16,9 +18,7 @@ $channelId = $_GET['ChannelId'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="Stylesheet.css" type="text/css">
   <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-  
-
-  <title>Channel</title>
+  <title><?php echo $result[0]['Name'] ?></title>
 </head>
 
 <body>
@@ -33,7 +33,7 @@ $channelId = $_GET['ChannelId'];
           <?php
           $sql = "SELECT * FROM `Channels` WHERE id = ?";
           $data = Query($conn, $sql, "i", $channelId);
-          echo "<img " . $data[0]['id'] . "' src='../uploads/" . $data[0]['CoverPicture'] . "' /></a>";
+          echo "<img id='" . $data[0]['id'] . "' src='../uploads/" . $data[0]['CoverPicture'] . "' /></a>";
           ?>
       </div>
 
@@ -41,7 +41,7 @@ $channelId = $_GET['ChannelId'];
           <?php
           $sql = "SELECT * FROM `Channels` WHERE id = ?";
           $data = Query($conn, $sql, "i", $channelId);
-          echo "<img " . $data[0]['id'] . "' src='../uploads/" . $data[0]['MainPicture'] . "' /></a>";
+          echo "<img id='" . $data[0]['id'] . "' src='../uploads/" . $data[0]['MainPicture'] . "' /></a>";
           ?>
       </div>
 
@@ -130,7 +130,7 @@ $channelId = $_GET['ChannelId'];
                         $query = "SELECT * FROM `Channels` WHERE Description = ?";
                         $data = Query($conn, $query, "s", $_POST['ChannelDescription']);
                         if (sizeof($data) > 0) {
-                            echo "<p>Bad boy</p>";
+                            echo "<p>You cannot add the same description</p>";
                         } else {
                             $channelDescription = $_POST['ChannelDescription'];
                             $query = "UPDATE Channels SET `Description` = ? WHERE id = ?";
@@ -162,6 +162,7 @@ $channelId = $_GET['ChannelId'];
               <input type="file" name="coverUpload" id="CoverUpload">
           </div>
               <input type="submit" name="fileSubmit" value="Update">
+<hr id="divider">              
         </div>
 
           <div id="channel_delete">
@@ -169,9 +170,9 @@ $channelId = $_GET['ChannelId'];
                 if(isset($_POST['ChannelDeleteSubmit'])) {
                   $query = "DELETE FROM `Channels` WHERE id = ?";
                   $data = Query($conn, $query, "i", $channelId);
+                  header("Location: main.php");
                 }
               ?>
-<hr id="divider">
               <input type="submit" onClick="Delete()" value="Delete Channel" name="ChannelDeleteSubmit" />
                       <!--  <div id="channel_delete_toggle">
                           <input type="submit" name="ChannelDeleteSubmit" value="Yes">
@@ -182,7 +183,7 @@ $channelId = $_GET['ChannelId'];
       </div>
   
 
-  <hr id="divider">
+  <hr id="bigdivider">
   <!-- INSERT CONTENT AFTER THAT -->
               <?php
                 $query = "SELECT Posts.*, Users.id UserId, Users.Username, Users.ProfilePicture FROM `Posts`, Users WHERE ChannelId = ? AND CreatedByUserId = Users.Id";

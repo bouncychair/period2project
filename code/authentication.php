@@ -55,7 +55,7 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     ' . $msgBox . '
     <input type="text" name="Username" placeholder="Username" />
     <input type="password" name="Password" placeholder="Password" />
-    <a href="#">Forgot your password?</a>
+    <a href="forgetPass.php">Forgot your password?</a>
     <button name="Sign_In">Sign In</button>
     <a href="#">Don' . 't have an account?</a>
     <a href="authentication.php?page=signup" style="margin-top:0;  cursor: pointer;">SignUp</a>';

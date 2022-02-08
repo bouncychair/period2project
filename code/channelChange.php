@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Stylesheet.css" type="text/css">
+    <title>Upload Document</title>
+</head>
+<body>
+    
+</body>
+</html>
 <?php
 session_start();
 include "connect.php";
@@ -24,9 +37,14 @@ if(isset($_POST['fileSubmit'])) {
         $data = Query($conn, $sql, "si", $upload, $channelId);
         header("location: channel.php?ChannelId=$channelId");
     } else {
-        echo "Select something else";
+        ?> <script>
+        window.setTimeout(function() {
+        window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
+        } , 4000);
+        </script> <?php
     }
 }
+
 
             $targetDir = "../uploads/";
             $fileName = @basename($_FILES["mainUpload"]["name"]);
@@ -34,12 +52,10 @@ if(isset($_POST['fileSubmit'])) {
             $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
               if (isset($_POST["fileSubmit"]) && !empty($_FILES["mainUpload"]["name"])) {
-                  // Allow certain file formats
                   $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
                   if (in_array($fileType, $allowTypes)) {
-                      // Upload file to server
+                    if($_FILES["coverUpload"]["size"] < 10000000) {
                       if (move_uploaded_file($_FILES["mainUpload"]["tmp_name"], $targetFilePath)) {
-                          // Insert image file name into database
                           $sql = "INSERT INTO Channels (`MainPicture`) VALUES = (?) WHERE id = ?";
                           if (Query($conn, $sql, "i", $channelId)) {
                               $statusMsg = "Records inserted successfully.";
@@ -49,6 +65,9 @@ if(isset($_POST['fileSubmit'])) {
                       } else {
                           $statusMsg = "Sorry, there was an error uploading your file.";
                       }
+                    } else {
+                        $statusMsg = "Sorry, your file too big";
+                    }
                   } else {
                       $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
                   }
@@ -64,7 +83,11 @@ if(isset($_POST['fileSubmit'])) {
         $data = Query($conn, $sql, "si", $upload1, $channelId);
         header("location: channel.php?ChannelId=$channelId");
     } else {
-        echo "Select something else";
+        ?> <script> alert("Please, select a file");
+        window.setTimeout(function() {
+        window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
+        } , 4000);
+        </script> <?php
     }
 }
 
@@ -74,12 +97,10 @@ if(isset($_POST['fileSubmit'])) {
             $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
               if (isset($_POST["fileSubmit"]) && !empty($_FILES["coverUpload"]["name"])) {
-                  // Allow certain file formats
                   $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
                   if (in_array($fileType, $allowTypes)) {
-                      // Upload file to server
-                      if (move_uploaded_file($_FILES["coverUpload"]["tmp_name"], $targetFilePath)) {
-                          // Insert image file name into database
+                    if($_FILES["coverUpload"]["size"] < 10000000) {
+                        if (move_uploaded_file($_FILES["coverUpload"]["tmp_name"], $targetFilePath)) {
                           $sql = "INSERT INTO Channels (`CoverPicture`) VALUES = (?) WHERE id = ?";
                           if (Query($conn, $sql, "i", $channelId)) {
                               $statusMsg = "Records inserted successfully.";
@@ -89,10 +110,12 @@ if(isset($_POST['fileSubmit'])) {
                       } else {
                           $statusMsg = "Sorry, there was an error uploading your file.";
                       }
+                    } else {
+                        $statusMsg = "Sorry, your file too big";
+                    }
                   } else {
                       $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
                   }
               } 
-
 ?>
 
