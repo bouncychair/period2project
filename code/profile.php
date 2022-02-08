@@ -55,7 +55,8 @@ die();*/ ?>
                     if (move_uploaded_file($file, $targetFilePath)) {
                         // Insert image file name into database
                         $sql = "INSERT INTO Users (`ProfilePicture`) VALUES = (?) WHERE id = ?";
-                        if (mysqli_query($conn, $sql)) {
+                        $data= Query($conn, $sql, "si", $fileName, $id);
+                     
                             $statusMsg = "Records inserted successfully.";
                         } else {
                             $statusMsg = "File upload failed, please try again.";
@@ -66,11 +67,7 @@ die();*/ ?>
                 } else {
                     $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
                 }
-            } else {
-            
-            // Display status message
-            echo $statusMsg;
-            }
+                echo $statusMsg;
             ?>
          
 
