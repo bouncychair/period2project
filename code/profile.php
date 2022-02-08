@@ -42,7 +42,7 @@ die();*/ ?>
 
             // File upload path
             $targetDir = "../uploads/";
-            $fileName = ($_FILES["file"]["name"]);
+            $fileName = $_FILES["file"]["name"];
             $file= $_FILES["file"]['tmp_name'];
             $targetFilePath = $targetDir . $fileName;
             $info= finfo_open(FILEINFO_MIME_TYPE);
