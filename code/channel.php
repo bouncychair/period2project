@@ -5,6 +5,8 @@ include "utils.php";
 CheckIdentifier();
 $id = GetUserId($conn);
 $channelId = $_GET['ChannelId'];
+$query = "SELECT `Name` FROM Channels WHERE id = ?";
+$result = Query($conn, $query, "i", $channelId);
 ?>
 
 <!DOCTYPE html>
@@ -16,192 +18,198 @@ $channelId = $_GET['ChannelId'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="Stylesheet.css" type="text/css">
   <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-  
-
-  <title>Channel</title>
+  <title><?php echo $result[0]['Name'] ?></title>
 </head>
 
 <body>
 
   <div class="header">
-      <img src="../img/logo1.png" alt="TocTic_logo">
-      <h2 id="company_name">TocTic</h2>
+    <img src="../img/logo1.png" alt="TocTic_logo">
+    <h2 id="company_name">TocTic</h2>
   </div>
 
   <div class="channel_header">
-      <div id="channel_cover_pic">
-          <?php
-          $sql = "SELECT * FROM `Channels` WHERE id = ?";
-          $data = Query($conn, $sql, "i", $channelId);
-          echo "<img " . $data[0]['id'] . "' src='../uploads/" . $data[0]['CoverPicture'] . "' /></a>";
-          ?>
-      </div>
+    <div id="channel_cover_pic">
+      <?php
+      $sql = "SELECT * FROM `Channels` WHERE id = ?";
+      $data = Query($conn, $sql, "i", $channelId);
+      echo "<img id='" . $data[0]['id'] . "' src='../uploads/" . $data[0]['CoverPicture'] . "' /></a>";
+      ?>
+    </div>
 
-      <div class="post_header_channel">
-          <?php
-          $sql = "SELECT * FROM `Channels` WHERE id = ?";
-          $data = Query($conn, $sql, "i", $channelId);
-          echo "<img " . $data[0]['id'] . "' src='../uploads/" . $data[0]['MainPicture'] . "' /></a>";
-          ?>
-      </div>
+    <div class="post_header_channel">
+      <?php
+      $sql = "SELECT * FROM `Channels` WHERE id = ?";
+      $data = Query($conn, $sql, "i", $channelId);
+      echo "<img id='" . $data[0]['id'] . "' src='../uploads/" . $data[0]['MainPicture'] . "' /></a>";
+      ?>
+    </div>
 
-      <div id="channel_name">
-          <?php
-          $query = "SELECT `Name` FROM Channels WHERE id = ?";
-          $result = Query($conn, $query, "i", $channelId);
-          echo "<h3>" . $result[0]['Name'] . "</h3>";
-          ?>
-      </div>
+    <div id="channel_name">
+      <?php
+      $query = "SELECT `Name` FROM Channels WHERE id = ?";
+      $result = Query($conn, $query, "i", $channelId);
+      echo "<h3>" . $result[0]['Name'] . "</h3>";
+      ?>
+    </div>
 
-      <div id="channel_description">
-          <?php
-          $query = "SELECT `Description` FROM Channels WHERE id = ?";
-          $result = Query($conn, $query, "i", $channelId);
-          echo "<p>" . $result[0]['Description'] . "</p>";
-          ?>
-      </div>
+    <div id="channel_description">
+      <?php
+      $query = "SELECT `Description` FROM Channels WHERE id = ?";
+      $result = Query($conn, $query, "i", $channelId);
+      echo "<p>" . $result[0]['Description'] . "</p>";
+      ?>
+    </div>
 
-      <div id="follow_btn">
-          <?php 
-            $userCheck = "SELECT `id`, `CreatedByUserId` FROM `Channels` WHERE id = ? AND CreatedByUserId = ?";
-            $result = Query($conn, $userCheck, "ii", $channelId, $id);
-              if(sizeof($result) > 0) {
-              }else {
-                $query = "SELECT `UserId`, `ChannelId` FROM Followed WHERE ChannelId = ? AND UserId = ?";
-                $data = Query($conn, $query, "ii", $channelId, $id);
-                  if (sizeof($data) > 0){ 
-                       echo '<form action="follow.php?ChannelId='.$channelId.'"method="post">
+    <div id="follow_btn">
+      <?php
+      $userCheck = "SELECT `id`, `CreatedByUserId` FROM `Channels` WHERE id = ? AND CreatedByUserId = ?";
+      $result = Query($conn, $userCheck, "ii", $channelId, $id);
+      if (sizeof($result) > 0) {
+      } else {
+        $query = "SELECT `UserId`, `ChannelId` FROM Followed WHERE ChannelId = ? AND UserId = ?";
+        $data = Query($conn, $query, "ii", $channelId, $id);
+        if (sizeof($data) > 0) {
+          echo '<form action="follow.php?ChannelId=' . $channelId . '"method="post">
                       <input type="submit" name="Unfollow" value="Unfollow">
                       </form>';
-                  }else{
-                    echo '<form action="follow.php?ChannelId='.$channelId.'"method="post">
+        } else {
+          echo '<form action="follow.php?ChannelId=' . $channelId . '"method="post">
                       <input type="submit" name="Follow" value="Follow">
                       </form>';
-                  }
-                }
-          ?>   
-      </div>
+        }
+      }
+      ?>
+    </div>
 
-      <div id="channel_menu">
-          <?php 
-            $query = "SELECT `CreatedByUserId` `id` FROM `Channels` WHERE CreatedByUserId = ? AND id = ?";
-            $data = Query($conn, $query, "ii", $id, $channelId);
-              if(sizeof($data) > 0) {
-                echo '<button id="channel_menu" onClick="Toggle()">Settings</button>'; 
-              }
-          ?>
-            
-      </div>
+    <div id="channel_menu">
+      <?php
+      $query = "SELECT `CreatedByUserId` `id` FROM `Channels` WHERE CreatedByUserId = ? AND id = ?";
+      $data = Query($conn, $query, "ii", $id, $channelId);
+      if (sizeof($data) > 0) {
+        echo '<button id="channel_menu" onClick="Toggle()">Settings</button>';
+      }
+      ?>
+
+    </div>
   </div>
 
-      <div id="change_channel" style="display: none">
-<hr id="divider">
+  <div id="change_channel" style="display: none">
+    <hr id="divider">
 
-        <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
-          <div id="channel_change_name">
-              <?php 
-                if(isset($_POST['allSubmit'])) {
-                  if(!empty($_POST['ChannelName'])){
-                    if (strlen($_POST['ChannelName']) > 1 && strlen($_POST['ChannelName']) < 30 && ctype_alnum($_POST['ChannelName'])) {
-                      $query = "SELECT * FROM `Channels` WHERE Name = ?";
-                      $data = Query($conn, $query, "s", $_POST['ChannelName']);
-                        if (sizeof($data) > 0){ 
-                        }else {
-                          $channelName = $_POST['ChannelName'];
-                          $query = "UPDATE Channels SET `Name` = ? WHERE id = ?";
-                          $data = Query($conn, $query, "si", $channelName, $channelId);
-                            echo "Adding succesful!";
-                            header("location: channel.php?ChannelId=$channelId");
+    <form action="<?php htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+      <div id="channel_change_name">
+        <?php
+        if (isset($_POST['allSubmit'])) {
+          if (!empty($_POST['ChannelName'])) {
+            if (strlen($_POST['ChannelName']) > 1 && strlen($_POST['ChannelName']) < 30 && ctype_alnum($_POST['ChannelName'])) {
+              $query = "SELECT * FROM `Channels` WHERE Name = ?";
+              $data = Query($conn, $query, "s", $_POST['ChannelName']);
+              if (sizeof($data) > 0) {
+              } else {
+                $channelName = $_POST['ChannelName'];
+                $query = "UPDATE Channels SET `Name` = ? WHERE id = ?";
+                $data = Query($conn, $query, "si", $channelName, $channelId);
+                echo "Adding succesful!";
+        ?> <script>
+                  window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
+                </script> <?php
                         }
+                      }
                     }
                   }
-                } 
-              ?>
-              <p>Change content of the channel</p>
-<hr id="divider"> 
-              <input type="text" name="ChannelName" placeholder="Change Name">
-          </div> 
+                          ?>
+        <p>Change content of the channel</p>
+        <hr id="divider">
+        <input type="text" name="ChannelName" placeholder="Change Name">
+      </div>
 
-          <div id="channel_change_description">
-            <?php
-              if (isset($_POST['allSubmit'])) {
-                if (!empty($_POST['ChannelDescription'])) {
-                    if (strlen($_POST['ChannelDescription']) > 1 && strlen($_POST['ChannelDescription']) < 201   /*&& ctype_alnum($_POST['ChannelDescription'])*/) {
-                        $query = "SELECT * FROM `Channels` WHERE Description = ?";
-                        $data = Query($conn, $query, "s", $_POST['ChannelDescription']);
-                        if (sizeof($data) > 0) {
-                            echo "<p>Bad boy</p>";
-                        } else {
-                            $channelDescription = $_POST['ChannelDescription'];
-                            $query = "UPDATE Channels SET `Description` = ? WHERE id = ?";
-                            $data = Query($conn, $query, "si", $channelDescription, $channelId);
-                            header("location: channel.php?ChannelId=$channelId");
+      <div id="channel_change_description">
+        <?php
+        if (isset($_POST['allSubmit'])) {
+          if (!empty($_POST['ChannelDescription'])) {
+            if (strlen($_POST['ChannelDescription']) > 1 && strlen($_POST['ChannelDescription']) < 201   /*&& ctype_alnum($_POST['ChannelDescription'])*/) {
+              $query = "SELECT * FROM `Channels` WHERE Description = ?";
+              $data = Query($conn, $query, "s", $_POST['ChannelDescription']);
+              if (sizeof($data) > 0) {
+                echo "<p>You cannot add the same description</p>";
+              } else {
+                $channelDescription = $_POST['ChannelDescription'];
+                $query = "UPDATE Channels SET `Description` = ? WHERE id = ?";
+                $data = Query($conn, $query, "si", $channelDescription, $channelId);
+        ?> <script>
+                  window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
+                </script> <?php
                         }
+                      }
                     }
-                }
-              }
-              ?>
-              <!-- <p><u>Change the description</u></p> -->
-              <input type="text" name="ChannelDescription" placeholder="Change Description">
-          </div>
-                <input type="submit" name="allSubmit" value="Update">
-          </form>
+                  }
+                          ?>
+        <!-- <p><u>Change the description</u></p> -->
+        <input type="text" name="ChannelDescription" placeholder="Change Description">
+      </div>
+      <input type="submit" name="allSubmit" value="Update">
+    </form>
 
-        <div id="FileUpload">
-          <form action="channelChange.php?ChannelId=<?php echo $channelId; ?>" method="post" enctype="multipart/form-data">
-          <div id="channel_change_mainpic">
-<hr id="divider">
-              <!-- <p><u>Change main picture</u></p> -->
-              <label for="MainUpload">Change Main Picture</label>
-              <input type="file" name="mainUpload" id="MainUpload">
-          </div> 
-
-          <div id="channel_change_cover">
-              <!-- <p><u>Change cover page</u></p> -->
-              <label for="CoverUpload">Change Cover Picture</label>
-              <input type="file" name="coverUpload" id="CoverUpload">
-          </div>
-              <input type="submit" name="fileSubmit" value="Update">
+    <div id="FileUpload">
+      <form action="channelChange.php?ChannelId=<?php echo $channelId; ?>" method="post" enctype="multipart/form-data">
+        <div id="channel_change_mainpic">
+          <hr id="divider">
+          <!-- <p><u>Change main picture</u></p> -->
+          <label for="MainUpload">Change Main Picture</label>
+          <input type="file" name="mainUpload" id="MainUpload">
         </div>
 
-          <div id="channel_delete">
-              <?php
-                if(isset($_POST['ChannelDeleteSubmit'])) {
-                  $query = "DELETE FROM `Channels` WHERE id = ?";
-                  $data = Query($conn, $query, "i", $channelId);
+        <div id="channel_change_cover">
+          <!-- <p><u>Change cover page</u></p> -->
+          <label for="CoverUpload">Change Cover Picture</label>
+          <input type="file" name="coverUpload" id="CoverUpload">
+        </div>
+        <input type="submit" name="fileSubmit" value="Update">
+        <hr id="divider">
+    </div>
+
+    <div id="channel_delete">
+      <?php
+      if (isset($_POST['ChannelDeleteSubmit'])) {
+        $query = "DELETE FROM `Channels` WHERE id = ?";
+        $data = Query($conn, $query, "i", $channelId);
+      ?> <script>
+          window.location = 'main.php';
+        </script> <?php
                 }
-              ?>
-<hr id="divider">
-              <input type="submit" onClick="Delete()" value="Delete Channel" name="ChannelDeleteSubmit" />
-                      <!--  <div id="channel_delete_toggle">
+                  ?>
+      <input type="submit" onClick="Delete()" value="Delete Channel" name="ChannelDeleteSubmit" />
+      <!--  <div id="channel_delete_toggle">
                           <input type="submit" name="ChannelDeleteSubmit" value="Yes">
                           <button>No</button>
                         </div>-->
-          </div>  
-          <?php //} ?>
-      </div>
-  
+    </div>
+    <?php //} 
+    ?>
+  </div>
 
-  <hr id="divider">
+
+  <hr id="bigdivider">
   <!-- INSERT CONTENT AFTER THAT -->
-              <?php
-                $query = "SELECT Posts.*, Users.id UserId, Users.Username, Users.ProfilePicture FROM `Posts`, Users WHERE ChannelId = ? AND CreatedByUserId = Users.Id";
-                $data = Query($conn, $query, "i", $channelId);
-                  for ($i = 0; $i < sizeof($data); $i++) {
-                    $query = "SELECT COUNT(CASE WHEN Comments.PostId = ? THEN 1 ELSE NULL END) Comments FROM Comments";
-                    $commentsAmount = Query($conn, $query, "i", $data[$i]["id"]);
-                    $query = "SELECT COUNT(CASE WHEN Likes.PostId = ? THEN 1 ELSE NULL END) Likes FROM Likes";
-                    $likesAmount = Query($conn, $query, "i", $data[$i]["id"]);
-                    $query = "SELECT * FROM Likes WHERE UserId = ? AND PostId = ?";
-                    $likeCheck = Query($conn, $query, "ii", $id, $data[$i]["id"]);
-                      (sizeof($likeCheck) == 0) ? $likeIconName = "like.png" : $likeIconName = "liked.png";
+  <?php
+  $query = "SELECT Posts.*, Users.id UserId, Users.Username, Users.ProfilePicture FROM `Posts`, Users WHERE ChannelId = ? AND CreatedByUserId = Users.Id";
+  $data = Query($conn, $query, "i", $channelId);
+  for ($i = 0; $i < sizeof($data); $i++) {
+    $query = "SELECT COUNT(CASE WHEN Comments.PostId = ? THEN 1 ELSE NULL END) Comments FROM Comments";
+    $commentsAmount = Query($conn, $query, "i", $data[$i]["id"]);
+    $query = "SELECT COUNT(CASE WHEN Likes.PostId = ? THEN 1 ELSE NULL END) Likes FROM Likes";
+    $likesAmount = Query($conn, $query, "i", $data[$i]["id"]);
+    $query = "SELECT * FROM Likes WHERE UserId = ? AND PostId = ?";
+    $likeCheck = Query($conn, $query, "ii", $id, $data[$i]["id"]);
+    (sizeof($likeCheck) == 0) ? $likeIconName = "like.png" : $likeIconName = "liked.png";
 
-                        echo  '
+    echo  '
                               <div class="post">
                                 <div class="post_header">';
-                        echo  '<img src="../uploads/' . $data[$i]['ProfilePicture'] . '" />
+    echo  '<img src="../uploads/' . $data[$i]['ProfilePicture'] . '" />
                                 <div>';
-                        echo  ' <a>' . $data[$i]["Username"] . '</a>
+    echo  ' <a>' . $data[$i]["Username"] . '</a>
                                 </div>
                                 </div>
                                 <div class="post_caption">
@@ -235,14 +243,14 @@ $channelId = $_GET['ChannelId'];
                                     </div>
                                 </div>    
                                     <a class="likescount">' . $likesAmount[0]["Likes"] . '</a>
-                                    <img src="../img/comment.png">
+                                    <img src="../img/comment.png" onclick="OpenPost(' . $data[$i]['id'] . ')">
                                     <a>' . $commentsAmount[0]["Comments"] . '</a>
                                 </div>
                             </div>
 
                             ';
-                  }
-              ?>
+  }
+  ?>
 
 
 
@@ -251,10 +259,50 @@ $channelId = $_GET['ChannelId'];
   <!-- Obiviously a footer -->
   <?php include "footer.php"; ?>
   <script>
+    function OpenPost(id) {
+      location.href = "post.php?PostId=" + id;
+    }
+
     function OpenReactions(id) {
       var popup = document.getElementById("Popup " + id);
       popup.classList.toggle("show");
     }
+    $(document).ready(function() {
+      var posts = document.getElementsByClassName("post");
+      for (let i = 0; i < posts.length; i++) {
+        var postId = posts[i].getElementsByClassName("like_section")[0].id;
+
+        postId = postId.substr(5);
+        var like = "GetLikes";
+
+        $.ajax({
+          type: 'POST',
+          url: 'like.php',
+          dataType: "json",
+          data: ({
+            "PostId": postId,
+            "Like": like
+          }),
+
+          success: function(data) {
+            postId = data[0].postId
+            var likeText = document.getElementById("Post " + postId).getElementsByClassName("likescount")[0];
+            var likeGifText = document.getElementById("Post " + postId).getElementsByClassName("like-gif-count")[0];
+            var thinkGifText = document.getElementById("Post " + postId).getElementsByClassName("think-gif-count")[0];
+            var laughGifText = document.getElementById("Post " + postId).getElementsByClassName("laugh-gif-count")[0];
+            var angryGifText = document.getElementById("Post " + postId).getElementsByClassName("angry-gif-count")[0];
+            var sadGidText = document.getElementById("Post " + postId).getElementsByClassName("sad-gif-count")[0];
+            likeText.innerHTML = data[0].all;
+            likeGifText.innerHTML = data[0].like;
+            thinkGifText.innerHTML = data[0].think;
+            laughGifText.innerHTML = data[0].laugh;
+            angryGifText.innerHTML = data[0].angry;
+            sadGidText.innerHTML = data[0].sad;
+
+          }
+        });
+      }
+    });
 
     function Like(UserId, PostId, Reaction, LikesCount) {
       var Like;
@@ -302,12 +350,12 @@ $channelId = $_GET['ChannelId'];
 
     }
 
-    function Toggle(){
+    function Toggle() {
       var x = document.getElementById("change_channel");
-       if (x.style.display === "none") {
-          x.style.display = "block";
-        } else {
-          x.style.display = "none";
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
       }
     }
 
@@ -319,8 +367,7 @@ $channelId = $_GET['ChannelId'];
         x.style.display = "none";
       }
     }*/
-
-
   </script>
 </body>
+
 </html>

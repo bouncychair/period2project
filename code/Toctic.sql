@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Dec 09, 2021 at 12:55 PM
+-- Generation Time: Feb 08, 2022 at 01:42 PM
 -- Server version: 10.6.4-MariaDB-1:10.6.4+maria~focal
 -- PHP Version: 7.4.25
 
@@ -34,8 +34,22 @@ CREATE TABLE `Channels` (
   `MainPicture` varchar(255) DEFAULT NULL,
   `CoverPicture` varchar(255) DEFAULT NULL,
   `Description` varchar(200) DEFAULT NULL,
-  `RegDate` date NOT NULL
+  `RegDate` date NOT NULL,
+  `Type` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Channels`
+--
+
+INSERT INTO `Channels` (`id`, `CreatedByUserId`, `Name`, `MainPicture`, `CoverPicture`, `Description`, `RegDate`, `Type`) VALUES
+(1, 6, 'FirstChannel', '1400.jpeg', NULL, 'This is first channel', '2021-12-09', ''),
+(2, 7, 'geekcommunity', 'avatar.png', 'Flag-of-The-Netherlands3.png', 'Test description', '2021-12-20', ''),
+(15, 7, 'Netherlands', 'Picture20220111200512531e0475545976e249eb6eca919b51.gif', 'Picture202201112005800px-Flag_of_the_Netherlands.png', 'Hi there', '2022-01-11', 'Everything'),
+(16, 6, 'Github', 'Picture2022012474535Picture20220111200512531e0475545976e249eb6eca919b51.gif', 'Picture20220124745351200px-Flag_of_the_United_Kingdom.svg.png', 'This channel is just for testing', '2022-01-24', 'Everything'),
+(17, 6, 'jajaja', 'Picture2022020880262Screen Shot 1400-11-17 at 12.55.35.png', 'Picture2022020880262Screen Shot 1400-11-10 at 15.46.49.png', 'jajajaja', '2022-02-08', 'photo'),
+(18, 6, 'dadad', 'Picture2022020820569Screen Shot 1400-11-17 at 12.55.35.png', 'Picture2022020820569Screen Shot 1400-11-10 at 15.47.23.png', 'adadad', '2022-02-08', 'photo'),
+(19, 6, 'CreatedChannelfsf', 'Picture2022020829347Screen Shot 1400-11-10 at 15.47.23.png', 'Picture2022020829347Screen Shot 1400-11-10 at 15.47.23.png', 'sfsfsf', '2022-02-08', 'photo');
 
 -- --------------------------------------------------------
 
@@ -58,9 +72,18 @@ CREATE TABLE `Comments` (
 --
 
 CREATE TABLE `Followed` (
+  `id` int(11) NOT NULL,
   `UserId` int(11) NOT NULL,
   `ChannelId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Followed`
+--
+
+INSERT INTO `Followed` (`id`, `UserId`, `ChannelId`) VALUES
+(3, 7, 2),
+(4, 7, 1);
 
 -- --------------------------------------------------------
 
@@ -75,6 +98,13 @@ CREATE TABLE `Likes` (
   `Reaction` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `Likes`
+--
+
+INSERT INTO `Likes` (`id`, `UserId`, `PostId`, `Reaction`) VALUES
+(463, 7, 7, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -83,8 +113,9 @@ CREATE TABLE `Likes` (
 
 CREATE TABLE `Notifications` (
   `id` int(11) NOT NULL,
-  `UserId` int(11) NOT NULL,
-  `PostId` int(11) NOT NULL
+  `ChannelId` int(11) NOT NULL,
+  `PostId` int(11) NOT NULL,
+  `Date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -102,6 +133,19 @@ CREATE TABLE `Posts` (
   `Caption` varchar(500) DEFAULT NULL,
   `Date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Posts`
+--
+
+INSERT INTO `Posts` (`id`, `CreatedByUserId`, `ChannelId`, `ImageName`, `VideoName`, `Caption`, `Date`) VALUES
+(7, 7, 1, 'cute-penguin-cartoon-icon-vector.jpeg103655.jpeg', NULL, 'Test post', '2022-01-11'),
+(10, 7, 1, 'funny-dancing-cartoon-penguin-earmuffs-vector-flat-illustration-adorable-happy-polar-animal-moving-warm-accessory-isolated-175368179.jpeg103829.jpeg', NULL, 'post 2', '2022-01-11'),
+(13, 7, 1, NULL, NULL, 'Hi guys, How are you today?', '2022-01-11'),
+(14, 7, 1, NULL, NULL, 'Wassuppp', '2022-01-11'),
+(15, 7, 1, NULL, NULL, 'Wassuppp', '2022-01-11'),
+(16, 7, 2, NULL, NULL, 'Wassuppp', '2022-01-11'),
+(17, 7, 2, 'paper-plane-10.png', NULL, 'hahahahha', '2022-01-11');
 
 -- --------------------------------------------------------
 
@@ -137,6 +181,18 @@ CREATE TABLE `Users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `Users`
+--
+
+INSERT INTO `Users` (`id`, `FirstName`, `LastName`, `Username`, `Email`, `Password`, `Country`, `Gender`, `Age`, `RegDate`, `ProfilePicture`, `Identifier`) VALUES
+(6, 'Sahib', 'Zulfigar', 'sahibthecreator', 'sahibzulfigar4@gmail.com', '$2y$10$/Mr3uCYRSQIGp7gm9tpsOusN8JkHbXQJzTpj5eBjXnBa2njZcCrKC', 'Netherlands', 'Male', 17, '2021-12-09', '391912870_CHRISTMAS_TREE_400px.gif', '61b200540e92a6.83807161'),
+(7, 'Bob', 'Test', 'Rob', 'sahibzulfigar4@gmail.com', '$2y$10$RGWX1YrZ6uGyxwGqriosn.nCdw4MA5hCWY5cwDOwJzDn97BBy8hG.', 'Netherlands', 'Male', 21, '2021-12-09', 'joker (1).jpg', '61b238d576f565.22469766'),
+(8, 'Bob', 'Test', 'bobtester', 'sahibzulfigar4@gmail.com', '$2y$10$gJ0TIth/IoVV9cMaZTtFlOSi/VZYWQeSzPgCxYnqVTbzbISCeLjfq', 'Netherlands', 'Male', 21, '2021-12-09', 'DefaultProfile.png', '61b238dbbff6d8.91529916'),
+(9, 'MrTest', 'Tester', 'mrtester', 'sahibzulfigar4@gmail.com', '$2y$10$ArXk97vGOci/Zw9P9GqAyO102RBFt6SshFU8RiOWk0oMzZgMFmnPy', 'Netherlands', 'Other', 29, '2021-12-10', 'DefaultProfile.png', '61b33747c7b1a2.85638735'),
+(10, 'Test', 'Ivanov', 'ivanov91', 'sahibzulfigar4@gmail.com', '$2y$10$Dz8oAn5bwYm9Ts5UGr7RauhRIgiqlbNq8JhqbVbOifEyMsWeUjdJ6', 'United Kingdom', 'Male', 10, '2021-12-22', 'DefaultProfile.png', '61c36a9a0362c0.36966284'),
+(11, 'test', 'test', 'test183', 'sahibzulfigar4@gmail.com', '$2y$10$PWPyM8AxIm96cz9zSZgJkO3ZusTCXxEHQ88VzWBgiVxH6duMaFERe', 'Netherlands', 'Male', 17, '2022-02-08', 'DefaultProfile.png', '62026f16ec94f9.37719721');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -159,6 +215,7 @@ ALTER TABLE `Comments`
 -- Indexes for table `Followed`
 --
 ALTER TABLE `Followed`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `Remove Follow if no User` (`UserId`),
   ADD KEY `Remove Follow if no channel` (`ChannelId`);
 
@@ -175,8 +232,8 @@ ALTER TABLE `Likes`
 --
 ALTER TABLE `Notifications`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `Remove Notification if no User` (`UserId`),
-  ADD KEY `Remove Notification if no Post` (`PostId`);
+  ADD KEY `Remove Notification if no Post` (`PostId`),
+  ADD KEY `Remove Notification if no User` (`ChannelId`);
 
 --
 -- Indexes for table `Posts`
@@ -207,31 +264,37 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT for table `Channels`
 --
 ALTER TABLE `Channels`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `Comments`
 --
 ALTER TABLE `Comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
+--
+-- AUTO_INCREMENT for table `Followed`
+--
+ALTER TABLE `Followed`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Likes`
 --
 ALTER TABLE `Likes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=464;
 
 --
 -- AUTO_INCREMENT for table `Notifications`
 --
 ALTER TABLE `Notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Posts`
 --
 ALTER TABLE `Posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `Tokens`
@@ -243,7 +306,7 @@ ALTER TABLE `Tokens`
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
@@ -281,7 +344,7 @@ ALTER TABLE `Likes`
 --
 ALTER TABLE `Notifications`
   ADD CONSTRAINT `Remove Notification if no Post` FOREIGN KEY (`PostId`) REFERENCES `Posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `Remove Notification if no User` FOREIGN KEY (`UserId`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `Remove Notification if no User` FOREIGN KEY (`ChannelId`) REFERENCES `Channels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Posts`

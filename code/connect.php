@@ -1,10 +1,10 @@
 <?php
-$servername = "localhost";
+$servername = "mysql";
 $username = "root";
-$password = "";
+$password = "qwerty";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, "toctic");
+$conn = new mysqli($servername, $username, $password, "Toctic");
 
 // Check connection
 if ($conn->connect_error) {

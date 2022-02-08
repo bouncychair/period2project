@@ -38,46 +38,34 @@ die();*/ ?>
             $statusMsg = '';
         ?></div> 
         <?php
-            $upload= $_FILES["file"]["name"];
-            if (isset($_POST["submitty"])) {
-                if (!empty($_FILES["file"]["name"])) {
-                    $sql = "UPDATE Users SET `ProfilePicture` = ? WHERE id=?";
-                    $data = Query($conn, $sql, "si", $upload, $id);
-                }else
-                echo "Please select new Profile Picture";
-                header("Location:profile.php");
-            }
+            
 
-            // File upload path
-            $targetDir = "../uploads/";
-            $fileName = @basename($_FILES["file"]["name"]);
-            $targetFilePath = $targetDir . $fileName;
-            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-
-            if (isset($_POST["submitty"]) && !empty($_FILES["file"]["name"])) {
+            
+            if (isset($_POST["submitty"]) && !empty($fileName)) {
+                // File upload path
+                $targetDir = "../uploads/";
+                $fileName = $_FILES["file"]["name"];
+                $file= $_FILES["file"]['tmp_name'];
+                $targetFilePath = $targetDir . $fileName;
+                $info= finfo_open(FILEINFO_MIME_TYPE);
                 // Allow certain file formats
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
-                if (in_array($fileType, $allowTypes)) {
+                $allowTypes =["image/jpg", "image/jpeg", "image/png", "image/gif"];
+                if (in_array($info, $allowTypes)) {
                     // Upload file to server
-                    if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)) {
+                    if (move_uploaded_file($file, $targetFilePath)) {
                         // Insert image file name into database
                         $sql = "INSERT INTO Users (`ProfilePicture`) VALUES = (?) WHERE id = ?";
-                        if (mysqli_query($conn, $sql)) {
+                        $data= Query($conn, $sql, "si", $fileName, $id);
+                     
                             $statusMsg = "Records inserted successfully.";
                         } else {
                             $statusMsg = "File upload failed, please try again.";
                         }
                     } else {
-                        $statusMsg = "Sorry, there was an error uploading your file.";
+                        $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
                     }
-                } else {
-                    $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
-                }
-            } else {
-            
-            // Display status message
-            echo $statusMsg;
-            }
+                    echo $statusMsg;
+                } 
             ?>
          
 
@@ -92,7 +80,7 @@ die();*/ ?>
     </div>
 
     <div id="upload">
-        <form action="" method="POST" enctype="multipart/form-data"> <!-- does not take the uploaded files because it overwrites it with 2x submitty-->
+        <form action="upload.php" method="POST" enctype="multipart/form-data"> <!-- does not take the uploaded files because it overwrites it with 2x submitty-->
             <p><u>Choose a new Profile Picture:</u></p>
             <label for="photo-upload"> <b> Choose Photo</b></label> 
             <input type="file" name="file" id="photo-upload" style="display: none">
@@ -126,9 +114,8 @@ die();*/ ?>
             <button class="loggoutt" name="out"> Logout</button>
            <?php
             if(isset($_POST['out'])) {
-                unset($_SESSION["id"]);
-                unset($_SESSION["name"]);
-                header("Location:authentication.php");
+                unset($_SESSION["Identifier"]);
+                GoToUrl("authentication.php");
             }
             ?>
             </form>

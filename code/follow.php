@@ -10,7 +10,7 @@ $channelId = $_GET['ChannelId'];
 if (isset($_POST['Unfollow'])) {
     $query = "DELETE FROM `Followed` WHERE UserId=? AND ChannelId = ?";
     $data = Query($conn, $query, "ii", $id, $channelId);
-    header("location: channel.php?ChannelId=$channelId");
+    GoToUrl("channel.php?ChannelId=$channelId");
 }
 
 if (isset($_POST['Follow'])) {
@@ -18,7 +18,7 @@ if (isset($_POST['Follow'])) {
     //$ChannelIdFollow = $_POST['ChannelId'];
     $query = "INSERT INTO `Followed` (`ChannelId`, `UserId`) VALUES (?, ?)";
     Query($conn, $query, "ii", $channelId, $id);
-    header("location: channel.php?ChannelId=$channelId");
-                    }
+    GoToUrl("channel.php?ChannelId=$channelId");
+}
 
 ?>

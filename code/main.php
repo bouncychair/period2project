@@ -30,7 +30,7 @@ $data = Query($conn, $query, "i", $id);
     <div class="scrollmenu">
         <?php
 
-        $query = "SELECT * FROM `Channels`, Followed WHERE Followed.UserId = ? AND Followed.ChannelId = Channels.id";
+        $query = "SELECT Channels.*, Followed.UserId, Followed.ChannelId FROM `Channels`, Followed WHERE Followed.UserId = ? AND Followed.ChannelId = Channels.id";
         $data = Query($conn, $query, "i", $id);
         if (sizeof($data) > 0) {
             for ($i = 0; $i < sizeof($data); $i++) {
@@ -72,6 +72,8 @@ $data = Query($conn, $query, "i", $id);
         $query = "SELECT * FROM Likes WHERE UserId = ? AND PostId = ?";
         $likeCheck = Query($conn, $query, "ii", $id, $data[$i]["id"]);
         (sizeof($likeCheck) == 0) ? $likeIconName = "like.png" : $likeIconName = "liked.png";
+        $query = "SELECT VideoName FROM Posts WHERE id = ?";
+        $isVideo = Query($conn, $query, "i", $data[$i]["id"]);
 
         echo '
         <div class="post">
@@ -87,9 +89,19 @@ $data = Query($conn, $query, "i", $id);
             </div>
             <div class="post_caption">
                 <p>' . $data[$i]['Caption'] . '</p>
-            </div>
-            <div><img src="../uploads/' . $data[$i]['ImageName'] . '" alt="Post"></div>
-            <div class="like_section" id="Post ' . $data[$i]['id'] . '">
+            </div>';
+        if (!($data[$i]["ImageName"] == null && $data[$i]["VideoName"] == null)) {
+            if ($isVideo[0]['VideoName'] == null)
+                echo '<div><img src="../uploads/' . $data[$i]['ImageName'] . '" alt="Post"></div>';
+            else {
+                echo '<div>
+                <video width="100%" controls>
+                <source src="../uploads/' . $data[$i]['VideoName'] . '">
+                Your browser does not support the video tag.
+              </video></div>';
+            }
+        }
+        echo '<div class="like_section" id="Post ' . $data[$i]['id'] . '">
             <div class="popup">
                 <img onclick="OpenReactions(' . $data[$i]['id'] . ')" src="../img/' . $likeIconName . '">
                 <div class="popuptext" id="Popup ' . $data[$i]['id'] . '">
@@ -147,7 +159,7 @@ $data = Query($conn, $query, "i", $id);
             for (let i = 0; i < posts.length; i++) {
                 var postId = posts[i].getElementsByClassName("like_section")[0].id;
 
-                postId = postId.substr(postId.length - 1);
+                postId = postId.substr(5);
                 var like = "GetLikes";
 
                 $.ajax({
@@ -225,6 +237,6 @@ $data = Query($conn, $query, "i", $id);
 
         }
     </script>
-</body> 
-        
-</html> 
+</body>
+
+</html>
