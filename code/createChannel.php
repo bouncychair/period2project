@@ -112,9 +112,9 @@ $id = GetUserId($conn);
                 $target_file_main = $target_dir . $rename . basename($_FILES["mainphoto"]["name"]);
                 $sqlMainPhoto = $rename . basename($_FILES["mainphoto"]["name"]);
                 // Get file extension
-                $imageExtension = strtolower(pathinfo($target_file_main, PATHINFO_EXTENSION));
+                $imageExtension = finfo_open(FILEINFO_MIME_TYPE);
                 // Allowed file types
-                $allowd_file_ext = array("jpg", "jpeg", "png", "gif");
+                $allowd_file_ext = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
                 //checking if there is an uploaded file
                 if (!file_exists($_FILES["mainphoto"]["tmp_name"])) {
                     echo '<span style="color:red;text-align:center;font-size:18px;">Please select main image to upload.</span>';
@@ -139,7 +139,7 @@ $id = GetUserId($conn);
                 $target_file_cover = $target_dir . $rename . basename($_FILES["coverphoto"]["name"]);
                 $sqlCoverPicture = $rename . basename($_FILES["coverphoto"]["name"]);
                 // Get file extension
-                $imageExtension = strtolower(pathinfo($target_file_cover, PATHINFO_EXTENSION));
+                $imageExtension = finfo_open(FILEINFO_MIME_TYPE);
                 //checking if there is an uploaded file
                 if (!file_exists($_FILES["coverphoto"]["tmp_name"])) {
                     echo '<span style="color:red;text-align:center;font-size:18px;">Please select cover image to upload.</span>';
