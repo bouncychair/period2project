@@ -1018,13 +1018,12 @@ label {
 
 .main-notifications {
     background-color: #182952;
-    height: 926px;
+    height: 100%;
     width: 100%;
 }
 .box-notifications {
     background-color: white;
     height: 50px;
-    width: 500px;
     border-radius: 30px;
     margin-bottom: 20px;
     padding: 1px;
