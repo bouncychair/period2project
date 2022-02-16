@@ -982,7 +982,7 @@ input[type=file] {
     display: inline;
     float: right;
     padding: 0%;
-}
+} 
 
 #loggout button {
     position: relative;
@@ -1021,14 +1021,12 @@ label {
 
 .main-notifications {
     background-color: #182952;
-    height: 926px;
+    height: 100%;
     width: 100%;
 }
-
 .box-notifications {
     background-color: white;
     height: 50px;
-    width: 500px;
     border-radius: 30px;
     margin-bottom: 20px;
     padding: 1px;
@@ -1036,12 +1034,10 @@ label {
     font-size: large;
     margin-inline: auto;
 }
-
 .box-notifications p {
     padding-left: 40px;
     color: black;
 }
-
 .texth3 {
     width: 234, 5px;
     margin: 0px;
@@ -1049,8 +1045,6 @@ label {
     font-size: 35px;
     padding: 30px;
 }
-
-
 /* Post page ------------------------------------------------------------------------*/
 
 .post_comments {

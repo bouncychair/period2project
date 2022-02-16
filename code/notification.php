@@ -23,18 +23,21 @@ $id = GetUserId($conn);
       
       <?php
          //$postid = $_GET['Postsid'];
-         $query = "SELECT Channels.Name,Notifications.* FROM Notifications, Followed, Channels WHERE Channels.id = Notifications.ChannelId AND Notifications.ChannelId = Followed.ChannelId AND Followed.UserId = ? GROUP BY `date`";
+         $query = "SELECT Channels.Name,Notifications. * FROM Notifications, Followed, Channels WHERE Channels.id = Notifications.ChannelId AND Notifications.ChannelId = Followed.ChannelId AND Followed.UserId = ? ORDER BY `date`";
          $data = Query($conn, $query, "i", $id);
-         if ("SELECT Users.Id, Posts.id FROM `followed`, `Posts` WHERE Followed.UserId = ? AND Channels.UserId = Followed.UserId AND Post.id = ?"){
+         if(sizeof($data) > 0){
+           for ($i=0; $i < sizeof($data); $i++) { 
             echo "<div class='box-notifications'>";
-            echo "<p>" . $data[0]['Name']. " is created a post </p>
-          </div>";
+            echo "<p>There is a new post in " . $data[$i]['Name']. "</p>
+            </div>";
+           }
          }else{
-           echo "You are not subscribed to the channel!";
+          echo "<div class='box-notifications'>";
+          echo "<p>There is no new notifications</p>
+          </div>";
          }
-         for ($i = 15; $i < sizeof($data); $i++ ){
-          echo $data[0]['Name']. " is created a post";
-         }
+            
+    
      
     ?> 
     <?php
