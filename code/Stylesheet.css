@@ -1021,7 +1021,6 @@ label {
     height: 926px;
     width: 100%;
 }
-
 .box-notifications {
     background-color: white;
     height: 50px;
@@ -1033,12 +1032,10 @@ label {
     font-size: large;
     margin-inline: auto;
 }
-
 .box-notifications p {
     padding-left: 40px;
     color: black;
 }
-
 .texth3 {
     width: 234, 5px;
     margin: 0px;
@@ -1046,8 +1043,6 @@ label {
     font-size: 35px;
     padding: 30px;
 }
-
-
 /* Post page ------------------------------------------------------------------------*/
 
 .post_comments {
