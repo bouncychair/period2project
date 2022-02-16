@@ -88,7 +88,7 @@ $id = GetUserId($conn);
     if (isset($_POST['submitPhoto'])) {
       if (!empty($_POST['searchChannel'])) {
         $photoDescription = $_POST["photoDescription"];
-        $channelId = "SELECT Followed.`ChannelId` FROM Followed, Channels WHERE Followed.UserId = ? AND Channels.`Name` = ? AND Followed.ChannelId = Channels.id";
+        $channelId = "SELECT Followed.`ChannelId` FROM Followed, Channels WHERE Followed.UserId = ? AND Channels.`Name` = ? AND Followed.ChannelId = Channels.id AND Channels.CreatedByUserId = ?";
         $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
         if($chId != NULL) {
         if ($_FILES["photoUpload"]["size"] < 3000000) {
