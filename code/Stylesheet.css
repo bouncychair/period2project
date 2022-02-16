@@ -949,6 +949,9 @@ input[type=file] {
     margin: auto;
     display: block;
     margin: 0 auto;
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
 }
 
 .name p {
