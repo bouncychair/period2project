@@ -1,0 +1,23 @@
+.main-notifications{
+    background-color: #182952;
+    height: 926px;
+    width: 100%;
+}
+.box-notifications{
+    background-color: white;
+    height: 100px;
+    width: 500px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+}
+.box-notifications p, a{
+    padding-left: 40px;
+}
+h3 {
+	width: 234,5px;
+	margin:0px;
+	color: #E14594;
+	font-size: 35px;
+	padding: 30px;
+
+}
