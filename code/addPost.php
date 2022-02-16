@@ -238,6 +238,8 @@ $id = GetUserId($conn);
                   if (move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/" . $_FILES["videoUpload"]["name"])) {
                     $insertVideo = "INSERT INTO Posts (CreatedByUserId, ChannelId, VideoName, Caption, `Date`) VALUES (?,?,?,?,?)";
                     $insertV = Query($conn, $insertVideo, "iisss", $id, $chId[0]["ChannelId"], $_FILES["videoUpload"]["name"], $videoDescription, $date);
+                    $videonotify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+                    $videon = Query($conn, $videonotify, "iis", $id, $chId[0]["ChannelId"], $date);
                     if ($insertV == 1) {
                       echo "Your post has been uploaded.";
                     } else {
@@ -272,6 +274,8 @@ $id = GetUserId($conn);
         if (!empty($_POST['textUpload'])) {
           $insertText = "INSERT INTO Posts (CreatedByUserId, ChannelId, Caption, `Date`) VALUES (?,?,?,?)";
           $insertT = Query($conn, $insertText, "iiss", $id, $chId[0]["ChannelId"], $text, $date);
+          $videonotify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+          $videon = Query($conn, $videonotify, "iis", $id, $chId[0]["ChannelId"], $date);
           if($insertT == 1){
             echo "Your post has been uploaded.";
            } else{
