@@ -537,11 +537,11 @@ div.scrollmenu a:hover {
 /* Channel Page -----------------------------------------------------------------------*/
 
 .channel_header {
-    height: 175px;
+    height: 250px;
     width: 100%;
     display: grid;
-    grid-template-columns: 5% 10% 20% 39% 21% 5%;
-    grid-template-rows: 10% 30% 25% 25% 10%;
+    grid-template-columns: 3% 10% 20% 2% 39% 21% 5%;
+    grid-template-rows: 10% 30% 25% 15% 15% 5%;
 }
 
 .channel_header h3 {
@@ -552,7 +552,7 @@ div.scrollmenu a:hover {
 
 .channel_header p {
     margin: 0px;
-    padding-top: 20px;
+    /*padding-top: 20px;*/
 }
 
 #channel_pic {
@@ -562,7 +562,10 @@ div.scrollmenu a:hover {
 
 #channel_name {
     grid-row: 2;
-    grid-column: 4;
+    grid-column: 5;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
 #channel_name h3 {
@@ -574,10 +577,14 @@ div.scrollmenu a:hover {
 
 #channel_description {
     grid-row: 3;
-    grid-column: 4;
-    margin: 50px 0;
+    grid-column: 5;
+    display: flex;
 }
-
+.desc {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
 #divider {
     border: solid purple 1px;
     width: 100%;
@@ -586,24 +593,22 @@ div.scrollmenu a:hover {
 #bigdivider {
     border: solid purple 1px;
     width: 100%;
-    margin: 40px 0;
 }
 
 .post_header_channel {
     grid-row: 2/5;
     grid-column: 2/4;
-    height: 100px;
 }
 
 .post_header_channel img {
     border-radius: 50%;
-    height: 100%;
-    width: auto;
-    object-fit: contain;
+    height: 115px;
+    width: 115px;
+    object-fit: cover;
 }
 
 #channel_cover_pic {
-    grid-column: 1/7;
+    grid-column: 1/8;
     grid-row: 1/2;
     height: 70px;
     width: 100%;
@@ -615,8 +620,8 @@ div.scrollmenu a:hover {
 }
 
 #follow_btn {
-    grid-row: 4;
-    grid-column: 4;
+    grid-row: 5;
+    grid-column: 5;
     display: flex;
     justify-content: left;
     padding: 0;
@@ -639,8 +644,8 @@ div.scrollmenu a:hover {
 }
 
 #channel_menu {
-    grid-row: 4;
-    grid-column: 5;
+    grid-row: 5;
+    grid-column: 6;
     display: flex;
     justify-content: right;
     align-items: center;

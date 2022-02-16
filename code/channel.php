@@ -57,7 +57,7 @@ $result = Query($conn, $query, "i", $channelId);
       <?php
       $query = "SELECT `Description` FROM Channels WHERE id = ?";
       $result = Query($conn, $query, "i", $channelId);
-      echo "<p>" . $result[0]['Description'] . "</p>";
+      echo "<p class='desc'>" . $result[0]['Description'] . "</p>";
       ?>
     </div>
 
@@ -102,12 +102,13 @@ $result = Query($conn, $query, "i", $channelId);
         <?php
         if (isset($_POST['allSubmit'])) {
           if (!empty($_POST['ChannelName'])) {
-            if (strlen($_POST['ChannelName']) > 1 && strlen($_POST['ChannelName']) < 30 && ctype_alnum($_POST['ChannelName'])) {
+            if (strlen($_POST['ChannelName']) > 1 && strlen($_POST['ChannelName']) < 11 && ctype_alnum($_POST['ChannelName'])) {
               $query = "SELECT * FROM `Channels` WHERE Name = ?";
               $data = Query($conn, $query, "s", $_POST['ChannelName']);
               if (sizeof($data) > 0) {
               } else {
                 $channelName = $_POST['ChannelName'];
+                $channelName = filter_input(INPUT_POST, 'ChannelName' ,FILTER_SANITIZE_STRING);
                 $query = "UPDATE Channels SET `Name` = ? WHERE id = ?";
                 $data = Query($conn, $query, "si", $channelName, $channelId);
                 echo "Adding succesful!";
@@ -116,7 +117,7 @@ $result = Query($conn, $query, "i", $channelId);
                 </script> <?php
                         }
                       }
-                    }
+                    } 
                   }
                           ?>
         <p>Change content of the channel</p>
@@ -128,13 +129,14 @@ $result = Query($conn, $query, "i", $channelId);
         <?php
         if (isset($_POST['allSubmit'])) {
           if (!empty($_POST['ChannelDescription'])) {
-            if (strlen($_POST['ChannelDescription']) > 1 && strlen($_POST['ChannelDescription']) < 201   /*&& ctype_alnum($_POST['ChannelDescription'])*/) {
+            if (strlen($_POST['ChannelDescription']) > 1 && strlen($_POST['ChannelDescription']) < 90   /*&& ctype_alnum($_POST['ChannelDescription'])*/) {
               $query = "SELECT * FROM `Channels` WHERE Description = ?";
               $data = Query($conn, $query, "s", $_POST['ChannelDescription']);
               if (sizeof($data) > 0) {
                 echo "<p>You cannot add the same description</p>";
               } else {
                 $channelDescription = $_POST['ChannelDescription'];
+                $channelDescription = filter_input(INPUT_POST, 'ChannelDescription' ,FILTER_SANITIZE_STRING);
                 $query = "UPDATE Channels SET `Description` = ? WHERE id = ?";
                 $data = Query($conn, $query, "si", $channelDescription, $channelId);
         ?> <script>

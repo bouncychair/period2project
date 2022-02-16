@@ -22,96 +22,60 @@ $channelId = $_GET['ChannelId'];
 /* CHANGE MAIN PICTURE OF THE CHANNEL ----------------------------------------------------------------- */
 
 
-$upload = $_FILES['mainUpload']['name'];
-if(isset($_POST['fileSubmit'])) {
-    if(!empty($_FILES['mainUpload']['name'])) {
-        $sql = "UPDATE Channels SET `MainPicture` = ? WHERE id = ?";
-        $data = Query($conn, $sql, "si", $upload, $channelId); ?> <script>
-        window.location = 'channel.php?ChannelId=<?php echo $channelId ?>'; 
-        </script> <?php
-    } else {
-        ?> <script>
-        window.setTimeout(function() {
-        window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
-        } , 4000);
-        </script> <?php
-    }
-}
-
-
             $targetDir = "../uploads/";
             $fileName = $_FILES["mainUpload"]["name"];
             $tmpFile1 = $_FILES["mainUpload"]["tmp_name"];
             $targetFilePath = $targetDir . $fileName;
             $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+            $whatsuploaded1 = finfo_file($fileinfo, $_FILES["mainUpload"]["tmp_name"]);
+            $regdate = date("Y-m-d");
+            $randnum = rand(1, 1000);
+            $rename1 = 'Picture'.date("Ymd").$randnum;
+            $targetFilePath = $targetDir . $rename1;
+            $finalName = $rename1 . basename($_FILES["mainUpload"]["name"]);
 
-              if (isset($_POST["fileSubmit"]) && !empty($_FILES["mainUpload"]["name"])) {
+                if (isset($_POST["fileSubmit"]) && !empty($_FILES["mainUpload"]["name"])) {
                   $allowTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
-                  if (in_array($fileinfo, $allowTypes)) {
+                    if (in_array($whatsuploaded1, $allowTypes)) {
                     if($_FILES["mainUpload"]["size"] < 10000000) {
-                      if (move_uploaded_file($_FILES["mainUpload"]["tmp_name"], $targetFilePath)) {
-                          $sql = "INSERT INTO Channels (`MainPicture`) VALUES = (?) WHERE id = ?";
-                          if (Query($conn, $sql, "i", $channelId)) {
+                        if (move_uploaded_file($_FILES["mainUpload"]["tmp_name"], $targetFilePath . basename($_FILES["mainUpload"]["name"]))) {
+                          $sql = "UPDATE Channels SET `MainPicture` = ? WHERE id = ?";
+                            if (Query($conn, $sql, "si", $finalName, $channelId)) {
                               $statusMsg = "Records inserted successfully.";
-                          } else {
-                              $statusMsg = "File upload failed, please try again.";
-                          }
-                      } else {
-                          $statusMsg = "Sorry, there was an error uploading your file.";
-                      }
-                    } else {
-                        $statusMsg = "Sorry, your file too big";
-                    }
-                  } else {
-                      $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
-                  }
-              } 
+                              GoToUrl("channel.php?ChannelId=$channelId");
+                            } 
+                        } 
+                    } 
+                    } 
+                } 
 
 
 /* CHANGE COVER PICTURE OF THE CHANNEL ----------------------------------------------------------------- */           
 
-$upload1 = $_FILES['coverUpload']['name'];
-if(isset($_POST['fileSubmit'])) {
-    if(!empty($_FILES['coverUpload']['name'])) {
-        $sql = "UPDATE Channels SET `CoverPicture` = ? WHERE id = ?";
-        $data = Query($conn, $sql, "si", $upload1, $channelId); ?> <script>
-        window.location = 'channel.php?ChannelId=<?php echo $channelId ?>'; 
-        </script> <?php
-    } else {
-        ?> <script> alert("Please, select a file");
-        window.setTimeout(function() {
-        window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
-        } , 4000);
-        </script> <?php
-    }
-}
-
             $targetDir = "../uploads/";
-            $fileName = $_FILES["coverUpload"]["name"];
+            $fileName1 = $_FILES["coverUpload"]["name"];
             $tmpFile2 = $_FILES["coverUpload"]["tmp_name"];
-            $targetFilePath = $targetDir . $fileName;
             $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-
-              if (isset($_POST["fileSubmit"]) && !empty($_FILES["coverUpload"]["name"])) {
+            $whatsuploaded2 = finfo_file($fileinfo, $_FILES["coverUpload"]["tmp_name"]);
+            $regdate = date("Y-m-d");
+            $randnum = rand(1, 1000);
+            $rename2 = 'Picture'.date("Y-m-d").$randnum;
+            $targetFilePath1 = $targetDir . $rename2;
+            $finalName1 = $rename2 . basename($_FILES["coverUpload"]["name"]);
+            
+                if (isset($_POST["fileSubmit"]) && !empty($_FILES["coverUpload"]["name"])) {
                   $allowTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
-                  if (in_array($fileinfo, $allowTypes)) {
+                  if (in_array($whatsuploaded2, $allowTypes)) {
                     if($_FILES["coverUpload"]["size"] < 10000000) {
-                        if (move_uploaded_file($_FILES["coverUpload"]["tmp_name"], $targetFilePath)) {
-                          $sql = "INSERT INTO Channels (`CoverPicture`) VALUES = (?) WHERE id = ?";
-                          if (Query($conn, $sql, "i", $channelId)) {
+                        if (move_uploaded_file($_FILES["coverUpload"]["tmp_name"], $targetFilePath1 . basename($_FILES["coverUpload"]["name"]))) {
+                          $sql = "UPDATE Channels SET `CoverPicture` = ? WHERE id = ?";
+                          if (Query($conn, $sql, "si",$finalName1, $channelId)) {
                               $statusMsg = "Records inserted successfully.";
-                          } else {
-                              $statusMsg = "File upload failed, please try again.";
-                          }
-                      } else {
-                          $statusMsg = "Sorry, there was an error uploading your file.";
-                      }
-                    } else {
-                        $statusMsg = "Sorry, your file too big";
-                    }
-                  } else {
-                      $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
-                  }
-              } 
+                              GoToUrl("channel.php?ChannelId=$channelId");
+                          } 
+                        } 
+                    } 
+                  } 
+                }
 ?>
 
