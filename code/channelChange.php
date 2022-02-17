@@ -96,7 +96,7 @@ function Redirect(){
   ?> <script> alert("Please, select a file");
               window.setTimeout(function() {
               window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
-              } , 4000);
+              } , 2000);
     </script> <?php
 }
 

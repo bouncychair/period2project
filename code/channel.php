@@ -108,13 +108,11 @@ $result = Query($conn, $query, "i", $channelId);
               if (sizeof($data) > 0) {
               } else {
                 $channelName = $_POST['ChannelName'];
-                $channelName = filter_input(INPUT_POST, 'ChannelName' ,FILTER_SANITIZE_STRING);
+                $channelName = filter_input(INPUT_POST, 'ChannelName', FILTER_SANITIZE_SPECIAL_CHARS);
                 $query = "UPDATE Channels SET `Name` = ? WHERE id = ?";
                 $data = Query($conn, $query, "si", $channelName, $channelId);
                 echo "Adding succesful!";
-        ?> <script>
-                  window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
-                </script> <?php
+                GoToUrl("channel.php?ChannelId=$channelId");
                         }
                       }
                     } 
@@ -136,12 +134,10 @@ $result = Query($conn, $query, "i", $channelId);
                 echo "<p>You cannot add the same description</p>";
               } else {
                 $channelDescription = $_POST['ChannelDescription'];
-                $channelDescription = filter_input(INPUT_POST, 'ChannelDescription' ,FILTER_SANITIZE_STRING);
+                $channelDescription = filter_input(INPUT_POST, 'ChannelDescription', FILTER_SANITIZE_SPECIAL_CHARS);
                 $query = "UPDATE Channels SET `Description` = ? WHERE id = ?";
                 $data = Query($conn, $query, "si", $channelDescription, $channelId);
-        ?> <script>
-                  window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
-                </script> <?php
+                GoToUrl("channel.php?ChannelId=$channelId");
                         }
                       }
                     }
