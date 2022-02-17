@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+
+use GuzzleHttp\RedirectMiddleware;
+
+ session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +25,6 @@ $channelId = $_GET['ChannelId'];
 
 /* CHANGE MAIN PICTURE OF THE CHANNEL ----------------------------------------------------------------- */
 
-
             $targetDir = "../uploads/";
             $fileName = $_FILES["mainUpload"]["name"];
             $tmpFile1 = $_FILES["mainUpload"]["tmp_name"];
@@ -35,7 +38,6 @@ $channelId = $_GET['ChannelId'];
             $targetFilePath = $targetDir . $rename1;
             $finalName = $rename1 . basename($_FILES["mainUpload"]["name"]);
 
-                
                   $allowTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
                     if (in_array($whatsuploaded1, $allowTypes)) {
                     if($_FILES["mainUpload"]["size"] < 10000000) {
@@ -48,8 +50,10 @@ $channelId = $_GET['ChannelId'];
                         } 
                     } 
                     } 
-                } else {
+                } else if(!empty($_FILES["coverUpload"]["name"])) {
                   GoToUrl("channel.php?ChannelId=$channelId");
+                } else {
+                  Redirect();
                 }
 
 
@@ -66,8 +70,7 @@ $channelId = $_GET['ChannelId'];
             $rename2 = 'Picture'.date("Y-m-d").$randnum;
             $targetFilePath1 = $targetDir . $rename2;
             $finalName1 = $rename2 . basename($_FILES["coverUpload"]["name"]);
-            
-                
+
                   $allowTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
                   if (in_array($whatsuploaded2, $allowTypes)) {
                     if($_FILES["coverUpload"]["size"] < 10000000) {
@@ -80,8 +83,23 @@ $channelId = $_GET['ChannelId'];
                         } 
                     } 
                   } 
-                } else {
+                } else if(!empty($_FILES["mainUpload"]["name"])) {
                   GoToUrl("channel.php?ChannelId=$channelId");
+                } else {
+                  Redirect();
                 }
+                  
+                
+
+function Redirect(){
+  $channelId = $_GET['ChannelId'];
+  ?> <script> alert("Please, select a file");
+              window.setTimeout(function() {
+              window.location = 'channel.php?ChannelId=<?php echo $channelId ?>';
+              } , 4000);
+    </script> <?php
+}
+
+
 ?>
 
