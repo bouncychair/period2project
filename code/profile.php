@@ -8,42 +8,56 @@ $id = GetUserId($conn);
 
 $query = "SELECT `ChannelId` FROM Followed WHERE UserId = ?";
 $data = Query($conn, $query, "i", $id);
+$errorMsg = "";
+$successMsg = "";
 
-if (isset($_POST["submitty"])) {
+if (isset($_POST["submit"])) {
+    if (!empty($_POST["password"])) {
+        if (strlen($_POST["password"]) > 1 && strlen($_POST["password"]) < 10  && ctype_alnum($_POST["password"])) {
 
-    if(!empty($_FILES['file']['name'])){
+            $password =  password_hash($_POST["password"], PASSWORD_DEFAULT);
+            $sql = "UPDATE Users SET `Password` = ? WHERE id=?";
+            if(Query($conn, $sql, "si", $password, $id)){
+                $successMsg = "Password has been changed!";
+            }else{
+                $errorMsg = "Something went wrong:( Please try again";
+            }    
             
-    // File upload path
-    $targetDir = "../uploads/";
-    $fileName = $_FILES["file"]["name"];
-    $file = $_FILES["file"]["tmp_name"];
-    $targetFilePath = $targetDir . $fileName;
-    $info = finfo_open(FILEINFO_MIME_TYPE);
-    $uploadtype = finfo_file($info, $file);
-    // Allow certain file formats
-    
-    $allowTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
-    if (in_array($uploadtype, $allowTypes)) {
-        // Upload file to server
-        
-        if (move_uploaded_file($file, $targetFilePath)) {
-            // Insert image file name into database
-            $sql = "UPDATE Users SET `ProfilePicture` = ? WHERE id=?";
-            $data = Query($conn, $sql, "si", $fileName, $id);
-            GoToUrl("profile.php");
-
-            $statusMsg = "Records inserted successfully.";
-        } else {
-            $statusMsg = "File upload failed, please try again.";
         }
     } else {
-        $statusMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
+        $errorMsg = 'Password can not be empty';
     }
-    }else{
-        $statusMsg = "Please chose a Picture";
-        GoToUrl("profile.php");
+}
+if (isset($_POST["submitty"])) {
+    if (!empty($_FILES['file']['name'])) {
+        // File upload path
+        $targetDir = "../uploads/";
+        $fileName = $_FILES["file"]["name"];
+        $file = $_FILES["file"]["tmp_name"];
+        $targetFilePath = $targetDir . $fileName;
+        $info = finfo_open(FILEINFO_MIME_TYPE);
+        $uploadtype = finfo_file($info, $file);
+        // Allow certain file formats
+
+        $allowTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+        if (in_array($uploadtype, $allowTypes)) {
+            // Upload file to server
+
+            if (move_uploaded_file($file, $targetFilePath)) {
+                // Insert image file name into database
+                $sql = "UPDATE Users SET `ProfilePicture` = ? WHERE id=?";
+                $data = Query($conn, $sql, "si", $fileName, $id);
+                $successMsg = "Profile picture has been updated!";
+
+            } else {
+                $errorMsg = "File upload failed, please try again.";
+            }
+        } else {
+            $errorMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
+        }
+    } else {
+        $errorMsg = "Please choose a Picture";
     }
-    echo $statusMsg;
 }
 
 
@@ -71,7 +85,6 @@ if (isset($_POST["submitty"])) {
             $data = Query($conn, $sql, "i", $id);
             $imageURL = '../uploads/' . $data[0]["ProfilePicture"];
             echo "<img max-width=400px src='$imageURL' alt='' />";
-            $statusMsg = '';
             ?></div>
 
 
@@ -97,10 +110,15 @@ if (isset($_POST["submitty"])) {
     </div>
 
     <div id="change">
-        <form action="upload.php" method="POST">
+        <form action="" method="POST">
             <p><u>Change your Password below:</u></p>
             <input type="text" name="password" placeholder="Update Password">
             <input type="submit" name="submit" value="Change Password">
+            <?php 
+            echo'<p style="color:red">' . $errorMsg . ' </p>';
+            echo'<p style="color:#2ecc71">' . $successMsg . ' </p>';
+            ?>
+            
         </form>
     </div>
 

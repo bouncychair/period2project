@@ -61,7 +61,8 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     <a href="authentication.php?page=signup" style="margin-top:0;  cursor: pointer;">SignUp</a>';
 } else if ($_GET["page"] == "signup") { //----------------------------------- Sign Up form
     $formChange = '
-    <span>Use your email for registration</span>
+    <h1>Welcome aboard!</h1>
+    <h4>Create an account</h4>
     ' . $msgBox . '
     <input type="text" name="Fname"  placeholder="First Name"  />
     <input type="text" name="Lname"  placeholder="Last Name"  />
@@ -75,7 +76,9 @@ if (empty($_GET["page"])) { //----------------------------------- Sign In form
     <option value="Female">Female</option>
     <option value="Other">Other</option>
 </select>
-    <button name="Sign_Up"">Sign Up </button>';
+    <button name="Sign_Up"">Sign Up </button>
+    <a href="#">Already have an account?</a>
+    <a href="authentication.php" style="margin-top:0;  cursor: pointer;">Sign In</a>';
 }
 
 if (isset($_POST["Sign_Up"])) {

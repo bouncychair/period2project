@@ -10,7 +10,7 @@ if (isset($_POST["submit"])) {
     $date = date("Y-m-d");
     $comments = $_POST["comments"];
     if (!empty($comments)) {
-        if(strlen($comments) < 201){
+        if(strlen($comments) <= 200){
             $comments = filter_var($comments, FILTER_SANITIZE_STRING);
             $sql = "INSERT INTO `Comments` (PostId, UserId,`Text`, `Date`) VALUES (?, ?, ?, ?)";
             Query($conn, $sql, "iiss", $post, $id, $comments, $date);
@@ -35,7 +35,7 @@ if (isset($_POST["submit"])) {
 </head>
 <body>
     <div class="header">
-        <img src="../img/logo1.png" alt="TocTic Logo" />
+        <a href="main.php" ><img src="../img/Left.png" width="10%" style="margin: 5px;" alt="back button"/></a>
         <h2>TocTic</h2>
     </div>
     <div class="post_comments">
@@ -46,9 +46,6 @@ if (isset($_POST["submit"])) {
             echo "<img src='../uploads/".$row[0]['ProfilePicture']."'>";
             ?>
             <p><?php echo $row[0]['Username'];?></p>
-            <div class="back_button">
-                <a href="../code/main.php"><img src="../img/Project2_back_arrow_big.png"></a>
-            </div> 
         </div>
         <div class="post_caption">
             <?php

@@ -28,7 +28,7 @@ $id = GetUserId($conn);
     </div>
     <h2>Create Channel</h2>
     <div class="post_type">
-        <form action="<?= htmlentities($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+        <form action="<?= htmlentities($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
             <div class="channelName">
                 <input type="text" id="channelName" name="channelName" placeholder="Channel name">
             </div>
@@ -112,7 +112,8 @@ $id = GetUserId($conn);
                 $target_file_main = $target_dir . $rename . basename($_FILES["mainphoto"]["name"]);
                 $sqlMainPhoto = $rename . basename($_FILES["mainphoto"]["name"]);
                 // Get file extension
-                $imageExtension = finfo_open(FILEINFO_MIME_TYPE);
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $imageExtension = finfo_file($finfo, $_FILES["mainphoto"]["tmp_name"]);
                 // Allowed file types
                 $allowd_file_ext = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
                 //checking if there is an uploaded file
@@ -139,7 +140,8 @@ $id = GetUserId($conn);
                 $target_file_cover = $target_dir . $rename . basename($_FILES["coverphoto"]["name"]);
                 $sqlCoverPicture = $rename . basename($_FILES["coverphoto"]["name"]);
                 // Get file extension
-                $imageExtension = finfo_open(FILEINFO_MIME_TYPE);
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $imageExtension = finfo_file($finfo, $_FILES["coverphoto"]["tmp_name"]);
                 //checking if there is an uploaded file
                 if (!file_exists($_FILES["coverphoto"]["tmp_name"])) {
                     echo '<span style="color:red;text-align:center;font-size:18px;">Please select cover image to upload.</span>';
@@ -162,6 +164,10 @@ $id = GetUserId($conn);
                     $insert_info = "INSERT INTO `Channels` (`CreatedByUserId`, `Name`, `MainPicture`, `CoverPicture`, `Description`, `RegDate`, `Type`) VALUES (?,?,?,?,?,?,?)";
                     $insertQ = Query($conn, $insert_info, "issssss", $id, $channelName, $sqlMainPhoto, $sqlCoverPicture, $channelDescription, $regdate, $channel_type);
                     if ($insertQ == 1) {
+                        $query = "SELECT id FROM `Channels` WHERE `CreatedByUserId` = ? AND `Name` = ? AND `MainPicture` = ? AND `CoverPicture` = ? AND `Description` = ? AND `RegDate` = ? AND `Type` = ?";
+                        $data = Query($conn, $query, "issssss", $id, $channelName, $sqlMainPhoto, $sqlCoverPicture, $channelDescription, $regdate, $channel_type);
+                        $query = "INSERT INTO `Followed` (`ChannelId`, `UserId`) VALUES (?, ?)";
+                        Query($conn, $query, "ii", $data[0]['id'], $id);
                         echo "<br>";
                         echo '<span style="color:green;text-align:center;font-size:18px;">Channel created successfully</span>';
                     } else {
@@ -197,6 +203,7 @@ $id = GetUserId($conn);
         $("#chooseFile").change(function() {
             readURL(this);
         });
+        
     </script>
 </body>
 

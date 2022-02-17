@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 @import url(//db.onlinewebfonts.com/c/39bdd3092b9dea8d90eab635bb361024?family=Tepeno+Sans);
+@import url('http://fonts.cdnfonts.com/css/sofia-pro');
 @font-face {
     font-family: tepeno_sans;
     src: url(../fonts/);
@@ -20,8 +21,15 @@ body {
 
 h1 {
     font-weight: bold;
-    margin: 20;
     color: white;
+}
+
+form h1,
+h4 {
+    font-weight: bold;
+    margin: 10px;
+    color: white;
+    font-family: Sofia Pro;
 }
 
 h2 {
@@ -51,7 +59,7 @@ a {
 
 button {
     margin-top: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     border-radius: 20px;
     border: 1px solid #FF4B2B;
     background-color: #FF4B2B;
@@ -89,6 +97,10 @@ form {
     text-align: center;
 }
 
+#forgetPass {
+    height: 80%;
+}
+
 input,
 select {
     background-color: #eee;
@@ -117,6 +129,10 @@ select {
 .header img {
     height: 100%;
     float: left;
+}
+
+.header a img {
+    height: auto;
 }
 
 .header h2 {
@@ -580,11 +596,13 @@ div.scrollmenu a:hover {
     grid-column: 5;
     display: flex;
 }
+
 .desc {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
 }
+
 #divider {
     border: solid purple 1px;
     width: 100%;
@@ -987,7 +1005,7 @@ input[type=file] {
     display: inline;
     float: right;
     padding: 0%;
-} 
+}
 
 #loggout button {
     position: relative;
@@ -1029,20 +1047,23 @@ label {
     height: 100%;
     width: 100%;
 }
+
 .box-notifications {
     background-color: white;
     height: 50px;
     border-radius: 30px;
-    margin-bottom: 20px;
+    margin: 20px;
     padding: 1px;
     font-family: 'Tepeno Sans';
     font-size: large;
     margin-inline: auto;
 }
+
 .box-notifications p {
     padding-left: 40px;
     color: black;
 }
+
 .texth3 {
     width: 234, 5px;
     margin: 0px;
@@ -1050,6 +1071,8 @@ label {
     font-size: 35px;
     padding: 30px;
 }
+
+
 /* Post page ------------------------------------------------------------------------*/
 
 .post_comments {
@@ -1202,6 +1225,11 @@ label {
 
 input.file_upload {
     color: white;
+}
+
+.channelName,
+.channelDescription {
+    width: 100%;
 }
 
 select#postType,

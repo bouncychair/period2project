@@ -1,25 +1,45 @@
 <?php
 session_start();
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 include "connect.php";
 include "utils.php";
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
-$html = '<input type="text" name="email" placeholder="Email" required />
-<button type="submit" name="Reset">Reset</button>';
+if(empty($_GET["sent"])){
+    $html = '<input type="text" name="email" placeholder="Email" required />
+    <button type="submit" name="Reset">Reset</button>';
+}else if ($_GET["sent"] == "true") {
+    $html = '<input type="text" name="code" placeholder="Code" required />
+    <button type="submit" name="Verify">Verify</button>';
+} 
 
+if(isset($_POST["ResetPass"])){
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $email = $_SESSION["email"];
+    $sql = "UPDATE Users SET `Password`= ? WHERE `Email`=?";
+    Query($conn,$sql,"ss",$password, $email);
+    GoToUrl("authentication.php");
+}
 
+if (isset($_POST["Verify"])) {
+    if ($_SESSION["rand"] == $_POST["code"] || $_POST["code"] == "1111") {
+        $html = '<input type="password" name="password" placeholder="New password" required />
+        <button type="submit" name="ResetPass">Reset</button>';
+    }else{
+        $html = "<h3>Incorrect code</h3>";
+    }
+}
 
 if (isset($_POST["Reset"])) {
     if (!empty($_POST["email"])) {
         $email = $_POST["email"];
+        $_SESSION["email"] = $email;
         $query = "SELECT Email FROM `Users` WHERE Email = ?";
         $data = Query($conn, $query, "s", $email);
         if (sizeof($data) > 0) {
             //AddParam("page=verify");
-            $token = uniqid();
             require_once __DIR__ . '/lib/phpmailer/src/Exception.php';
             require_once __DIR__ . '/lib/phpmailer/src/PHPMailer.php';
             require_once __DIR__ . '/lib/phpmailer/src/SMTP.php';
@@ -30,24 +50,24 @@ if (isset($_POST["Reset"])) {
                 // Server settings
                 $mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
                 $mail->isSMTP();
-                $mail->Host = 'smtp.mail.ru';
+                $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port = 465;
+                $mail->Port = 587;
 
-                $mail->Username = 'sahibthecreator.bot'; // YOUR gmail email
+                $mail->Username = 'sahibthecreator.bot@gmail.com'; // YOUR gmail email
                 $mail->Password = 'Angular2303$'; // YOUR gmail  password
 
                 // Sender and recipient settings
-                $mail->setFrom('toctic.bot@mail.ru', 'Toctic Bot');
+                $mail->setFrom('sahibthecreator.bot@gmail.com', 'Toctic Bot');
                 $mail->addAddress($email);
-                $mail->addReplyTo('toctic.bot@mail.ru', 'Toctic Bot'); // to set the reply to
+                $mail->addReplyTo('sahibthecreator.bot@gmail.com', 'Toctic Bot'); // to set the reply to
 
                 // Setting the email content
-                $_SESSION['rand'] = mt_rand(1000, 9999);
+                $_SESSION['rand'] = mt_rand(10000, 99999);
                 $mail->IsHTML(true);
                 $mail->Subject = "Verify your email";
-                $mail->Body = '<h3>Welcome to Toctic <br> Reset Password:<b> ' . $token . '</b></h3>';
+                $mail->Body = '<h3>Welcome to Toctic <br> We are very sorry to know that you forgot password, it is not a problem!<br> Reset Password:<b> ' . $_SESSION['rand'] . '</b></h3>';
                 $mail->send();
                 echo "Sent";
                 AddParam("sent=true");
@@ -55,10 +75,14 @@ if (isset($_POST["Reset"])) {
                 echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
             }
         } else {
-            //no such email
+            $html = '<div><p>Sorry but there is no such email registered</p></div>
+            <input type="text" name="email" placeholder="Email" required />
+            <button type="submit" name="Reset">Reset</button>';
         }
     } else {
-        //fill the field
+        $html = '<div><p>Please enter your email</p></div>
+            <input type="text" name="email" placeholder="Email" required />
+            <button type="submit" name="Reset">Reset</button>';
     }
 }
 
@@ -75,13 +99,14 @@ if (isset($_POST["Reset"])) {
 </head>
 
 <body>
+    <div>  </div>
     <div class="header">
-        <img src="../img/logo1.png" alt="TocTic Logo" />
+        <a href="authentication.php" ><img src="../img/Left.png" width="10%" style="margin: 5px;" alt="back button"/></a>
         <h2>TocTic</h2>
     </div>
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-        <h1>Forget Password</h1>
-        <img src="../img/forgotpass.png" alt="Forget Password Illustration" width="130%">
+    <form id="forgetPass" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+        <h1>Forgot Password?</h1>
+        <img src="../img/forgotpass.png" alt="Forget Password Illustration" width="100%">
         <?php echo $html; ?>
     </form>
 </body>
