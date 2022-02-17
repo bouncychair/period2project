@@ -88,7 +88,7 @@ $id = GetUserId($conn);
     if (isset($_POST['submitPhoto'])) {
       if (!empty($_POST['searchChannel'])) {
         $photoDescription = $_POST["photoDescription"];
-        $channelId = "SELECT Followed.`ChannelId` FROM Followed, Channels WHERE Followed.UserId = ? AND Channels.`Name` = ? AND Followed.ChannelId = Channels.id AND Channels.CreatedByUserId = ?";
+        $channelId = "SELECT Followed.`ChannelId` FROM Followed, Channels WHERE Followed.UserId = ? AND Channels.`Name` = ? AND Followed.ChannelId = Channels.id";
         $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
         if($chId != NULL) {
         if ($_FILES["photoUpload"]["size"] < 3000000) {
@@ -109,6 +109,8 @@ $id = GetUserId($conn);
                   if (move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/" . $newLengPhotoName)) {
                     $insertPhoto = "INSERT INTO Posts (`CreatedByUserId`, `ChannelId`, `ImageName`, `Caption`, `Date`) VALUES (?,?,?,?,?)";
                     $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $newLengPhotoName, $photoDescription, $date);
+                    $notify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+                    $n = Query($conn, $notify, "iis", $id, $chId[0]["ChannelId"], $date);
                     if ($insertP == 1) {
                       echo "Your post has been uploaded.";
                     } else {
@@ -121,6 +123,8 @@ $id = GetUserId($conn);
                   if (move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/" . $newPhotoName)) {
                     $insertPhoto = "INSERT INTO Posts (`CreatedByUserId`, `ChannelId`, `ImageName`, `Caption`, `Date`) VALUES (?,?,?,?,?)";
                     $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $newPhotoName, $photoDescription, $date);
+                    $notify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+                    $n = Query($conn, $notify, "iis", $id, $chId[0]["ChannelId"], $date);
                     if ($insertP == 1) {
                       echo "Your post has been uploaded.";
                     } else {
@@ -137,6 +141,8 @@ $id = GetUserId($conn);
                   if (move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/" . $newLeng2PhotoName)) {
                     $insertPhoto = "INSERT INTO Posts (`CreatedByUserId`, `ChannelId`, `ImageName`, `Caption`, `Date`) VALUES (?,?,?,?,?)";
                     $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $newLeng2PhotoName, $photoDescription, $date);
+                    $notify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+                    $n = Query($conn, $notify, "iis", $id, $chId[0]["ChannelId"], $date);
                     if ($insertP == 1) {
                       echo "Your post has been uploaded.";
                     } else {
@@ -149,6 +155,8 @@ $id = GetUserId($conn);
                   if (move_uploaded_file($_FILES["photoUpload"]["tmp_name"], "../uploads/" . $_FILES["photoUpload"]["name"])) {
                     $insertPhoto = "INSERT INTO Posts (`CreatedByUserId`, `ChannelId`, `ImageName`, `Caption`, `Date`) VALUES (?,?,?,?,?)";
                     $insertP = Query($conn, $insertPhoto, "iisss", $id, $chId[0]["ChannelId"], $_FILES["photoUpload"]["name"], $photoDescription, $date);
+                    $notify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+                    $n = Query($conn, $notify, "iis", $id, $chId[0]["ChannelId"], $date);
                     if ($insertP == 1) {
                       echo "Your post has been uploaded.";
                     } else {
@@ -198,6 +206,8 @@ $id = GetUserId($conn);
                   if (move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/" . $newLengVideoName)) {
                     $insertVideo = "INSERT INTO Posts (CreatedByUserId, ChannelId, VideoName, Caption, `Date`) VALUES (?,?,?,?,?)";
                     $insertV = Query($conn, $insertVideo, "iisss", $id, $chId[0]["ChannelId"], $newLengVideoName, $videoDescription, $date);
+                    $notify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+                    $n = Query($conn, $notify, "iis", $id, $chId[0]["ChannelId"], $date);
                     if ($insertV == 1) {
                       echo "Your post has been uploaded.";
                     } else {
@@ -210,6 +220,8 @@ $id = GetUserId($conn);
                   if (move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/" . $newVideoName)) {
                     $insertVideo = "INSERT INTO Posts (CreatedByUserId, ChannelId, VideoName, Caption, `Date`) VALUES (?,?,?,?,?)";
                     $insertV = Query($conn, $insertVideo, "iisss", $id, $chId[0]["ChannelId"], $newVideoName, $videoDescription, $date);
+                    $notify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+                    $n = Query($conn, $notify, "iis", $id, $chId[0]["ChannelId"], $date);
                     if ($insertV == 1) {
                       echo "Your post has been uploaded.";
                     } else {
@@ -226,6 +238,8 @@ $id = GetUserId($conn);
                   if (move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/" . $newLeng2VideoName)) {
                     $insertVideo = "INSERT INTO Posts (CreatedByUserId, ChannelId, VideoName, Caption, `Date`) VALUES (?,?,?,?,?)";
                     $insertV = Query($conn, $insertVideo, "iisss", $id, $chId[0]["ChannelId"], $newLeng2VideoName, $videoDescription, $date);
+                    $notify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+                    $n = Query($conn, $notify, "iis", $id, $chId[0]["ChannelId"], $date);
                     if ($insertV == 1) {
                       echo "Your post has been uploaded.";
                     } else {
@@ -238,8 +252,8 @@ $id = GetUserId($conn);
                   if (move_uploaded_file($_FILES["videoUpload"]["tmp_name"], "../uploads/" . $_FILES["videoUpload"]["name"])) {
                     $insertVideo = "INSERT INTO Posts (CreatedByUserId, ChannelId, VideoName, Caption, `Date`) VALUES (?,?,?,?,?)";
                     $insertV = Query($conn, $insertVideo, "iisss", $id, $chId[0]["ChannelId"], $_FILES["videoUpload"]["name"], $videoDescription, $date);
-                    $videonotify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
-                    $videon = Query($conn, $videonotify, "iis", $id, $chId[0]["ChannelId"], $date);
+                    $notify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+                    $n = Query($conn, $notify, "iis", $id, $chId[0]["ChannelId"], $date);
                     if ($insertV == 1) {
                       echo "Your post has been uploaded.";
                     } else {
@@ -274,8 +288,8 @@ $id = GetUserId($conn);
         if (!empty($_POST['textUpload'])) {
           $insertText = "INSERT INTO Posts (CreatedByUserId, ChannelId, Caption, `Date`) VALUES (?,?,?,?)";
           $insertT = Query($conn, $insertText, "iiss", $id, $chId[0]["ChannelId"], $text, $date);
-          $videonotify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
-          $videon = Query($conn, $videonotify, "iis", $id, $chId[0]["ChannelId"], $date);
+          $notify = "INSERT INTO Notifications (UserId, ChannelId, `Date`) VALUES (?,?,?)";
+          $n = Query($conn, $notify, "iis", $id, $chId[0]["ChannelId"], $date);
           if($insertT == 1){
             echo "Your post has been uploaded.";
            } else{
