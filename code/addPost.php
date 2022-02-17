@@ -88,7 +88,7 @@ $id = GetUserId($conn);
     if (isset($_POST['submitPhoto'])) {
       if (!empty($_POST['searchChannel'])) {
         $photoDescription = $_POST["photoDescription"];
-        $channelId = "SELECT Channels.`id` OR Followed.`ChannelId` FROM Followed, Channels WHERE Channels.`Name` = ? AND Followed.ChannelId = Channels.id OR Channels.CreatedByUserId = ? OR Followed.UserId = ?";
+        $channelId = "SELECT Channels.`id`, Followed.`ChannelId` FROM Followed, Channels WHERE Channels.`Name` = ? AND Followed.ChannelId = Channels.id OR Channels.CreatedByUserId = ? OR Followed.UserId = ? AND Channels.`Name` = ?";
         $chId = Query($conn, $channelId, "isis", $id, $_POST['searchChannel'],  $id, $_POST['searchChannel']);
         //$ownedChannelId = "SELECT Channels.`Id` FROM Channels.CreatedByUserId = ? AND Channels.`Name` = ?";
         //$ownedChId = Query($conn, $ownedChId, "is", $id, $_POST['searchChannel']);
