@@ -83,7 +83,7 @@ function SendVerificationMail($emailTo){
         $mail->Subject = "Verify your email";
         $mail->Body = '<h3>Welcome to Toctic <br> Your code for verification:<b> ' . $_SESSION['rand'] . '</b></h3>';
         $mail->send();
-        echo "Sent";
+        //echo "Sent";
     } catch (Exception $e) {
         //echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
         echo "<h3>Email got blocked</h3>";

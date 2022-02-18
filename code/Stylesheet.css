@@ -913,7 +913,7 @@ input#searchChannel {
 
 .searchResultBox {
     z-index: 3;
-    width: 125%;
+    width: 101%;
     background: rgb(7 196 161);
     border-radius: 5px;
     border-color: black;
@@ -1334,7 +1334,7 @@ input#searchChannel {
 
 .searchResultBox {
     z-index: 3;
-    width: 125%;
+    width: 101%;
     background: rgb(7 196 161);
     border-radius: 5px;
     border-color: black;

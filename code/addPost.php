@@ -91,7 +91,7 @@ $id = GetUserId($conn);
         $channelId = "SELECT Followed.`ChannelId` FROM Followed, Channels WHERE Followed.UserId = ? AND Channels.`Name` = ? AND Followed.ChannelId = Channels.id";
         $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
         if($chId != NULL) {
-        if ($_FILES["photoUpload"]["size"] < 3000000) {
+        if (!empty($_FILES["photoUpload"]["size"]) && $_FILES["photoUpload"]["size"] < 3000000) {
           $acceptedPhotoTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png"];
           $photoinfo = finfo_open(FILEINFO_MIME_TYPE);
           $uploadedPhotoType = finfo_file($photoinfo, $_FILES["photoUpload"]["tmp_name"]);
@@ -188,7 +188,7 @@ $id = GetUserId($conn);
         $chId = Query($conn, $channelId, "is", $id, $_POST['searchChannel']);
         $videoDescription = $_POST["videoDescription"];
         if($chId != NULL) {
-        if ($_FILES["videoUpload"]["size"] < 100000000) {
+        if (!empty($_FILES["videoUpload"]["tmp_name"]) && $_FILES["videoUpload"]["size"] < 100000000) {
           $acceptedVideoTypes = ["video/mov", "video/swf", "video/mp4", "video/mkv", "video/flv", "video/wmv", "video/avi", "video/3gp", "video/vob", "video/aaf", "video/mod", "video/mpeg"];
           $videoinfo = finfo_open(FILEINFO_MIME_TYPE);
           $uploadedVideoType = finfo_file($videoinfo, $_FILES["videoUpload"]["tmp_name"]);

@@ -13,11 +13,11 @@ $id = GetUserId($conn);
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="Stylesheet.css">
-  <title>Create Channel</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Stylesheet.css">
+    <title>Create Channel</title>
 </head>
 
 
@@ -112,22 +112,25 @@ $id = GetUserId($conn);
                 $target_file_main = $target_dir . $rename . basename($_FILES["mainphoto"]["name"]);
                 $sqlMainPhoto = $rename . basename($_FILES["mainphoto"]["name"]);
                 // Get file extension
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $imageExtension = finfo_file($finfo, $_FILES["mainphoto"]["tmp_name"]);
-                // Allowed file types
                 $allowd_file_ext = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
-                //checking if there is an uploaded file
-                if (!file_exists($_FILES["mainphoto"]["tmp_name"])) {
-                    echo '<span style="color:red;text-align:center;font-size:18px;">Please select main image to upload.</span>';
-                } else if (!in_array($imageExtension, $allowd_file_ext)) {
-                    echo '<span style="color:red;text-align:center;font-size:18px;">Allowed file formats are jpg, jpeg or png.</span>';
-                } else if ($_FILES["mainphoto"]["size"] > 2097152) {
-                    echo '<span style="color:red;text-align:center;font-size:18px;">File is too large. File size should be less than 2 megabytes.</span>';
-                } else {
-                    if (move_uploaded_file($_FILES["mainphoto"]["tmp_name"], $target_file_main)) {
-                        $count_upload += 1;
+                if (file_exists($_FILES["mainphoto"]["tmp_name"])) {
+                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                    $imageExtension = finfo_file($finfo, $_FILES["mainphoto"]["tmp_name"]);
+                    //var_dump($imageExtension);die();
+                    // Allowed file types
+                    //checking if there is an uploaded file
+                    if (!file_exists($_FILES["mainphoto"]["tmp_name"])) {
+                        echo '<span style="color:red;text-align:center;font-size:18px;">Please select main image to upload.</span>';
+                    } else if (!in_array($imageExtension, $allowd_file_ext)) {
+                        echo '<span style="color:red;text-align:center;font-size:18px;">Allowed file formats are jpg, jpeg or png.</span>';
+                    } else if ($_FILES["mainphoto"]["size"] > 2097152) {
+                        echo '<span style="color:red;text-align:center;font-size:18px;">File is too large. File size should be less than 2 megabytes.</span>';
                     } else {
-                        echo '<span style="color:red;text-align:center;font-size:18px;">Error uploading main picture</span>';
+                        if (move_uploaded_file($_FILES["mainphoto"]["tmp_name"], $target_file_main)) {
+                            $count_upload += 1;
+                        } else {
+                            echo '<span style="color:red;text-align:center;font-size:18px;">Error uploading main picture</span>';
+                        }
                     }
                 }
 
@@ -140,22 +143,25 @@ $id = GetUserId($conn);
                 $target_file_cover = $target_dir . $rename . basename($_FILES["coverphoto"]["name"]);
                 $sqlCoverPicture = $rename . basename($_FILES["coverphoto"]["name"]);
                 // Get file extension
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $imageExtension = finfo_file($finfo, $_FILES["coverphoto"]["tmp_name"]);
-                //checking if there is an uploaded file
-                if (!file_exists($_FILES["coverphoto"]["tmp_name"])) {
-                    echo '<span style="color:red;text-align:center;font-size:18px;">Please select cover image to upload.</span>';
-                } else if (!in_array($imageExtension, $allowd_file_ext)) {
-                    echo '<span style="color:red;text-align:center;font-size:18px;">Allowed file formats are jpg, jpeg or png.</span>';
-                } else if ($_FILES["coverphoto"]["size"] > 2097152) {
-                    echo '<span style="color:red;text-align:center;font-size:18px;">File is too large. File size should be less than 2 megabytes.</span>';
-                } else {
-                    if (move_uploaded_file($_FILES["coverphoto"]["tmp_name"], $target_file_cover)) {
-                        $count_upload += 1;
+                if (file_exists($_FILES["coverphoto"]["tmp_name"])) {
+                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                    $imageExtension = finfo_file($finfo, $_FILES["coverphoto"]["tmp_name"]);
+                    //checking if there is an uploaded file
+                    if (!file_exists($_FILES["coverphoto"]["tmp_name"])) {
+                        echo '<span style="color:red;text-align:center;font-size:18px;">Please select cover image to upload.</span>';
+                    } else if (!in_array($imageExtension, $allowd_file_ext)) {
+                        echo '<span style="color:red;text-align:center;font-size:18px;">Allowed file formats are jpg, jpeg or png.</span>';
+                    } else if ($_FILES["coverphoto"]["size"] > 2097152) {
+                        echo '<span style="color:red;text-align:center;font-size:18px;">File is too large. File size should be less than 2 megabytes.</span>';
                     } else {
-                        echo '<span style="color:red;text-align:center;font-size:18px;">Error uploading cover picture</span>';
+                        if (move_uploaded_file($_FILES["coverphoto"]["tmp_name"], $target_file_cover)) {
+                            $count_upload += 1;
+                        } else {
+                            echo '<span style="color:red;text-align:center;font-size:18px;">Error uploading cover picture</span>';
+                        }
                     }
                 }
+
 
                 if ($count_upload == 4) {
                     $channel_type = $_POST['postType'];
@@ -203,7 +209,6 @@ $id = GetUserId($conn);
         $("#chooseFile").change(function() {
             readURL(this);
         });
-        
     </script>
 </body>
 
